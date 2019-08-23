@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import MenuBar from '../src/Components/UserPages/MenuBar/MenuBar';
+import Container from './Components/UserPages/Container/Container';
 
 function App() {
   return (
     <div className="App">
-      <MenuBar />
+      <Container />
     </div>
   );
 }
