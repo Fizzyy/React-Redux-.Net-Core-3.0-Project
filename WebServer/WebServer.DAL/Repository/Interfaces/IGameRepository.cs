@@ -13,5 +13,11 @@ namespace WebServer.DAL.Repository.Interfaces
         Task<IEnumerable<Game>> GetCurrentPlatformGames(string GamePlatform);
 
         Task<Game> GetChosenGame(string GameID);
+
+        Task AddGame(Game game);
+
+        Task UpdateGame(Game game);
+
+        Task RemoveGame(string GameID);
     }
 }

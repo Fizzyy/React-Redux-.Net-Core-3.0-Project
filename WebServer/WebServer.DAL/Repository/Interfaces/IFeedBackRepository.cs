@@ -10,7 +10,7 @@ namespace WebServer.DAL.Repository.Interfaces
     {
         Task<List<Feedback>> GetCurrentGameFeedback(string GameID);
 
-        Task<IEnumerable<object>> GetUserFeedback(string Username);
+        Task<IEnumerable<Feedback>> GetUserFeedback(string Username);
 
         Task AddFeedback(Feedback feedback);
 

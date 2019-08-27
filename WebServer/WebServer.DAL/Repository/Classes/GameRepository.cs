@@ -34,5 +34,33 @@ namespace WebServer.DAL.Repository.Classes
             if (chosengame != null) return chosengame;
             else return null;
         }
+
+        public async Task AddGame(Game game)
+        {
+            commonContext.Games.Add(game);
+            commonContext.GameFinalScores.Add(new GameFinalScores { GameID = game.GameID, GameScore = 0 });
+            await commonContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateGame(Game game)
+        {
+            var foundgame = await commonContext.Games.FindAsync(game.GameID);
+            if (foundgame != null)
+            {
+                foundgame.GameName = game.GameName;
+                foundgame.GamePlatform = game.GamePlatform;
+                foundgame.GamePrice = game.GamePrice;
+                foundgame.GameRating = game.GameRating;
+                foundgame.GameJenre = game.GameJenre;
+            }
+            await commonContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveGame(string GameID)
+        {
+            var game = await commonContext.Games.FindAsync(GameID);
+            if (game != null) commonContext.Remove(game);
+            await commonContext.SaveChangesAsync();
+        }
     }
 }

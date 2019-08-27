@@ -21,7 +21,14 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await Task.FromResult(commonContext.Users);
+            return await Task.FromResult(commonContext.Users.Where(x => x.Role == "User"));
+        }
+
+        public async Task<User> GetCurrentUser(string Username)
+        {
+            var user = await commonContext.Users.FindAsync(Username);
+            if (user != null) return user;
+            return null;
         }
 
         public async Task AddUser(User user)

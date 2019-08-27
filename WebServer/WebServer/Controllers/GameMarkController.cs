@@ -19,24 +19,20 @@ namespace WebServer.Controllers
             this.gameMarkService = gameMarkService;
         }
 
-        [HttpGet]
-        [Route("GetUserMarks/{Username}")]
-        public async Task<IActionResult> GetUserMarks(string Username)
-        {
-            if (Username != null)
-            {
-                IEnumerable<object> gameMarks =  await gameMarkService.GetUsersScores(Username);
-                return Ok(gameMarks);
-            }
-            return NotFound();
-        }
-
         [HttpPost]
         [Route("AddScore")]
         public async Task<IActionResult> AddScore([FromBody]GameMarkBll model)
         {
             var res = await gameMarkService.AddScore(model);
             return Ok(res);
+        }
+
+        [HttpPost]
+        [Route("DeleteScore")]
+        public async Task<IActionResult> DeleteScore([FromBody]GameMarkBll model)
+        {
+            await gameMarkService.RemoveScore(model.GameID);
+            return Ok();
         }
     }
 }

@@ -19,20 +19,11 @@ namespace WebServer.DAL.Repository.Classes
             this.commonContext = commonContext;
         }
 
-        public async Task<IEnumerable<object>> GetUsersScores(string Username)
+        public async Task<IEnumerable<GameMark>> GetAllUserScores(string Username)
         {
-            var allusersscores = await Task.FromResult(commonContext.GameMarks.Where(x => x.Username == Username)
-                                                                              .Join(commonContext.Games,
-                                                                                    p => p.GameID,
-                                                                                    c => c.GameID,
-                                                                                    (p,c) => new
-                                                                                    {
-                                                                                        GameName = c.GameName,
-                                                                                        Score = p.Score,
-                                                                                        ScoreID = p.Id,
-                                                                                        GamePlatform = c.GamePlatform
-                                                                                    }));
-            return allusersscores;
+            var allusersscores = await Task.FromResult(commonContext.GameMarks.Where(x => x.Username == Username));
+            if (allusersscores != null) return allusersscores;
+            return null;
         }
 
         public async Task<int> GetCurrentUserScore(string GameID, string Username)
@@ -41,6 +32,7 @@ namespace WebServer.DAL.Repository.Classes
             {
                 if (Username == null || Username == "Войти") return 0;
                 var avg = await commonContext.GameMarks.FirstOrDefaultAsync(x => x.GameID == GameID && x.Username == Username);
+                if (avg == null) return 0;
                 return avg.Score;
             }
             catch(Exception ex)
@@ -49,7 +41,7 @@ namespace WebServer.DAL.Repository.Classes
             }
         }
 
-        public async Task<double> AddScore(GameMark score)
+        public async Task AddScore(GameMark score)
         {
             var AlreadyPutGame = await commonContext.GameMarks.FirstOrDefaultAsync(x => x.Username == score.Username && x.GameID == score.GameID);
             if (AlreadyPutGame == null) commonContext.GameMarks.Add(score);
@@ -59,8 +51,6 @@ namespace WebServer.DAL.Repository.Classes
                 AlreadyPutGame.GameMarkDate = score.GameMarkDate;
             }
             await commonContext.SaveChangesAsync();
-            var result = await commonContext.GameMarks.Where(x => x.GameID == score.GameID).AverageAsync(x => x.Score);
-            return result;
         }
 
         public async Task RemoveScore(string GameMarkID)

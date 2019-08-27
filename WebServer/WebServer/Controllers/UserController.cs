@@ -26,7 +26,6 @@ namespace WebServer.Controllers
 
         [HttpGet]
         [Route("GetAllUsers")]
-        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetAllUsers()
         {
             IEnumerable<User> users = await userService.GetUsers();
@@ -65,6 +64,15 @@ namespace WebServer.Controllers
         }
 
         [HttpGet]
+        [Route("GetUserFullInfo/{Username}")]
+        public async Task<IActionResult> GetUserFullInfo(string Username)
+        {
+            var user = await userService.GetCurrentUser(Username);
+            if (user != null) return Ok(user);
+            else return NotFound();
+        }
+
+        [HttpGet]
         [Route("ReturnUserBalance/{Username}")]
         public async Task<IActionResult> ReturnUserBalance(string Username)
         {
@@ -72,32 +80,25 @@ namespace WebServer.Controllers
             return NotFound();
         }
 
-        /*[HttpGet]
-        [Route("GetUserAccountData/{Username}")]
-        public async Task<IActionResult> GetUserAccountData(string Username)
-        {
-
-        }*/
-
         [HttpPost]
-        [Route("BanUser/{Username}")]
-        public async Task<IActionResult> BanUser(string Username)
+        [Route("BanUser")]
+        public async Task<IActionResult> BanUser([FromBody]UserBll username)
         {
-            if (Username != null)
+            if (username != null)
             {
-                await userService.BanUser(Username);
+                await userService.BanUser(username.Username);
                 return Ok();
             }
             return NotFound();
         }
 
         [HttpPost]
-        [Route("SignOut/{Username}")]
-        public async Task<IActionResult> SignOutUser(string Username)
+        [Route("SignOut")]
+        public async Task<IActionResult> SignOutUser([FromBody]UserBll user)
         {
-            if (Username != null)
+            if (user != null)
             {
-                await refreshTokensService.DeleteRefreshToken(Username);
+                await refreshTokensService.DeleteRefreshToken(user.Username);
                 return Ok();
             }
             else return BadRequest();

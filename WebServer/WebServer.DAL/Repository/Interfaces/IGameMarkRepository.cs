@@ -8,11 +8,11 @@ namespace WebServer.DAL.Repository.Interfaces
 {
     public interface IGameMarkRepository
     {
-        Task<IEnumerable<object>> GetUsersScores(string Username);
+        Task<IEnumerable<GameMark>> GetAllUserScores(string Username);
 
         Task<int> GetCurrentUserScore(string GameID, string Username);
 
-        Task<double> AddScore(GameMark score);
+        Task AddScore(GameMark score);
 
         Task RemoveScore(string GameMarkID);
     }

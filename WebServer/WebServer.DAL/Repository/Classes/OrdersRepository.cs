@@ -60,6 +60,13 @@ namespace WebServer.DAL.Repository.Classes
             return res;
         }
 
+        public async Task<IEnumerable<Orders>> GetAllUserOrders(string Username)
+        {
+            var UserOrders = await Task.FromResult(commonContext.Orders.Where(x => x.Username == Username));
+            if (UserOrders != null) return UserOrders;
+            return null;
+        }
+
         public async Task AddOrder(Orders order)
         {
             commonContext.Orders.Add(order);

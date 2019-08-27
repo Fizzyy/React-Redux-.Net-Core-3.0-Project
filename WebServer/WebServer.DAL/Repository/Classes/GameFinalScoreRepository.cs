@@ -27,10 +27,11 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task<GameFinalScores> UpdateScore(GameFinalScores game)
         {
+            var result = await commonContext.GameMarks.Where(x => x.GameID == game.GameID).AverageAsync(x => x.Score);
             var foundgame = await commonContext.GameFinalScores.FindAsync(game.GameID);
             if (foundgame != null)
             {
-                foundgame.GameScore = game.GameScore;
+                foundgame.GameScore = result;
             }
             await commonContext.SaveChangesAsync();
             return foundgame;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebServer.DAL.Models;
@@ -8,6 +9,7 @@ using WebServer.DAL.Repository;
 using WebServer.DAL.Repository.Interfaces;
 using WebServer.Services.Interfaces;
 using WebServer.Services.ModelsBll;
+using WebServer.Services.ModelsBll.Joins;
 
 namespace WebServer.Services.Services
 {
@@ -16,15 +18,40 @@ namespace WebServer.Services.Services
         private readonly IUserRepository userRepository;
         private readonly IRefreshTokensRepository refreshTokensRepository;
 
-        public UserService(IUserRepository userRepository, IRefreshTokensRepository refreshTokensRepository)
+        private readonly IFeedbackService feedbackService;
+        private readonly IGameMarkService gameMarkService;
+        private readonly IOrderService orderService;
+
+        public UserService(IUserRepository userRepository, IRefreshTokensRepository refreshTokensRepository, IFeedbackService feedbackService, IGameMarkService gameMarkService, IOrderService orderService)
         {
             this.userRepository = userRepository;
             this.refreshTokensRepository = refreshTokensRepository;
+            this.feedbackService = feedbackService;
+            this.gameMarkService = gameMarkService;
+            this.orderService = orderService;
         }
 
         public async Task<IEnumerable<User>> GetUsers()
         {
             return await userRepository.GetUsers();
+        }
+
+        public async Task<UserBll> GetCurrentUser(string Username)
+        {
+            var founduser = await userRepository.GetCurrentUser(Username);
+            if (founduser == null) return null;
+
+            UserBll user = new UserBll
+            {
+                Username = founduser.Username,
+                UserBalance = founduser.UserBalance,
+                Role = founduser.Role,
+                isUserBanned = founduser.isUserBanned,
+                Feedbacks = await feedbackService.GetUserFeedback(Username),
+                GameMarks = await gameMarkService.GetAllUserScores(Username),
+                Orders = await orderService.GetAllUserOrders(Username)
+            };
+            return user;
         }
 
         public Task AddUser(UserBll user)

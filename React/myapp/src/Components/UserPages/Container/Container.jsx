@@ -25,6 +25,9 @@ class Container extends React.Component {
                     <h1>asfasfasf</h1>
                     <h1>asfasfasf</h1>
                     <h1>asfasfasf</h1>
+                    <h1>asfasfasf</h1>
+                    <h1>asfasfasf</h1>
+                    <h1>asfasfasf</h1>
                 </div>
                 <div id='footer'>
                     <Footer />

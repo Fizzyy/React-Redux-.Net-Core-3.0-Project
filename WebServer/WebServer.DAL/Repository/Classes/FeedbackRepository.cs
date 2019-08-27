@@ -6,6 +6,7 @@ using WebServer.DAL.Context;
 using WebServer.DAL.Models;
 using WebServer.DAL.Repository.Interfaces;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebServer.DAL.Repository.Classes
 {
@@ -29,20 +30,11 @@ namespace WebServer.DAL.Repository.Classes
             return feedbacks;
         }
 
-        public async Task<IEnumerable<object>> GetUserFeedback(string Username)
+        public async Task<IEnumerable<Feedback>> GetUserFeedback(string Username)
         {
-            var UserFeedback = await Task.FromResult(commonContext.Feedbacks.Where(x => x.Username == Username)
-                                                                            .Join(commonContext.Games,
-                                                                                  p => p.GameID,
-                                                                                  c => c.GameID,
-                                                                                  (p, c) => new
-                                                                                  {
-                                                                                      GameName = c.GameName,
-                                                                                      Comment = p.Comment,
-                                                                                      CommentDate = p.CommentDate
-                                                                                  })
-                                                                            .OrderByDescending(x => x.CommentDate));
-            return UserFeedback;
+            var UserFeedback = await Task.FromResult(commonContext.Feedbacks.Where(x => x.Username == Username));
+            if (UserFeedback != null) return UserFeedback;
+            return null;
         }
 
         public async Task AddFeedback(Feedback feedback)

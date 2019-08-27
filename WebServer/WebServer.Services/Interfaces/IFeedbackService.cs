@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebServer.DAL.Models;
 using WebServer.Services.ModelsBll;
+using WebServer.Services.ModelsBll.Joins;
 
 namespace WebServer.Services.Interfaces
 {
@@ -11,7 +12,7 @@ namespace WebServer.Services.Interfaces
     {
         Task<List<Feedback>> GetCurrentGameFeedback(string GameID);
 
-        Task<IEnumerable<object>> GetUserFeedback(string Username);
+        Task<List<UserFeedbackBll>> GetUserFeedback(string Username);
 
         Task AddFeedback(FeedbackBll feedback);
 

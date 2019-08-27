@@ -73,5 +73,38 @@ namespace WebServer.Services.Services
             };
             return gameDescription;
         }
+
+        public async Task AddGame(GameBll game)
+        {
+            await gameRepository.AddGame(new Game
+            {
+                GameID = game.GameID,
+                GameName = game.GameName,
+                GameJenre = game.GameJenre,
+                GamePrice = game.GamePrice,
+                GamePlatform = game.GamePlatform,
+                GameRating = game.GameRating,
+                GameImage = game.GameImage
+            });
+        }
+
+        public async Task UpdateGame(GameBll game)
+        {
+            await gameRepository.UpdateGame(new Game
+            {
+                GameID = game.GameID,
+                GameName = game.GameName,
+                GameJenre = game.GameJenre,
+                GamePrice = game.GamePrice,
+                GamePlatform = game.GamePlatform,
+                GameRating = game.GameRating,
+                GameImage = game.GameImage
+            });
+        }
+
+        public async Task RemoveGame(string GameID)
+        {
+            await gameRepository.RemoveGame(GameID);
+        }
     }
 }

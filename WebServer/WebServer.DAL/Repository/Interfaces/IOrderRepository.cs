@@ -12,6 +12,8 @@ namespace WebServer.DAL.Repository.Interfaces
 
         Task<IEnumerable<object>> GetPaidOrders(string Username);
 
+        Task<IEnumerable<Orders>> GetAllUserOrders(string Username);
+
         Task AddOrder(Orders order);
 
         Task RemoveOrders(string[] orders);

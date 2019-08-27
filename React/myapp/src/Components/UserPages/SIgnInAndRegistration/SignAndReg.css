@@ -1,0 +1,41 @@
+.modal-content {
+    height: 300px;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 210px;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-body-divs {
+    flex: 1;
+    padding-top: 15px;
+    vertical-align: middle;
+    height: 2em;
+}
+
+.modal-body-labels {
+    font-size: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#SignInButton {
+    width: 150px;
+    height: 40px;
+}

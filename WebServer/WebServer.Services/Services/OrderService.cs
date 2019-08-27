@@ -7,16 +7,19 @@ using WebServer.DAL.Repository;
 using WebServer.DAL.Repository.Interfaces;
 using WebServer.Services.Interfaces;
 using WebServer.Services.ModelsBll;
+using WebServer.Services.ModelsBll.Joins;
 
 namespace WebServer.Services.Services
 {
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository orderRepository;
+        private readonly IGameRepository gameRepository;
 
-        public OrderService(IOrderRepository orderRepository)
+        public OrderService(IOrderRepository orderRepository, IGameRepository gameRepository)
         {
             this.orderRepository = orderRepository;
+            this.gameRepository = gameRepository;
         }
 
         public Task<IEnumerable<object>> GetCurrentOrders(string Username)
@@ -27,6 +30,35 @@ namespace WebServer.Services.Services
         public Task<IEnumerable<object>> GetPaidOrders(string Username)
         {
             return orderRepository.GetPaidOrders(Username);
+        }
+
+        public async Task<List<UserOrdersBll>> GetAllUserOrders(string Username)
+        {
+            List<UserOrdersBll> userOrders = new List<UserOrdersBll>();
+
+            var foundorders = await orderRepository.GetAllUserOrders(Username);
+
+            if (foundorders != null)
+            {
+                foreach (var order in foundorders)
+                {
+                    var game = await gameRepository.GetChosenGame(order.GameID);
+
+                    userOrders.Add(new UserOrdersBll
+                    {
+                        OrderID = order.Id,
+                        GameName = game.GameName,
+                        GamePlatform = game.GamePlatform,
+                        Amount = order.Amount,
+                        Username = order.Username,
+                        OrderDate = order.OrderDate,
+                        TotalSum = order.TotalSum
+                    });
+                }
+                return userOrders;
+            }
+
+            return null;
         }
 
         public Task AddOrder(OrdersBll order)

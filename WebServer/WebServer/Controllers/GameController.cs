@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebServer.DAL.Models;
 using WebServer.Services.Interfaces;
+using WebServer.Services.ModelsBll;
 using WebServer.Services.ModelsBll.Joins;
 
 namespace WebServer.Controllers
@@ -48,6 +49,51 @@ namespace WebServer.Controllers
                 var gameDesc = await gameService.GetChosenGame(GameID, Username);
                 if (gameDesc != null) return Ok(gameDesc);
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("AddGame")]
+        public async Task<IActionResult> AddGame([FromBody]GameBll game)
+        {
+            try
+            {
+                await gameService.AddGame(game);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateGame")]
+        public async Task<IActionResult> UpdateGame([FromBody]GameBll game)
+        {
+            try
+            { 
+                await gameService.UpdateGame(game);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteGame/{GameID}")]
+        public async Task<IActionResult> RemoveGame(string GameID)
+        {
+            try
+            {
+                await gameService.RemoveGame(GameID);
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -10,9 +10,15 @@ namespace WebServer.Services.Interfaces
     public interface IUserService
     {
         Task<IEnumerable<User>> GetUsers();
+
+        Task<UserBll> GetCurrentUser(string Username);
+
         Task AddUser(UserBll user);
+
         Task<object> CheckUser(UserBll user);
+
         Task<decimal> ReturnUserBalance(string Username);
+
         Task BanUser(string Username);
     }
 }

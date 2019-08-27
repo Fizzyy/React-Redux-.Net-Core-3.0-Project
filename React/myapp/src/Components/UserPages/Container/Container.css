@@ -11,8 +11,9 @@
 
 #bodyy {
     width: 100%;
-    /* height: auto; */
+    padding-top: 7.5em;
     background-color: yellowgreen;
+    /* height: auto; */
     /* overflow-y: scroll;
     scroll-behavior: smooth; */
 }

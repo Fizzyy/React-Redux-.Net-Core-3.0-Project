@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebServer.DAL.Models;
 using WebServer.Services.ModelsBll;
+using WebServer.Services.ModelsBll.Joins;
 
 namespace WebServer.Services.Interfaces
 {
@@ -12,6 +13,8 @@ namespace WebServer.Services.Interfaces
         Task<IEnumerable<object>> GetCurrentOrders(string Username);
 
         Task<IEnumerable<object>> GetPaidOrders(string Username);
+
+        Task<List<UserOrdersBll>> GetAllUserOrders(string Username);
 
         Task AddOrder(OrdersBll orders);
 

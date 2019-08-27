@@ -9,8 +9,11 @@ namespace WebServer.Services.ModelsBll
     public class FeedbackBll
     {
         public int Id { get; set; }
+
         public string Username { get; set; }
+
         public string GameID { get; set; }
+
         public string Comment { get; set; }
 
         public DateTime CommentDate { get; set; }

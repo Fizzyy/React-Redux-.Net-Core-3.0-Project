@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WebServer.Services.ModelsBll.Joins;
 
 namespace WebServer.Services.ModelsBll
 {
@@ -16,8 +17,8 @@ namespace WebServer.Services.ModelsBll
 
         public string Role { get; set; }
 
-        public List<OrdersBll> Orders { get; set; }
-        public List<FeedbackBll> Feedbacks { get; set; }
-        public List<GameMarkBll> GameMarks { get; set; }
+        public List<UserOrdersBll> Orders { get; set; }
+        public List<UserFeedbackBll> Feedbacks { get; set; }
+        public List<UserScoresBll> GameMarks { get; set; }
     }
 }
