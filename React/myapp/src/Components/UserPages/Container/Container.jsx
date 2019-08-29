@@ -2,6 +2,12 @@ import React from 'react';
 import MenuBar from '../MenuBar/MenuBar';
 import '../Container/Container.css';
 import Footer from '../Footer/Footer';
+import { BrowserRouter, Route } from 'react-router-dom';
+import StartPage from '../StartPage/StartPage';
+import Catalog from '../Catalog/Catalog';
+import GameDescription from '../GameDescription/GameDescription';
+import AccountSettings from '../AccountSettings/AccountSettings';
+import MyOrders from '../MyOrders/MyOrders';
 
 class Container extends React.Component {
     render() {
@@ -11,23 +17,13 @@ class Container extends React.Component {
                     <MenuBar />
                 </div>
                 <div id='bodyy'>
-                    <h1>qwe</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
-                    <h1>asfasfasf</h1>
+                    <Route exact path="/" render={() => <StartPage />} />
+                    <Route path="/Catalog">
+                        <Route exact path="/Catalog/:gamePlatform" render={props => <Catalog {...props} />} />
+                        <Route exact path="/Catalog/:gamePlatform/:gameID" render={props => <GameDescription {...props} />} />
+                    </Route>
+                    <Route path="/AccountSettings" component={AccountSettings} />
+                    <Route path="/MyOrders" component={MyOrders} />
                 </div>
                 <div id='footer'>
                     <Footer />

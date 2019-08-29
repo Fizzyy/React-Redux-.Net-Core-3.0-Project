@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Kursach\\WebServer\\WebServer\\WebServer.csproj": {}
+    "D:\\gitFinishedProject\\WebServer\\WebServer\\WebServer.csproj": {}
   },
   "projects": {
-    "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
+    "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
+        "projectUniqueName": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
         "projectName": "WebServer.DAL",
-        "projectPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
+        "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
         "packagesPath": "C:\\Users\\Dzmitry.Yaniuk\\.nuget\\packages\\",
-        "outputPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\obj\\",
+        "outputPath": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -81,14 +81,14 @@
         }
       }
     },
-    "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj": {
+    "D:\\gitFinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
+        "projectUniqueName": "D:\\gitFinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
         "projectName": "WebServer.Services",
-        "projectPath": "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
+        "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
         "packagesPath": "C:\\Users\\Dzmitry.Yaniuk\\.nuget\\packages\\",
-        "outputPath": "D:\\Kursach\\WebServer\\WebServer.Services\\obj\\",
+        "outputPath": "D:\\gitFinishedProject\\WebServer\\WebServer.Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -107,8 +107,8 @@
         "frameworks": {
           "netcoreapp3.0": {
             "projectReferences": {
-              "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
-                "projectPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
+              "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
+                "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
               }
             }
           }
@@ -156,14 +156,14 @@
         }
       }
     },
-    "D:\\Kursach\\WebServer\\WebServer\\WebServer.csproj": {
+    "D:\\gitFinishedProject\\WebServer\\WebServer\\WebServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Kursach\\WebServer\\WebServer\\WebServer.csproj",
+        "projectUniqueName": "D:\\gitFinishedProject\\WebServer\\WebServer\\WebServer.csproj",
         "projectName": "WebServer",
-        "projectPath": "D:\\Kursach\\WebServer\\WebServer\\WebServer.csproj",
+        "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer\\WebServer.csproj",
         "packagesPath": "C:\\Users\\Dzmitry.Yaniuk\\.nuget\\packages\\",
-        "outputPath": "D:\\Kursach\\WebServer\\WebServer\\obj\\",
+        "outputPath": "D:\\gitFinishedProject\\WebServer\\WebServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -182,11 +182,11 @@
         "frameworks": {
           "netcoreapp3.0": {
             "projectReferences": {
-              "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
-                "projectPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
+              "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
+                "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
               },
-              "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj": {
-                "projectPath": "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj"
+              "D:\\gitFinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj": {
+                "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj"
               }
             }
           }

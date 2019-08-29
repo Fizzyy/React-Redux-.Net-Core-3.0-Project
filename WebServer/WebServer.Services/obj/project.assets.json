@@ -4726,11 +4726,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
+      "projectUniqueName": "D:\\gitFinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
       "projectName": "WebServer.Services",
-      "projectPath": "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
+      "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
       "packagesPath": "C:\\Users\\Dzmitry.Yaniuk\\.nuget\\packages\\",
-      "outputPath": "D:\\Kursach\\WebServer\\WebServer.Services\\obj\\",
+      "outputPath": "D:\\gitFinishedProject\\WebServer\\WebServer.Services\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -4749,8 +4749,8 @@
       "frameworks": {
         "netcoreapp3.0": {
           "projectReferences": {
-            "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
-              "projectPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
+            "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
+              "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
             }
           }
         }

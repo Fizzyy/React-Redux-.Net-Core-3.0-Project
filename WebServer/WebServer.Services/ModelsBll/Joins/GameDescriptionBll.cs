@@ -30,13 +30,14 @@ namespace WebServer.Services.ModelsBll.Joins
 
         public GameDescriptionBll() { }
 
-        public GameDescriptionBll(string GameID, string GameName, double GameScore, decimal GamePrice, byte[] GameImage)
+        public GameDescriptionBll(string GameID, string GameName, double GameScore, decimal GamePrice, string GameRating, byte[] GameImage)
         {
             this.GameID = GameID;
             this.GameName = GameName;
             this.GameScore = GameScore;
             this.GamePrice = GamePrice;
             this.GameImage = GameImage;
+            this.GameRating = GameRating;
         }
     }
 }

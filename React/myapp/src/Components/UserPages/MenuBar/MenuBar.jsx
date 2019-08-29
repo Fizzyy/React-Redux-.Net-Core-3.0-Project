@@ -21,7 +21,7 @@ class MenuBar extends React.Component {
         return (
             <>
                 <div className="divMainBar_divsInsideBar">
-                    <Link to='/' className="Links">Главная</Link>
+                    <Link to='/' className='Links'>Главная</Link>
                 </div>
                 <div className="divMainBar_divsInsideBar">
                     <div id="dropDownButtonCategory">
@@ -33,7 +33,7 @@ class MenuBar extends React.Component {
                     </div>
                 </div>
                 <div className="divMainBar_divsInsideBar">
-
+                    <Link to="/SignUp" className="Links">Акции</Link>
                 </div>
             </>
         );
@@ -42,34 +42,35 @@ class MenuBar extends React.Component {
     render() {
         return (
             this.props.userData.isUserLogged ?
-                <BrowserRouter>
-                    <div id="divMainBar">
-                        {this.existingItems()}
-                        <div className="divMainBar_divsInsideBar_UserData">
-                            <div id="divUserInfo">
-                                <div className="divUserInfo_divs">
-                                    <Icon size={26} icon={user_circle} /><Link className="dropDownItemsSpans" style={{ color: 'whitesmoke' }}>username</Link>
-                                </div>
-                                <div className="divUserInfo_divs">
-                                    <Icon size={26} icon={ic_account_balance_wallet} /><Link className="dropDownItemsSpans" style={{ color: 'whitesmoke' }}>100</Link>
-                                </div>
+                <div id="divMainBar">
+                    {this.existingItems()}
+                    <div className="divMainBar_divsInsideBar">
+                        <Link to="/MyOrders" className="Links">Моя корзина</Link>
+                    </div>
+                    <div className="divMainBar_divsInsideBar_UserData">
+                        <div id="divUserInfo">
+                            <div className="divUserInfo_divs">
+                                <Icon size={26} icon={user_circle} /><Link to="/AccountSettings" className="dropDownItemsSpans" style={{ color: 'whitesmoke' }}>{this.props.userData.username}</Link>
+                            </div>
+                            <div className="divUserInfo_divs">
+                                <Icon size={26} icon={ic_account_balance_wallet} /><Link className="dropDownItemsSpans" style={{ color: 'whitesmoke' }}>{this.props.userData.userBalance}p</Link>
                             </div>
                         </div>
                     </div>
-                </BrowserRouter>
+                </div>
                 :
-                <BrowserRouter>
-                    <div id="divMainBar">
-                        {this.existingItems()}
-                        <div className="divMainBar_divsInsideBar_UserData">
-                            <div className="divForUnloggedUser">
-                                <Link to="/SignIn" className="linksUnloggedUser" style={{ marginBottom: '10px' }}>Войти</Link>
-                                <Link className="linksUnloggedUser">Регистрация</Link>
-                            </div>
+                <div id="divMainBar">
+                    {this.existingItems()}
+                    <div className="divMainBar_divsInsideBar_UserData">
+                        <div className="divForUnloggedUser">
+                            <Link to="/SignIn" className="linksUnloggedUser" style={{ marginBottom: '10px' }}>Войти</Link>
+                            <Link to="/SignUp" className="linksUnloggedUser">Регистрация</Link>
                         </div>
-                        <Route path="/SignIn" component={SignInAndRegistration} />
                     </div>
-                </BrowserRouter>
+                    <Route path="/SignIn" render={props => <SignInAndRegistration {...props} registration={false} />} />
+                    <Route path="/SignUp" render={props => <SignInAndRegistration {...props} registration={true} />} />
+                </div>
+
         );
     }
 }

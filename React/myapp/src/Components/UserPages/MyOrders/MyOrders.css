@@ -1,0 +1,36 @@
+#divMainMyOrders {
+    width: 100%;
+    height: 55em;
+}
+
+.divOrders {
+    width: 54%;
+    height: 55em;
+    float: left;
+}
+
+input[type=checkbox] {
+    transform: scale(1.2);
+}
+
+.emptyDivsOrders {
+    float: left;
+    width: 23%;
+    height: 55em;
+    display: flex;
+}
+
+.divWithOrdersOptions {
+    width: 100%;
+    height: 10em;
+}
+
+.pMoneyInfo {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.tempdivs {
+    text-align: left;
+    padding-left: 3em;
+}

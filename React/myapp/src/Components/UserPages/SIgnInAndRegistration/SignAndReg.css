@@ -1,12 +1,12 @@
-.modal-content {
-    height: 300px;
-}
-
 .modal-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-left: 210px;
+    align-content: center;
+}
+
+.modal-title.h4 {
+    background-color: white;
 }
 
 .modal-body {
@@ -19,8 +19,10 @@
 .modal-body-divs {
     flex: 1;
     padding-top: 15px;
-    vertical-align: middle;
-    height: 2em;
+}
+
+.modal-body-inputs {
+    align-self: flex-end;
 }
 
 .modal-body-labels {
