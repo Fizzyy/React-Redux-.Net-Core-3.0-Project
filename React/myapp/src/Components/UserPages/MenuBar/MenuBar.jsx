@@ -67,8 +67,6 @@ class MenuBar extends React.Component {
                             <Link to="/SignUp" className="linksUnloggedUser">Регистрация</Link>
                         </div>
                     </div>
-                    <Route path="/SignIn" render={props => <SignInAndRegistration {...props} registration={false} />} />
-                    <Route path="/SignUp" render={props => <SignInAndRegistration {...props} registration={true} />} />
                 </div>
 
         );

@@ -41,10 +41,71 @@ namespace WebServer.Services.Services
             {
                 returnedgames.Add(new GameDescriptionBll
                 (
-                    game.GameID, game.GameName, await gameFinalScoreRepository.GetGameScore(game.GameID), game.GamePrice, game.GameImage
+                    game.GameID, game.GameName, await gameFinalScoreRepository.GetGameScore(game.GameID), game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
                 ));
             }
             return returnedgames;
+        }
+
+        public async Task<List<GameDescriptionBll>> OrderGames(string GamePlatform, string Type, string TypeValue)
+        {
+            List<GameDescriptionBll> games = new List<GameDescriptionBll>();
+
+            var foundgames = await gameRepository.GetCurrentPlatformGames(GamePlatform);
+            if (foundgames == null) return null;
+
+            foreach (var game in foundgames)
+            {
+                games.Add(new GameDescriptionBll
+                (
+                    game.GameID, game.GameName, await gameFinalScoreRepository.GetGameScore(game.GameID), game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
+                ));
+            }
+
+            switch (Type)
+            {
+                case "Genre":
+                    {
+                        if (TypeValue != "All") games = games.Where(x => x.GameJenre == TypeValue).ToList();
+                        break;
+                    }
+                case "Rating":
+                    {
+                        if (TypeValue != "All") games = games.Where(x => x.GameRating == TypeValue).ToList();
+                        break;
+                    }
+                case "NameAsc":
+                    {
+                        games = games.OrderBy(x => x.GameName).ToList();
+                        break;
+                    }
+                case "NameDesc":
+                    {
+                        games = games.OrderByDescending(x => x.GameName).ToList();
+                        break;
+                    }
+                case "PriceAsc":
+                    {
+                        games = games.OrderBy(x => x.GamePrice).ToList();
+                        break;
+                    }
+                case "PriceDesc":
+                    {
+                        games = games.OrderByDescending(x => x.GamePrice).ToList();
+                        break;
+                    }
+                case "ScoreAsc":
+                    {
+                        games = games.OrderBy(x => x.GameScore).ToList();
+                        break;
+                    }
+                case "ScoreDesc":
+                    {
+                        games = games.OrderByDescending(x => x.GameScore).ToList();
+                        break;
+                    }
+            }
+            return games;
         }
 
         public async Task<GameDescriptionBll> GetChosenGame(string GameID, string Username)

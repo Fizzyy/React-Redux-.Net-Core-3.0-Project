@@ -16,6 +16,8 @@ namespace WebServer.Services.Interfaces
 
         Task<GameDescriptionBll> GetChosenGame(string GameID, string Username);
 
+        Task<List<GameDescriptionBll>> OrderGames(string GamePlatform, string Type, string TypeValue);
+
         Task AddGame(GameBll game);
 
         Task UpdateGame(GameBll game);

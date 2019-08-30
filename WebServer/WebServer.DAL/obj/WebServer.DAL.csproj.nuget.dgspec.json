@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {}
+    "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {}
   },
   "projects": {
-    "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
+    "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
+        "projectUniqueName": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
         "projectName": "WebServer.DAL",
-        "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
+        "projectPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
         "packagesPath": "C:\\Users\\Dzmitry.Yaniuk\\.nuget\\packages\\",
-        "outputPath": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\obj\\",
+        "outputPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

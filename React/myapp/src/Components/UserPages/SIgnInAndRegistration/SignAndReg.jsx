@@ -39,22 +39,22 @@ class SignInAndRegistration extends React.Component {
             response = await axiosPost(AUTHORIZATION, { username: this.state.username, password: this.state.password1 });
 
         if (response.status === 200) {
-            localStorage.setItem('Token', response.data.token.access_token);
-            localStorage.setItem('RefreshToken', response.data.refreshToken);
+            if (!this.props.registration) {
+                localStorage.setItem('Token', response.data.token.access_token);
+                localStorage.setItem('RefreshToken', response.data.refreshToken);
 
-            let tokendata = jwt_decode(response.data.token.access_token);
-            if (tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] == "Admin") this.props.history.push('/Admin');
-            debugger;
+                let tokendata = jwt_decode(response.data.token.access_token);
+                if (tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] == "Admin") this.props.history.push('/Admin');
 
-            store.dispatch({
-                type: 'LOGGED_USER',
-                username: tokendata["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
-                userRole: tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
-                userBalance: Number(tokendata.UserBalance),
-                isUserLogged: true
-            });
-
-            this.handleClose();
+                store.dispatch({
+                    type: 'LOGGED_USER',
+                    username: tokendata["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+                    userRole: tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+                    userBalance: Number(tokendata.UserBalance),
+                    isUserLogged: true
+                });
+                this.handleClose();
+            }
         };
     }
 

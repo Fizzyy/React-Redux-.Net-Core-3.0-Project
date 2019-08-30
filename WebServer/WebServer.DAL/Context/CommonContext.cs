@@ -15,6 +15,7 @@ namespace WebServer.DAL.Context
         public DbSet<Orders> Orders { get; set; }
         public DbSet<GameMark> GameMarks { get; set; }
         public DbSet<Game> Games { get; set; }
+        public DbSet<Offers> Offers { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<MoneyKeys> MoneyKeys { get; set; }
         public DbSet<GameFinalScores> GameFinalScores { get; set; }

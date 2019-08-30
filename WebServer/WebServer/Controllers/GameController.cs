@@ -40,6 +40,21 @@ namespace WebServer.Controllers
             return BadRequest();
         }
 
+        [HttpPost]
+        [Route("OrderGames")]
+        public async Task<IActionResult> OrderGames([FromBody]OrderParameters chars)
+        {
+            try
+            {
+                IEnumerable<GameDescriptionBll> games = await gameService.OrderGames(chars.GamePlatform, chars.Type, chars.TypeValue);
+                return Ok(games);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet]
         [Route("GetChosenGame/{GameID}/{Username}")]
         public async Task<IActionResult> GetChosenGame(string GameID, string Username)

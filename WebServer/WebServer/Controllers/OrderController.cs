@@ -25,8 +25,8 @@ namespace WebServer.Controllers
         [Route("GetCurrentOrders/{Username}")]
         public async Task<IActionResult> GetCurrentOrders(string Username)
         {
-            var userTokens = TokenService.VerifyToken(Request.Headers["AccessToken"]);
-            if (userTokens == null) return Unauthorized();
+            //var userTokens = TokenService.VerifyToken(Request.Headers["AccessToken"]);
+            //if (userTokens == null) return Unauthorized();
 
             IEnumerable<object> userorders = await orderService.GetCurrentOrders(Username);
             return Ok(userorders);

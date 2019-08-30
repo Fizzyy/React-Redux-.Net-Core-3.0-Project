@@ -16,7 +16,7 @@ namespace WebServer.Services.Services
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role),
-                new Claim("UserBalance", user.UserBalance.ToString())
+                new Claim("UserBalance", Convert.ToDouble(user.UserBalance).ToString())
             };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;

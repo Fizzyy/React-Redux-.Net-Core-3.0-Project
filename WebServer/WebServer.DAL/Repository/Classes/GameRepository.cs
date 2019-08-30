@@ -52,6 +52,7 @@ namespace WebServer.DAL.Repository.Classes
                 foundgame.GamePrice = game.GamePrice;
                 foundgame.GameRating = game.GameRating;
                 foundgame.GameJenre = game.GameJenre;
+                foundgame.GameImage = game.GameImage;
             }
             await commonContext.SaveChangesAsync();
         }

@@ -27,7 +27,7 @@ namespace WebServer.DAL.Models
 
         public string GamePlatform { get; set; }
 
-        public byte[] GameImage { get; set; }
+        public string GameImage { get; set; }
 
         public List<Orders> Orders { get; set; }
         public List<Feedback> Feedbacks { get; set; }

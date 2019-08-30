@@ -24,13 +24,13 @@ namespace WebServer.Services.ModelsBll.Joins
 
         public string GamePlatform { get; set; }
 
-        public byte[] GameImage { get; set; }
+        public string GameImage { get; set; }
 
         public List<FeedbackBll> Feedbacks { get; set; }
 
         public GameDescriptionBll() { }
 
-        public GameDescriptionBll(string GameID, string GameName, double GameScore, decimal GamePrice, string GameRating, byte[] GameImage)
+        public GameDescriptionBll(string GameID, string GameName, double GameScore, decimal GamePrice, string GameRating, string GameJenre, string GameImage)
         {
             this.GameID = GameID;
             this.GameName = GameName;
@@ -38,6 +38,7 @@ namespace WebServer.Services.ModelsBll.Joins
             this.GamePrice = GamePrice;
             this.GameImage = GameImage;
             this.GameRating = GameRating;
+            this.GameJenre = GameJenre;
         }
     }
 }

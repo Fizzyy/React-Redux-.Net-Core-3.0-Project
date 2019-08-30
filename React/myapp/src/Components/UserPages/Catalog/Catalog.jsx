@@ -1,14 +1,17 @@
 import React from 'react';
 import '../Catalog/Catalog.css';
-import { axiosGet } from '../../CommonFunctions/axioses';
+import { axiosGet, axiosPost } from '../../CommonFunctions/axioses';
 import { GETCURRENTPLATFORMGAMES } from '../../CommonFunctions/URLconstants';
 import GameBlockInfo from './GameBlockInfo';
+import { ORDERGAMES } from '../../CommonFunctions/URLconstants';
 
 class Catalog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            games: []
+            games: [],
+            orderingType1: 'Name',
+            orderingType2: 'Asc'
         }
     }
 
@@ -30,28 +33,37 @@ class Catalog extends React.Component {
                 }
             })()
         }
+        if (this.state.orderingType1 !== preState.orderingType1 || this.state.orderingType2 !== preState.orderingType2) {
+            (async () => {
+                let temp = this.state.orderingType1 + this.state.orderingType2;
+                let res = await axiosPost(ORDERGAMES, { GamePlatform: this.props.match.params.gamePlatform, Type: temp });
+                if (res.status === 200) {
+                    this.setState({ games: res.data });
+                }
+            })()
+        }
     }
 
-    getGamesByRating = (e) => {
-        let foundGamesByRating = this.state.games.filter(game => {
-            if (e.target.value == "All") return true;
-            else {
-                if (game.gameRating == e.target.value) return true;
-                else return false;
-            }
-        });
-        this.setState({ games: foundGamesByRating });
+    setOrderType1 = (e) => {
+        this.setState({ orderingType1: e.target.value });
     }
 
-    getGamesByGenres = (e) => {
-        let foundGamesByGenres = this.state.games.filter(game => {
-            if (e.target.value == "All") return true;
-            else {
-                if (game.gameJenre == e.target.value) return true;
-                else return false;
-            }
-        });
-        this.setState({ games: foundGamesByGenres });
+    setOrderType2 = (e) => {
+        this.setState({ orderingType2: e.target.value });
+    }
+
+    getGamesByRating = async (e) => {
+        let res = await axiosPost(ORDERGAMES, { GamePlatform: this.props.match.params.gamePlatform, Type: 'Rating', TypeValue: e.target.value });
+        if (res.status == 200) {
+            this.setState({ games: res.data });
+        }
+    }
+
+    getGamesByGenres = async (e) => {
+        let res = await axiosPost(ORDERGAMES, { GamePlatform: this.props.match.params.gamePlatform, Type: 'Genre', TypeValue: e.target.value });
+        if (res.status == 200) {
+            this.setState({ games: res.data });
+        }
     }
 
     render() {
@@ -60,20 +72,20 @@ class Catalog extends React.Component {
                 <div id="divMainCatalog_Options">
                     <h2 style={{ marginTop: '15px' }}>{this.props.match.params.gamePlatform}</h2>
                     <div id="divMainCatalog_Options_Selects">
-                        <h4 style={{ marginLeft: '40px', marginTop: '10px' }}>Sorting:</h4>
+                        <h4 style={{ marginLeft: '40px', marginTop: '10px' }}>Сортировка:</h4>
                         <div className="divContainer_Sort">
                             <label>Критерий:</label>
-                            <select className="Selects" style={{ width: '100px' }}>
-                                <option>Имя</option>
-                                <option>Цена</option>
-                                <option>Рейтинг</option>
+                            <select className="Selects" style={{ width: '100px' }} onChange={this.setOrderType1}>
+                                <option value="Name">Имя</option>
+                                <option value="Price">Цена</option>
+                                <option value="Score">Рейтинг</option>
                             </select>
                         </div>
                         <div className="divContainer_Sort">
                             <label>Тип:</label>
-                            <select className="Selects">
-                                <option>По возрастанию</option>
-                                <option>По убыванию</option>
+                            <select className="Selects" onChange={this.setOrderType2}>
+                                <option value="Asc">По возрастанию</option>
+                                <option value="Desc">По убыванию</option>
                             </select>
                         </div>
                     </div>

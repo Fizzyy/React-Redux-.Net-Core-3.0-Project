@@ -16,6 +16,7 @@ const getchosengame1 = '/GetChosenGame/';
 const deletedgame = '/DeleteGame/';
 const updategame = '/UpdateGame';
 const addgame = '/AddGame';
+const ordergames = '/OrderGames/';
 
 const baseURLorder = MainURL + 'api/Order';
 const addorder = '/AddOrder'
@@ -48,6 +49,7 @@ export const GETCHOSENGAME = baseURLcatalog + getchosengame1;
 export const DELETEGAME = baseURLcatalog + deletedgame;
 export const UPDATEGAME = baseURLcatalog + updategame;
 export const ADDGAME = baseURLcatalog + addgame;
+export const ORDERGAMES = baseURLcatalog + ordergames;
 
 export const ADDORDER = baseURLorder + addorder;
 export const GETUNPAIDORDERS = baseURLorder + getunpaidorders;

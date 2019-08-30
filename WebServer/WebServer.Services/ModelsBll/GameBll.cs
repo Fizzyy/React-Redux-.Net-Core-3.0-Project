@@ -18,6 +18,6 @@ namespace WebServer.Services.ModelsBll
 
         public string GamePlatform { get; set; }
 
-        public byte[] GameImage { get; set; }
+        public string GameImage { get; set; }
     }
 }
