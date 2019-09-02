@@ -8,13 +8,17 @@ namespace WebServer.DAL.Repository.Interfaces
 {
     public interface IGameRepository
     {
-        Task<IEnumerable<Game>> GetAllGames();
-
         Task<IEnumerable<Game>> GetCurrentPlatformGames(string GamePlatform);
 
-        Task<Game> GetChosenGame(string GameID);
+        Task<IEnumerable<Game>> GetAllGames();
+
+        Task<List<Game>> GetGamesByRegex(string Gameplatform, string GameName);
+
+        Task<IEnumerable<Game>> GetSameJenreGames(string GameGenre, string GameID); 
 
         Task AddGame(Game game);
+
+        Task<Game> GetChosenGame(string GameID);
 
         Task UpdateGame(Game game);
 

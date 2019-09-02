@@ -6,15 +6,19 @@ using System.Text;
 
 namespace WebServer.DAL.Models
 {
-    public class GameFinalScores
+    public class GamesScreenshots
     {
-        [Key]
         [ForeignKey("Game")]
+        [Key]
         public string GameID { get; set; }
 
-        public double GameScore { get; set; }
+        public string GameScreenshotReference1 { get; set; }
 
-        //public int AmountOfVotes { get; set; }
+        public string GameScreenshotReference2 { get; set; }
+
+        public string GameScreenshotReference3 { get; set; }
+
+        public string GameDescriptionBackground { get; set; }
 
         public Game Game { get; set; }
     }

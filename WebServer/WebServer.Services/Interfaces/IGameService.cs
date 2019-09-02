@@ -16,7 +16,11 @@ namespace WebServer.Services.Interfaces
 
         Task<GameDescriptionBll> GetChosenGame(string GameID, string Username);
 
+        Task<IEnumerable<Game>> GetSameJenreGames(string GameGenre, string GameID);
+
         Task<List<GameDescriptionBll>> OrderGames(string GamePlatform, string Type, string TypeValue);
+
+        Task<List<GameDescriptionBll>> GetGamesByRegex(string GamePlatform, string GameName);
 
         Task AddGame(GameBll game);
 

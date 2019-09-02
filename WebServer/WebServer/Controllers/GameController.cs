@@ -40,19 +40,35 @@ namespace WebServer.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("OrderGames")]
-        public async Task<IActionResult> OrderGames([FromBody]OrderParameters chars)
+        public async Task<IActionResult> OrderGames([FromQuery]string GamePlatform, [FromQuery]string Type, [FromQuery]string TypeValue)
         {
             try
             {
-                IEnumerable<GameDescriptionBll> games = await gameService.OrderGames(chars.GamePlatform, chars.Type, chars.TypeValue);
+                IEnumerable<GameDescriptionBll> games = await gameService.OrderGames(GamePlatform, Type, TypeValue);
                 return Ok(games);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("GetGamesByRegex")]
+        public async Task<IActionResult> GetGamesByRegex([FromQuery]string GamePlatform, [FromQuery]string GameName)
+        {
+            List<GameDescriptionBll> games = await gameService.GetGamesByRegex(GamePlatform, GameName);
+            return Ok(games);
+        }
+
+        [HttpGet]
+        [Route("GetSameGenreGames")]
+        public async Task<IActionResult> GetSameGenreGames([FromQuery]string GameGenre, [FromQuery]string GameID)
+        {
+            IEnumerable<Game> games = await gameService.GetSameJenreGames(GameGenre, GameID);
+            return Ok(games);
         }
 
         [HttpGet]

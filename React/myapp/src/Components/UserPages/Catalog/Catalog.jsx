@@ -3,7 +3,11 @@ import '../Catalog/Catalog.css';
 import { axiosGet, axiosPost } from '../../CommonFunctions/axioses';
 import { GETCURRENTPLATFORMGAMES } from '../../CommonFunctions/URLconstants';
 import GameBlockInfo from './GameBlockInfo';
-import { ORDERGAMES } from '../../CommonFunctions/URLconstants';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import { ORDERGAMES, GETGAMESBYREGEX } from '../../CommonFunctions/URLconstants';
+import { search } from 'react-icons-kit/fa/search';
+import { Icon } from 'react-icons-kit';
 
 class Catalog extends React.Component {
     constructor(props) {
@@ -45,15 +49,11 @@ class Catalog extends React.Component {
     }
 
     setOrderType1 = (e) => {
-        this.setState({ orderingType1: e.target.value });
-    }
-
-    setOrderType2 = (e) => {
-        this.setState({ orderingType2: e.target.value });
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     getGamesByRating = async (e) => {
-        let res = await axiosPost(ORDERGAMES, { GamePlatform: this.props.match.params.gamePlatform, Type: 'Rating', TypeValue: e.target.value });
+        let res = await axiosGet(ORDERGAMES + `GamePlatform=${this.props.match.params.gamePlatform}&Type=Rating&TypeValue=${e.target.value}%2B`);
         if (res.status == 200) {
             this.setState({ games: res.data });
         }
@@ -66,16 +66,36 @@ class Catalog extends React.Component {
         }
     }
 
+    getGamesByRegex = async (e) => {
+        let res = await axiosGet(GETGAMESBYREGEX + `GamePlatform=${this.props.match.params.gamePlatform}&GameName=${e.target.value}`);
+        if (res.status === 200) {
+            this.setState({ games: res.data });
+        }
+    }
+
     render() {
         return (
             <div id="divMainCatalog">
                 <div id="divMainCatalog_Options">
                     <h2 style={{ marginTop: '15px' }}>{this.props.match.params.gamePlatform}</h2>
                     <div id="divMainCatalog_Options_Selects">
+                        <InputGroup style={{ marginLeft: '20px' }}>
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="btnGroupAddon">
+                                    <Icon icon={search} size={18} />
+                                </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <FormControl
+                                type="text"
+                                placeholder="Введите название"
+                                aria-label="Input group example"
+                                onChange={this.getGamesByRegex}
+                            />
+                        </InputGroup>
                         <h4 style={{ marginLeft: '40px', marginTop: '10px' }}>Сортировка:</h4>
                         <div className="divContainer_Sort">
                             <label>Критерий:</label>
-                            <select className="Selects" style={{ width: '100px' }} onChange={this.setOrderType1}>
+                            <select className="Selects" style={{ width: '100px' }} onChange={this.setOrderType1} name="orderingType1">
                                 <option value="Name">Имя</option>
                                 <option value="Price">Цена</option>
                                 <option value="Score">Рейтинг</option>
@@ -83,7 +103,7 @@ class Catalog extends React.Component {
                         </div>
                         <div className="divContainer_Sort">
                             <label>Тип:</label>
-                            <select className="Selects" onChange={this.setOrderType2}>
+                            <select className="Selects" onChange={this.setOrderType1} name="orderingType2">
                                 <option value="Asc">По возрастанию</option>
                                 <option value="Desc">По убыванию</option>
                             </select>
@@ -116,13 +136,13 @@ class Catalog extends React.Component {
                                 <input type="radio" name="rating" value="All" defaultChecked onChange={this.getGamesByRating} />Все
                             </li>
                             <li className="liStyles" >
-                                <input type="radio" name="rating" value="6+" onChange={this.getGamesByRating} />6+
+                                <input type="radio" name="rating" value="6" onChange={this.getGamesByRating} />6+
                             </li>
                             <li className="liStyles" >
-                                <input type="radio" name="rating" value="12+" onChange={this.getGamesByRating} />12+
+                                <input type="radio" name="rating" value="12" onChange={this.getGamesByRating} />12+
                             </li>
                             <li className="liStyles" >
-                                <input type="radio" name="rating" value="18+" onChange={this.getGamesByRating} />18+
+                                <input type="radio" name="rating" value="18" onChange={this.getGamesByRating} />18+
                             </li>
                         </ul>
                     </div>
@@ -139,6 +159,7 @@ class Catalog extends React.Component {
                                     gameRating={x.gameRating}
                                     gameScore={x.gameScore}
                                     gamePlatform={this.props.match.params.gamePlatform}
+                                    gameImage={x.gameImage}
                                 />
                             );
                         })}

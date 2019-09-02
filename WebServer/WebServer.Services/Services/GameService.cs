@@ -61,7 +61,6 @@ namespace WebServer.Services.Services
                     game.GameID, game.GameName, await gameFinalScoreRepository.GetGameScore(game.GameID), game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
                 ));
             }
-
             switch (Type)
             {
                 case "Genre":
@@ -71,7 +70,10 @@ namespace WebServer.Services.Services
                     }
                 case "Rating":
                     {
-                        if (TypeValue != "All") games = games.Where(x => x.GameRating == TypeValue).ToList();
+                        if (TypeValue != "All")
+                        {
+                            games = games.Where(x => x.GameRating == TypeValue).ToList();
+                        }
                         break;
                     }
                 case "NameAsc":
@@ -106,6 +108,26 @@ namespace WebServer.Services.Services
                     }
             }
             return games;
+        }
+
+        public async Task<IEnumerable<Game>> GetSameJenreGames(string GameGenre, string GameID)
+        {
+            return await gameRepository.GetSameJenreGames(GameGenre, GameID);
+        }
+
+        public async Task<List<GameDescriptionBll>> GetGamesByRegex(string GamePlatform, string GameName)
+        {
+            var games = await gameRepository.GetGamesByRegex(GamePlatform, GameName);
+            if (games == null) return null;
+            List<GameDescriptionBll> returnedgames = new List<GameDescriptionBll>();
+            foreach (var game in games)
+            {
+                returnedgames.Add(new GameDescriptionBll
+                (
+                    game.GameID, game.GameName, await gameFinalScoreRepository.GetGameScore(game.GameID), game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
+                ));
+            }
+            return returnedgames;
         }
 
         public async Task<GameDescriptionBll> GetChosenGame(string GameID, string Username)

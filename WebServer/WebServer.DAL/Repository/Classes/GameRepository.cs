@@ -6,6 +6,7 @@ using WebServer.DAL.Context;
 using WebServer.DAL.Models;
 using WebServer.DAL.Repository.Interfaces;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace WebServer.DAL.Repository.Classes
 {
@@ -33,6 +34,25 @@ namespace WebServer.DAL.Repository.Classes
             var chosengame = await commonContext.Games.FindAsync(GameID);
             if (chosengame != null) return chosengame;
             else return null;
+        }
+
+        public async Task<IEnumerable<Game>> GetSameJenreGames(string GameGenre, string GameID)
+        {
+            return await Task.FromResult(commonContext.Games.Where(x => x.GameJenre == GameGenre && x.GameID != GameID).Take(5));
+        }
+
+        public async Task<List<Game>> GetGamesByRegex(string GamePlatform, string GameName)
+        {
+            List<Game> games = new List<Game>();
+            var platformgames = await Task.FromResult(commonContext.Games.Where(x => x.GamePlatform == GamePlatform).ToList());
+            if (GameName == null || GameName == "") return platformgames;
+            Regex regex = new Regex($@"^{GameName}\w*", RegexOptions.IgnoreCase);
+            foreach (var game in platformgames)
+            {
+                Match match = regex.Match(game.GameName);
+                if (match.Success) games.Add(game); 
+            }
+            return games;
         }
 
         public async Task AddGame(Game game)

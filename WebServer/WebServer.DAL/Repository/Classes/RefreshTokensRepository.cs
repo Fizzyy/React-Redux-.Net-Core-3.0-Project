@@ -34,6 +34,9 @@ namespace WebServer.DAL.Repository.Classes
         public async Task SaveRefreshToken(string Username, string newRefreshToken)
         {
             RefreshTokens refreshToken = new RefreshTokens { Username = Username, RefreshToken = newRefreshToken };
+            var ExistingTokens = await commonContext.RefreshTokens.FindAsync(Username);
+            if (ExistingTokens != null) commonContext.RefreshTokens.Remove(ExistingTokens);
+
             commonContext.RefreshTokens.Add(refreshToken);
             await commonContext.SaveChangesAsync();
         }

@@ -56,7 +56,7 @@
 }
 
 #span_Header_GameName {
-    font-size: 32px;
+    font-size: 36px;
     color: whitesmoke;
 }
 
@@ -74,17 +74,6 @@
     flex: 1;
 }
 
-.span_ShortInfo_OldPrice {
-    text-decoration-line: line-through;
-    font-size: 18px;
-    color: whitesmoke;
-}
-
-.span_ShortInfo_NewPrice {
-    color: gold;
-    font-size: 18px;
-}
-
 .span_ShortInfo {
     font-size: 18px;
     color: whitesmoke;
@@ -94,13 +83,13 @@
     list-style-type: none;
     padding: 0;
     margin-left: -8px;
-    margin-top: 15px;
+    margin-top: 30px;
     margin-bottom: 5px;
 }
 
 .li_GameDesc {
     display: inline;
-    font-size: 18px;
+    font-size: 20px;
     margin: 0 10px 0 10px;
     color: whitesmoke;
 }
@@ -133,7 +122,7 @@
 }
 
 
-
+/*****************************************************/
 #divMainGrid {
     width: 100%;
     height: 55em;
@@ -150,16 +139,108 @@
 
 #gameImage { 
     grid-area: gameImage;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
 }
 #header { 
+    text-align: left;
     grid-area: header;
 }
 #comments { 
     grid-area: comments;
+    display: flex;
+    flex-direction: column;
 }
 #buttons { 
     grid-area: buttons;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 #others { 
     grid-area: others;
+}
+
+#gamePoster {
+    width: 75%;
+    height: 70%;
+    margin-top: 20px;
+}
+
+.div_HeaderAndInfo {
+    margin-top: 5px;
+}
+
+.userStars {
+    margin-top: 10px;
+}
+
+.buyButton {
+    width: 150px;
+    height: 40px;
+}
+
+.label_PriceInfo {
+    justify-self: flex-start;
+    color: white;
+    align-self: flex-end;
+    position: absolute;
+    bottom: 10%;
+    right: 13%;
+}
+
+.input_AmountOfGames {
+    width: 150px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.label_CurrentUserRating {
+    color: whitesmoke;
+    padding-top: 15px;
+}
+
+.div_InputAndButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.span_ShortInfo_OldPrice {
+    text-decoration-line: line-through;
+    color: whitesmoke;
+    position: absolute;
+    left: 12%;
+    bottom: 10%;
+}
+
+.span_ShortInfo_NewPrice {
+    color: gold;
+    position: absolute;
+    right: 12%;
+    bottom: 10%;
+}
+
+.div_CommentsHeader {
+    flex:1;
+    text-align: left;
+    color: whitesmoke;
+}
+
+.div_CommentsCarousel {
+    flex: 6;
+    padding-right: 30px;
+}
+
+.carousel {
+    width: 100%;
+    height: 400px;
+}
+
+.w-100 {
+    width: 100%;
+    height: 400px;
 }

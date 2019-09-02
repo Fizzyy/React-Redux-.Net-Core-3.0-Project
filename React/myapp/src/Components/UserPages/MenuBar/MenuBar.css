@@ -3,6 +3,7 @@
     height: 7.5em;
     background-color: black;
     position: fixed;
+    z-index: 10;
 }
 
 .divMainBar_divsInsideBar {
