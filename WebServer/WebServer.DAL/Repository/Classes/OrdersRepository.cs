@@ -18,45 +18,9 @@ namespace WebServer.DAL.Repository.Classes
             this.commonContext = commonContext;
         }
 
-        public async Task<IEnumerable<object>> GetCurrentOrders(string Username)
+        public async Task<IEnumerable<Orders>> GetPaidOrUnpaidOrders(string Username, bool type)
         {
-            var res = await Task.FromResult(commonContext.Orders
-                                            .Where(x => x.isOrderPaid == false)
-                                            .Join(commonContext.Games,
-                                            p => p.GameID,
-                                            c => c.GameID,
-                                            (p, c) => new
-                                            {
-                                                orderID = p.Id,
-                                                GameName = c.GameName,
-                                                Amount = p.Amount,
-                                                OrderDate = p.OrderDate,
-                                                GamePlatform = c.GamePlatform,
-                                                TotalSum = p.TotalSum
-                                            }));
-                                            
-            return res;
-        }
-
-
-        public async Task<IEnumerable<object>> GetPaidOrders(string Username)
-        {
-            var res = await Task.FromResult(commonContext.Orders
-                                           .Where(x => x.isOrderPaid == true)
-                                           .Join(commonContext.Games,
-                                           p => p.GameID,
-                                           c => c.GameID,
-                                           (p, c) => new
-                                           {
-                                               orderID = p.Id,
-                                               GameName = c.GameName,
-                                               Amount = p.Amount,
-                                               OrderDate = p.OrderDate,
-                                               GamePlatform = c.GamePlatform,
-                                               TotalSum = p.TotalSum
-                                           })
-                                           .OrderByDescending(x => x.OrderDate));
-
+            var res = await Task.FromResult(commonContext.Orders.Where(x => x.Username == Username && x.isOrderPaid == type));        
             return res;
         }
 
@@ -78,12 +42,9 @@ namespace WebServer.DAL.Repository.Classes
             for (int i = 0; i < orders.Length; i++)
             {
                 var k = await commonContext.Orders.FindAsync(int.Parse(orders[i]));
-                if (k != null)
-                {
-                    commonContext.Orders.Remove(k);
-                    await commonContext.SaveChangesAsync();
-                }
+                if (k != null) commonContext.Orders.Remove(k);
             }
+            await commonContext.SaveChangesAsync();
         }
 
         public async Task PayForOrders(string Username, string[] orders)

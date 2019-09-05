@@ -17,13 +17,15 @@ namespace WebServer.Services.Services
         private readonly IGameFinalScoreRepository gameFinalScoreRepository;
         private readonly IGameMarkRepository gameMarkRepository;
         private readonly IFeedbackRepository feedbackRepository;
+        private readonly IUserRepository userRepository;
 
-        public GameService(IGameRepository gameRepository, IGameFinalScoreRepository gameFinalScoreRepository, IFeedbackRepository feedbackRepository, IGameMarkRepository gameMarkRepository)
+        public GameService(IGameRepository gameRepository, IGameFinalScoreRepository gameFinalScoreRepository, IFeedbackRepository feedbackRepository, IGameMarkRepository gameMarkRepository, IUserRepository userRepository)
         {
             this.gameRepository = gameRepository;
             this.gameFinalScoreRepository = gameFinalScoreRepository;
             this.feedbackRepository = feedbackRepository;
             this.gameMarkRepository = gameMarkRepository;
+            this.userRepository = userRepository;
         }
 
         public Task<IEnumerable<Game>> GetAllGames()
@@ -39,9 +41,10 @@ namespace WebServer.Services.Services
             List<GameDescriptionBll> returnedgames = new List<GameDescriptionBll>();
             foreach (var game in games)
             {
+                var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
                 returnedgames.Add(new GameDescriptionBll
                 (
-                    game.GameID, game.GameName, await gameFinalScoreRepository.GetGameScore(game.GameID), game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
+                    game.GameID, game.GameName, gamescores.GameScore, game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
                 ));
             }
             return returnedgames;
@@ -56,9 +59,10 @@ namespace WebServer.Services.Services
 
             foreach (var game in foundgames)
             {
+                var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
                 games.Add(new GameDescriptionBll
                 (
-                    game.GameID, game.GameName, await gameFinalScoreRepository.GetGameScore(game.GameID), game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
+                    game.GameID, game.GameName, gamescores.GameScore, game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
                 ));
             }
             switch (Type)
@@ -119,12 +123,14 @@ namespace WebServer.Services.Services
         {
             var games = await gameRepository.GetGamesByRegex(GamePlatform, GameName);
             if (games == null) return null;
+
             List<GameDescriptionBll> returnedgames = new List<GameDescriptionBll>();
             foreach (var game in games)
             {
+                var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
                 returnedgames.Add(new GameDescriptionBll
                 (
-                    game.GameID, game.GameName, await gameFinalScoreRepository.GetGameScore(game.GameID), game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
+                    game.GameID, game.GameName, gamescores.GameScore, game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
                 ));
             }
             return returnedgames;
@@ -135,24 +141,28 @@ namespace WebServer.Services.Services
             var foundgame = await gameRepository.GetChosenGame(GameID);
             if (foundgame == null) return null;
 
+            var gamescores = await gameFinalScoreRepository.GetGame(GameID);
+
             List<FeedbackBll> feedbacks = new List<FeedbackBll>();
             foreach (var feedback in await feedbackRepository.GetCurrentGameFeedback(foundgame.GameID))
             {
-                feedbacks.Add(new FeedbackBll(feedback.Id, feedback.Username, feedback.GameID, feedback.Comment, feedback.CommentDate));
+                var user = await userRepository.GetCurrentUser(feedback.Username);
+                feedbacks.Add(new FeedbackBll(feedback.Id, feedback.Username, feedback.GameID, feedback.Comment, feedback.CommentDate, user.UserImage));
             }
 
             GameDescriptionBll gameDescription = new GameDescriptionBll
             {
                 GameID = foundgame.GameID,
                 GameName = foundgame.GameName,
-                GameScore = await gameFinalScoreRepository.GetGameScore(foundgame.GameID),
+                GameScore = gamescores.GameScore,
                 GameJenre = foundgame.GameJenre,
                 GamePlatform = foundgame.GamePlatform,
                 GamePrice = foundgame.GamePrice,
                 GameRating = foundgame.GameRating,
-                UserScore = await gameMarkRepository.GetCurrentUserScore(GameID, Username),
+                UserScore = gamescores.GameScore,
                 Feedbacks = feedbacks,
-                GameImage = foundgame.GameImage
+                GameImage = foundgame.GameImage,
+                AmountOfVotes = gamescores.AmountOfVotes
             };
             return gameDescription;
         }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebServer.DAL.Models;
 using WebServer.Services.Interfaces;
 using WebServer.Services.ModelsBll;
+using WebServer.Services.ModelsBll.Joins;
 using WebServer.Services.Services;
 
 namespace WebServer.Controllers
@@ -23,12 +24,10 @@ namespace WebServer.Controllers
 
         [HttpGet]
         [Route("GetCurrentOrders/{Username}")]
+        [Authorize(Policy = "MyPolicy")]
         public async Task<IActionResult> GetCurrentOrders(string Username)
         {
-            var userTokens = TokenService.VerifyToken(Request.Headers["AccessToken"]);
-            if (userTokens == null) return Unauthorized();
-
-            IEnumerable<object> userorders = await orderService.GetCurrentOrders(Username);
+            List<UserOrdersBll> userorders = await orderService.GetPaidOrUnpaidOrders(Username, false);
             return Ok(userorders);
         }
 
@@ -36,21 +35,17 @@ namespace WebServer.Controllers
         [Route("GetPaidOrders/{Username}")]
         public async Task<IActionResult> GetPaidOrders(string Username)
         {
-            IEnumerable<object> paidorders = await orderService.GetPaidOrders(Username);
-            return Ok(paidorders);
+            List<UserOrdersBll> userorders = await orderService.GetPaidOrUnpaidOrders(Username, true);
+            return Ok(userorders);
         }
 
         [HttpPost]
         [Route("AddOrder")]
-        //[Authorize (Roles = "User")]
+        [Authorize(Policy = "MyPolicy")]
         public async Task<IActionResult> AddOrder([FromBody] OrdersBll model)
         {
             try
             {
-                var userTokens = TokenService.VerifyToken(Request.Headers["AccessToken"]);
-
-                if (userTokens == null) return Unauthorized();
-
                 await orderService.AddOrder(model);
                 return Ok();
             }
@@ -60,14 +55,14 @@ namespace WebServer.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("DeleteOrders")]
-        public async Task<IActionResult> DeleteOrders([FromBody] string[] selectedOrders)
+        public async Task<IActionResult> DeleteOrders([FromBody]PayOrDeleteOrdersBll orders)
         {
             try
             {
-                await orderService.RemoveOrders(selectedOrders);
-                return Ok("Deleted!");
+                List<UserOrdersBll> NewOrders =  await orderService.RemoveOrders(orders.Username, orders.orders);
+                return Ok(NewOrders);
             }
             catch(Exception ex)
             {
@@ -76,13 +71,13 @@ namespace WebServer.Controllers
         }
 
         [HttpPost]
-        [Route("PayForOrders/{Username}")]
-        public async Task<IActionResult> PayForOrders([FromBody]string[] selectedOrders, string Username)
+        [Route("PayForOrders")]
+        public async Task<IActionResult> PayForOrders([FromBody]PayOrDeleteOrdersBll orders)
         {
             try
             {
-                await orderService.PayForOrders(Username, selectedOrders);
-                return Ok("Paid!");
+                List<UserOrdersBll> NewOrders = await orderService.PayForOrders(orders.Username, orders.orders);
+                return Ok(NewOrders);
             }
             catch (Exception ex)
             {

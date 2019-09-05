@@ -9,7 +9,7 @@ namespace WebServer.DAL.Repository.Interfaces
 {
     public interface IGameFinalScoreRepository
     {
-        Task<double> GetGameScore(string GameID);
+        Task<GameFinalScores> GetGame(string GameID);
 
         Task<GameFinalScores> UpdateScore(GameFinalScores game);
     }

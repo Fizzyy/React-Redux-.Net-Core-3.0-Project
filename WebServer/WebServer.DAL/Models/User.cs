@@ -29,6 +29,8 @@ namespace WebServer.DAL.Models
 
         public string Role { get; set; }
 
+        public string UserImage { get; set; }
+
         public List<Orders> Orders { get; set; }
         public List<Feedback> Feedbacks { get; set; }
         public List<GameMark> GameMarks { get; set; }

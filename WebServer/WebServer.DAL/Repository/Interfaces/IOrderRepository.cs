@@ -8,9 +8,7 @@ namespace WebServer.DAL.Repository.Interfaces
 {
     public interface IOrderRepository
     {
-        Task<IEnumerable<object>> GetCurrentOrders(string Username);
-
-        Task<IEnumerable<object>> GetPaidOrders(string Username);
+        Task<IEnumerable<Orders>> GetPaidOrUnpaidOrders(string Username, bool type);
 
         Task<IEnumerable<Orders>> GetAllUserOrders(string Username);
 

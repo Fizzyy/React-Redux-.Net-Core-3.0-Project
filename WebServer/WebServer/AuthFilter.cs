@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -13,66 +16,99 @@ using WebServer.Services.Services;
 
 namespace WebServer
 {
-    public class AccountRequirement : IAuthorizationRequirement {
-
-    }
+    public class AccountRequirement : IAuthorizationRequirement { }
 
     public class AuthFilter : AuthorizationHandler<AccountRequirement>
     {
         private readonly IRefreshTokensService refreshTokensService;
-        private readonly AccountRequirement accountRequirement;
+        private readonly IHttpContextAccessor httpContextAccessor;
         protected string role;
-        public AuthFilter(string role)
+
+        //public AuthFilter() { }
+
+        public AuthFilter(IRefreshTokensService refreshTokensService, IHttpContextAccessor httpContextAccessor)
         {
-            this.role = role;
+            this.refreshTokensService = refreshTokensService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AccountRequirement requirement)
         {
-            var actionContext = (AuthorizationFilterContext)context.Resource;
-            var jwtToken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "AccessToken").Value.FirstOrDefault();
-            var refreshtoken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "RefreshToken").Value.FirstOrDefault();
+            try
+            { 
+            string jwtToken, refreshtoken;
+
+                //var abc = context.Requirements.ToArray()[1];
+                //var type = abc.GetType().GetProperty("AllowedRoles").GetValue(abc, null);
+                //var value = type.GetType().GetProperties().GetValue(0);
+
+                HttpContext httpContext = httpContextAccessor.HttpContext;
+            jwtToken = httpContext.Request.Headers["AccessToken"];
+            refreshtoken = httpContext.Request.Headers["RefreshToken"];
+
+            //var actionContext = (AuthorizationFilterContext)context.Resource;
+            //jwtToken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "AccessToken").Value.FirstOrDefault();
+            //refreshtoken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "RefreshToken").Value.FirstOrDefault();
 
             if (jwtToken == null || refreshtoken == null)
             {
-                //actionContext.Response = actionContext.Request.CreateResponse(System.Net.HttpStatusCode.Unauthorized);
                 context.Fail();
+                httpContext.Response.StatusCode = 401; 
+                return;
             }
 
             var claims = TokenService.VerifyToken(jwtToken);
 
-            if (actionContext.HttpContext.User.IsInRole(role))
-            {
-                context.Succeed(requirement);
-            }
-
-            if (claims == null)
-            {
-                var principal = ClaimsService.GetPrincipalFromExpiredToken(jwtToken);
-
-                var username = principal.Identity.Name;
-                var role = principal.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
-                var balance = principal.FindFirst("UserBalance");
-
-                var savedRefreshToken = await refreshTokensService.GetRefreshToken(username); //retrieve the refresh token from a data store
-                if (savedRefreshToken.RefreshToken != refreshtoken)
+                if (claims == null)
                 {
-                    //actionContext.HttpContext.Response.StatusCode = actionContext.HttpContext
-                    context.Fail();
-                    //return BadRequest("Invalid refresh token");
+                    var principal = ClaimsService.GetPrincipalFromExpiredToken(jwtToken);
+
+                    var username = principal.Identity.Name;
+                    var role = principal.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
+                    var balance = principal.FindFirst("UserBalance").Value;
+
+                    /*if (!httpContext.User.HasClaim(ClaimTypes.Role, "User") || !httpContext.User.HasClaim(ClaimTypes.Role, "Admin"))
+                    {
+                        context.Fail();
+                        httpContext.Response.StatusCode = 401;
+                        return;
+                    }*/
+
+                    var savedRefreshToken = await refreshTokensService.GetRefreshToken(username);
+                    if (savedRefreshToken.RefreshToken != refreshtoken)
+                    {
+                        context.Fail();
+                        httpContext.Response.StatusCode = 401;
+                        return;
+                    }
+
+                    var identity = ClaimsService.GetIdentity(new UserBll
+                    {
+                        Username = username,
+                        UserBalance = decimal.Parse(balance),
+                        Role = role
+                    });
+
+                    var token = TokenService.CreateToken(identity);
+                    var newRefreshToken = TokenService.GenerateRefreshToken();
+                    await refreshTokensService.DeleteRefreshToken(username);
+                    await refreshTokensService.SaveRefreshToken(username, newRefreshToken);
+
+                    PropertyInfo propertyInfo = token.GetType().GetProperty("access_token");
+                    string temp = (string)propertyInfo.GetValue(token, null);
+
+                    httpContext.Response.Headers["Token"] = temp;
+                    httpContext.Response.Headers["RefreshToken"]= newRefreshToken;
+
+                    httpContext.Request.Headers["Token"] = temp;
+                    httpContext.Request.Headers["RefreshToken"] = newRefreshToken;
                 }
-
-                var identity = ClaimsService.GetIdentity(new UserBll { Username = username, UserBalance = decimal.Parse(balance.Value), Role = role.Value });
-                var token = TokenService.CreateToken(identity); 
-                var newRefreshToken = TokenService.GenerateRefreshToken();
-                await refreshTokensService.DeleteRefreshToken(username);
-                await refreshTokensService.SaveRefreshToken(username, newRefreshToken);
-               
-
-                actionContext.HttpContext.Response.Headers.Add("Authorization", new[] { token.GetType().GetField("access_token").ToString(),refreshtoken});
             }
-
-
+            catch (Exception e)
+            {
+                throw e;
+            }
+            context.Succeed(requirement);
             await Task.Yield();
         }
     }

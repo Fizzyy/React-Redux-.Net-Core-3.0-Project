@@ -1,7 +1,7 @@
 import React from 'react';
 import '../MyOrders/MyOrders.css';
-import { axiosGet } from '../../CommonFunctions/axioses';
-import { GETUNPAIDORDERS } from '../../CommonFunctions/URLconstants';
+import { axiosGet, axiosPost, axiosDelete } from '../../CommonFunctions/axioses';
+import { GETUNPAIDORDERS, DELETEORDERS, PAYFORORDERS } from '../../CommonFunctions/URLconstants';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import jwt_decode from 'jwt-decode';
@@ -15,7 +15,8 @@ class MyOrders extends React.Component {
             orders: [],
             selectedOrders: [],
             userBalance: 0,
-            totalSumToPay: 0
+            totalSumToPay: 0,
+            tempSum: 0
         }
     }
 
@@ -25,7 +26,8 @@ class MyOrders extends React.Component {
             const decoding = jwt_decode(token);
             let res = await axiosGet(GETUNPAIDORDERS + this.props.userData.username);
             if (res.status === 200) {
-
+                let temp = res.headers.entries();
+                debugger;
                 for (let i = 0; i < res.data.length; i++) {
                     this.state.totalSumToPay += res.data[i].totalSum;
                 }
@@ -42,11 +44,41 @@ class MyOrders extends React.Component {
         let index = this.state.selectedOrders.indexOf(e.target.value);
         if (index > -1) {
             this.state.selectedOrders.splice(index, 1)
-            this.setState({ selectedOrders: this.state.selectedOrders });
+            this.setState({ selectedOrders: this.state.selectedOrders, tempSum: this.state.tempSum - Number(e.target.name) });
         }
         if (index === -1) {
             this.state.selectedOrders.push(e.target.value)
-            this.setState({ selectedOrders: this.state.selectedOrders });
+            this.setState({ selectedOrders: this.state.selectedOrders, tempSum: this.state.tempSum + Number(e.target.name) });
+        }
+    }
+
+    deleteOrders = async () => {
+        let response = await axiosPost(DELETEORDERS, { Username: this.props.userData.username, orders: this.state.selectedOrders });
+        if (response.status === 200) {
+            for (let i = 0; i < response.data.length; i++) {
+                this.state.totalSumToPay += response.data[i].totalSum;
+            }
+            this.setState({
+                orders: response.data,
+                userBalance: this.state.tempSum,
+                totalSumToPay: this.state.totalSumToPay
+            });
+        }
+    }
+
+    payForOrders = async () => {
+        if (this.state.userBalance < this.state.totalSumToPay) alert('Not enough money');
+        else {
+            let res = await axiosPost(PAYFORORDERS, { Username: this.props.userData.username, orders: this.state.selectedOrders });
+            if (res.status === 200) {
+                for (let i = 0; i < res.data.length; i++) {
+                    this.state.totalSumToPay += res.data[i].totalSum;
+                }
+                this.setState({
+                    orders: res.data,
+                    totalSumToPay: this.state.totalSumToPay
+                });
+            }
         }
     }
 
@@ -64,6 +96,7 @@ class MyOrders extends React.Component {
                                 <th>Дата заказа</th>
                                 <th>Количество</th>
                                 <th>Цена</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,25 +109,29 @@ class MyOrders extends React.Component {
                                         <td>{x.amount}</td>
                                         <td>{x.totalSum}</td>
                                         <td>
-                                            <input type="checkbox" value={x.orderID} onChange={this.selectOrder} />
+                                            <input type="checkbox" value={x.orderID} name={x.totalSum} onChange={this.selectOrder} />
                                         </td>
                                     </tr>
                                 );
                             })}
+                            <tr>
+                                <td colSpan="6">
+                                    <div className="tr_MenuOrders">
+                                        <div>
+                                            <p className="pMoneyInfo">Ваш баланс: {this.state.userBalance}p</p>
+                                            <p className="pMoneyInfo">Всего к оплате: {this.state.totalSumToPay}p</p>
+                                        </div>
+                                        <div className="div_OptionButtons">
+                                            <Button variant="outline-danger" onClick={this.deleteOrders}>Удалить</Button>
+                                            <Button variant="outline-success" style={{ marginTop: '10px' }} onClick={this.payForOrders}>Оплатить</Button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </Table>
                     <div>
 
-                    </div>
-                </div>
-                <div className="emptyDivsOrders">
-                    <div className="divWithOrdersOptions">
-                        <p className="pMoneyInfo">Ваш баланс: {this.state.userBalance}p</p>
-                        <p className="pMoneyInfo">Всего к оплате: {this.state.totalSumToPay}p</p>
-                        <div style={{ marginTop: '10px' }}>
-                            <Button variant="outline-danger">Удалить</Button>
-                            <Button variant="outline-success" style={{ marginLeft: '10px' }}>Оплатить</Button>
-                        </div>
                     </div>
                 </div>
             </div>

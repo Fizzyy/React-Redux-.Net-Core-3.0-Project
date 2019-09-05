@@ -66,9 +66,12 @@ namespace WebServer
             services.AddTransient<IRefreshTokensRepository, RefreshTokensRepository>();
             services.AddTransient<IRefreshTokensService, RefreshTokenService>();
 
-            /*services.AddAuthorization(options => options.AddPolicy("MyPolicy", 
-                                      policy => policy.Requirements.Add(new AccountRequirement())));
-            services.AddTransient<IAuthorizationHandler, AuthFilter>();*/
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("MyPolicy", policy => policy.Requirements.Add(new AccountRequirement()));
+            });
+            services.AddTransient<IAuthorizationHandler, AuthFilter>();
+            services.AddHttpContextAccessor();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

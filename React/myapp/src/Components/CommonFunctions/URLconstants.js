@@ -24,7 +24,7 @@ const baseURLorder = MainURL + 'api/Order';
 const addorder = '/AddOrder'
 const getunpaidorders = '/GetCurrentOrders/';
 const deleteorder = '/DeleteOrders';
-const payfororder = '/PayForOrders/';
+const payfororder = '/PayForOrders';
 const getpaidorders = '/GetPaidOrders/';
 
 const baseURLfeedback = MainURL + 'api/Feedback';

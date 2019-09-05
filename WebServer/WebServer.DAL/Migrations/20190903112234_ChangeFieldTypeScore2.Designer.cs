@@ -3,34 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebServer.DAL.Context;
 
 namespace WebServer.DAL.Migrations
 {
     [DbContext(typeof(CommonContext))]
-    partial class CommonContextModelSnapshot : ModelSnapshot
+    [Migration("20190903112234_ChangeFieldTypeScore2")]
+    partial class ChangeFieldTypeScore2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("WebServer.DAL.Models.BannedUsers", b =>
-                {
-                    b.Property<string>("Username");
-
-                    b.Property<DateTime>("BanDate");
-
-                    b.Property<string>("BanReason");
-
-                    b.HasKey("Username");
-
-                    b.ToTable("BannedUsers");
-                });
 
             modelBuilder.Entity("WebServer.DAL.Models.Feedback", b =>
                 {
@@ -83,8 +72,6 @@ namespace WebServer.DAL.Migrations
                 {
                     b.Property<string>("GameID");
 
-                    b.Property<int>("AmountOfVotes");
-
                     b.Property<double>("GameScore");
 
                     b.HasKey("GameID");
@@ -114,23 +101,6 @@ namespace WebServer.DAL.Migrations
                     b.HasIndex("Username");
 
                     b.ToTable("GameMarks");
-                });
-
-            modelBuilder.Entity("WebServer.DAL.Models.GamesScreenshots", b =>
-                {
-                    b.Property<string>("GameID");
-
-                    b.Property<string>("GameDescriptionBackground");
-
-                    b.Property<string>("GameScreenshotReference1");
-
-                    b.Property<string>("GameScreenshotReference2");
-
-                    b.Property<string>("GameScreenshotReference3");
-
-                    b.HasKey("GameID");
-
-                    b.ToTable("GamesScreenshots");
                 });
 
             modelBuilder.Entity("WebServer.DAL.Models.MoneyKeys", b =>
@@ -211,21 +181,11 @@ namespace WebServer.DAL.Migrations
 
                     b.Property<decimal>("UserBalance");
 
-                    b.Property<string>("UserImage");
-
                     b.Property<bool>("isUserBanned");
 
                     b.HasKey("Username");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("WebServer.DAL.Models.BannedUsers", b =>
-                {
-                    b.HasOne("WebServer.DAL.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("Username")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WebServer.DAL.Models.Feedback", b =>
@@ -256,14 +216,6 @@ namespace WebServer.DAL.Migrations
                     b.HasOne("WebServer.DAL.Models.User", "User")
                         .WithMany("GameMarks")
                         .HasForeignKey("Username");
-                });
-
-            modelBuilder.Entity("WebServer.DAL.Models.GamesScreenshots", b =>
-                {
-                    b.HasOne("WebServer.DAL.Models.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameID")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WebServer.DAL.Models.Offers", b =>

@@ -8,6 +8,9 @@ import FormControl from 'react-bootstrap/FormControl';
 import { ORDERGAMES, GETGAMESBYREGEX } from '../../CommonFunctions/URLconstants';
 import { search } from 'react-icons-kit/fa/search';
 import { Icon } from 'react-icons-kit';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 class Catalog extends React.Component {
     constructor(props) {
@@ -79,19 +82,6 @@ class Catalog extends React.Component {
                 <div id="divMainCatalog_Options">
                     <h2 style={{ marginTop: '15px' }}>{this.props.match.params.gamePlatform}</h2>
                     <div id="divMainCatalog_Options_Selects">
-                        <InputGroup style={{ marginLeft: '20px' }}>
-                            <InputGroup.Prepend>
-                                <InputGroup.Text id="btnGroupAddon">
-                                    <Icon icon={search} size={18} />
-                                </InputGroup.Text>
-                            </InputGroup.Prepend>
-                            <FormControl
-                                type="text"
-                                placeholder="Введите название"
-                                aria-label="Input group example"
-                                onChange={this.getGamesByRegex}
-                            />
-                        </InputGroup>
                         <h4 style={{ marginLeft: '40px', marginTop: '10px' }}>Сортировка:</h4>
                         <div className="divContainer_Sort">
                             <label>Критерий:</label>
@@ -148,21 +138,42 @@ class Catalog extends React.Component {
                     </div>
                 </div>
                 <div id="divMainCatalog_Games">
+                    <div>
+                        <InputGroup style={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px', width: '30em' }}>
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="btnGroupAddon">
+                                    <Icon icon={search} size={18} />
+                                </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <FormControl
+                                type="text"
+                                placeholder="Введите название"
+                                aria-label="Input group example"
+                                onChange={this.getGamesByRegex}
+                            />
+                        </InputGroup>
+                    </div>
                     <div id="divMainCatalog_Games_GameBlockInfo">
-                        {this.state.games.map((x) => {
-                            return (
-                                <GameBlockInfo
-                                    gameID={x.gameID}
-                                    gameName={x.gameName}
-                                    gameJenre={x.gameJenre}
-                                    gamePrice={x.gamePrice}
-                                    gameRating={x.gameRating}
-                                    gameScore={x.gameScore}
-                                    gamePlatform={this.props.match.params.gamePlatform}
-                                    gameImage={x.gameImage}
-                                />
-                            );
-                        })}
+                        <Container>
+                            <Row className="bootstrap_RowCatalog">
+                                {this.state.games.map((x) => {
+                                    return (
+                                        <Col md={2}>
+                                            <GameBlockInfo
+                                                gameID={x.gameID}
+                                                gameName={x.gameName}
+                                                gameJenre={x.gameJenre}
+                                                gamePrice={x.gamePrice}
+                                                gameRating={x.gameRating}
+                                                gameScore={x.gameScore}
+                                                gamePlatform={this.props.match.params.gamePlatform}
+                                                gameImage={x.gameImage}
+                                            />
+                                        </Col>
+                                    );
+                                })}
+                            </Row>
+                        </Container>
                     </div>
                 </div>
             </div>

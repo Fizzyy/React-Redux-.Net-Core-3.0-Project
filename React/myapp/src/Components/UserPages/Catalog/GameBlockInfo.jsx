@@ -18,7 +18,6 @@ class GameBlockInfo extends React.Component {
         return (
             <Link to={`/Catalog/${this.props.gamePlatform}/${this.props.gameID}`}>
                 <div id="divMainGameBlock">
-
                     <Image cloudName="djlynoeio" publicId={this.props.gameImage} id="divMainGameBlock_Image" />
                     {this.props.isItOffer ?
                         <div className="divMainGameBlock_OfferDiv">
@@ -26,7 +25,6 @@ class GameBlockInfo extends React.Component {
                             <label style={{ marginLeft: '5px', marginTop: '2px' }}>Скидка 20%</label>
                         </div>
                         : null}
-
                     <div id="divMainGameBlock_Info">
                         <label style={{ fontSize: 20, marginLeft: '5px', color: 'black' }}>{this.props.gameName}</label>
                         <div className="divMainGameBlock_Info_Ratings">

@@ -26,11 +26,25 @@ input[type=checkbox] {
 }
 
 .pMoneyInfo {
-    font-size: 18px;
+    font-size: 16px;
     margin-top: 10px;
 }
 
 .tempdivs {
     text-align: left;
     padding-left: 3em;
+}
+
+.tr_MenuOrders {
+    width: 100%; 
+    height: 5em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.div_OptionButtons {
+    justify-self: flex-end;
+    display: flex;
+    flex-direction: column;
 }

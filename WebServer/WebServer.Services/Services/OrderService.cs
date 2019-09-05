@@ -22,14 +22,28 @@ namespace WebServer.Services.Services
             this.gameRepository = gameRepository;
         }
 
-        public Task<IEnumerable<object>> GetCurrentOrders(string Username)
+        public async Task<List<UserOrdersBll>> GetPaidOrUnpaidOrders(string Username, bool type)
         {
-            return orderRepository.GetCurrentOrders(Username);
-        }
+            var orders = await orderRepository.GetPaidOrUnpaidOrders(Username, type);
 
-        public Task<IEnumerable<object>> GetPaidOrders(string Username)
-        {
-            return orderRepository.GetPaidOrders(Username);
+            List<UserOrdersBll> ordersBlls = new List<UserOrdersBll>();
+            foreach (var order in orders)
+            {
+                var game = await gameRepository.GetChosenGame(order.GameID);
+
+                ordersBlls.Add(new UserOrdersBll
+                {
+                    OrderID = order.Id,
+                    GameName = game.GameName,
+                    GamePlatform = game.GamePlatform,
+                    Amount = order.Amount,
+                    Username = order.Username,
+                    OrderDate = order.OrderDate,
+                    TotalSum = order.TotalSum
+                });
+            }
+
+            return ordersBlls;
         }
 
         public async Task<List<UserOrdersBll>> GetAllUserOrders(string Username)
@@ -63,18 +77,20 @@ namespace WebServer.Services.Services
 
         public Task AddOrder(OrdersBll order)
         {
-            var date = DateTime.Now.Date;
+            var date = DateTime.Now;
             return orderRepository.AddOrder(new Orders { Username = order.Username, GameID = order.GameID, Amount = order.Amount, OrderDate = date, TotalSum = order.TotalSum, isOrderPaid = false });
         }
 
-        public Task RemoveOrders(string[] orders)
+        public async Task<List<UserOrdersBll>> RemoveOrders(string Username, string[] orders)
         {
-            return orderRepository.RemoveOrders(orders);
+            await orderRepository.RemoveOrders(orders);
+            return await GetPaidOrUnpaidOrders(Username, false);
         }
 
-        public Task PayForOrders(string Username, string[] orders)
+        public async Task<List<UserOrdersBll>> PayForOrders(string Username, string[] orders)
         {
-            return orderRepository.PayForOrders(Username, orders);
+            await orderRepository.PayForOrders(Username, orders);
+            return await GetPaidOrUnpaidOrders(Username, false);
         }
     }
 }

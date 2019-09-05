@@ -12,10 +12,11 @@ namespace WebServer.DAL.Context
         public CommonContext() { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<BannedUsers> BannedUsers { get; set; }
         public DbSet<Orders> Orders { get; set; }
         public DbSet<GameMark> GameMarks { get; set; }
         public DbSet<Game> Games { get; set; }
-        //public DbSet<GamesScreenshots> GamesScreenshots { get; set; }
+        public DbSet<GamesScreenshots> GamesScreenshots { get; set; }
         public DbSet<Offers> Offers { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<MoneyKeys> MoneyKeys { get; set; }

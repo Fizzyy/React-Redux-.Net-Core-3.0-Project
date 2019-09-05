@@ -47,10 +47,11 @@ namespace WebServer.Services.Services
             return list;
         }
 
-        public Task AddFeedback(FeedbackBll feedback)
+        public async Task<List<Feedback>> AddFeedback(FeedbackBll feedback)
         {
             var date = DateTime.Now;
-            return feedbackRepository.AddFeedback(new Feedback { Username = feedback.Username, GameID = feedback.GameID, Comment = feedback.Comment, CommentDate = date.Date });
+            await feedbackRepository.AddFeedback(new Feedback { Username = feedback.Username, GameID = feedback.GameID, Comment = feedback.Comment, CommentDate = date.Date });
+            return await feedbackRepository.GetCurrentGameFeedback(feedback.GameID);
         }
 
         public Task RemoveFeedback(string FeedbackID)

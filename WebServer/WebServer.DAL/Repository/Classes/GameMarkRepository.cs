@@ -26,7 +26,7 @@ namespace WebServer.DAL.Repository.Classes
             return null;
         }
 
-        public async Task<int> GetCurrentUserScore(string GameID, string Username)
+        public async Task<double> GetCurrentUserScore(string GameID, string Username)
         {
             try
             {
@@ -44,7 +44,12 @@ namespace WebServer.DAL.Repository.Classes
         public async Task AddScore(GameMark score)
         {
             var AlreadyPutGame = await commonContext.GameMarks.FirstOrDefaultAsync(x => x.Username == score.Username && x.GameID == score.GameID);
-            if (AlreadyPutGame == null) commonContext.GameMarks.Add(score);
+            if (AlreadyPutGame == null)
+            {
+                commonContext.GameMarks.Add(score);
+                var game = await commonContext.GameFinalScores.FindAsync(score.GameID);
+                game.AmountOfVotes += 1;
+            }
             else
             {
                 AlreadyPutGame.Score = score.Score;

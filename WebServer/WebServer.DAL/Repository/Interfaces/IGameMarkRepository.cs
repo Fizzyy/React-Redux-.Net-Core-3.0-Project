@@ -10,7 +10,7 @@ namespace WebServer.DAL.Repository.Interfaces
     {
         Task<IEnumerable<GameMark>> GetAllUserScores(string Username);
 
-        Task<int> GetCurrentUserScore(string GameID, string Username);
+        Task<double> GetCurrentUserScore(string GameID, string Username);
 
         Task AddScore(GameMark score);
 

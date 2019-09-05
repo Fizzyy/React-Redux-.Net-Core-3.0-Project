@@ -16,7 +16,7 @@ namespace WebServer.DAL.Models
 
         public DateTime GameMarkDate { get; set; }
 
-        public int Score { get; set; }
+        public double Score { get; set; }
 
         public User User { get; set; }
 

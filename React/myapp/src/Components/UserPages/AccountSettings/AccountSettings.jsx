@@ -1,4 +1,6 @@
 import React from 'react';
+import Image from 'react-bootstrap/Image';
+import '../AccountSettings/AccountSettings.css';
 
 class AccountSettings extends React.Component {
     constructor(props) {
@@ -7,7 +9,9 @@ class AccountSettings extends React.Component {
 
     render() {
         return (
-            <h1>account</h1>
+            <div className="divMainAccountSettings">
+
+            </div>
         );
     }
 }

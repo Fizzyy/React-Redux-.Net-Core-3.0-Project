@@ -1,6 +1,6 @@
 #divMainGameDescription {
     width: 100%;
-    height: 64em;
+    height: 118em;
     background-color: #121214;
 }
 
@@ -125,16 +125,18 @@
 /*****************************************************/
 #divMainGrid {
     width: 100%;
-    height: 55em;
+    height: 110em;
     display: grid;
     background-color: black;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 3.3fr 0.7fr;
     grid-template-areas: 
     "gameImage header header header"
     "gameImage comments comments comments"
     "buttons comments comments comments"
     "others others others others"
+    "userReviews userReviews userReviews userReviews"
+    "currentUserReviews currentUserReviews currentUserReviews commentOptions"
 }
 
 #gameImage { 
@@ -162,6 +164,21 @@
 }
 #others { 
     grid-area: others;
+}
+
+#userReviews {
+    grid-area: userReviews;
+}
+
+#currentUserReviews {
+    grid-area: currentUserReviews;
+}
+
+#commentOptions {
+    grid-area: commentOptions;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #gamePoster {
@@ -194,7 +211,6 @@
 
 .input_AmountOfGames {
     width: 150px;
-    margin-top: 20px;
     margin-bottom: 10px;
 }
 
@@ -231,16 +247,38 @@
 }
 
 .div_CommentsCarousel {
-    flex: 6;
-    padding-right: 30px;
+    flex: 1;
+    padding-right: 40px;
 }
 
 .carousel {
     width: 100%;
-    height: 400px;
+    height: 390px;
 }
 
 .w-100 {
     width: 100%;
-    height: 400px;
+    height: 390px;
+}
+
+.textarea_UserComment {
+    width: 100%;
+    height: 100%;
+    background-color: #121214;
+    color: #17a2b8;
+    resize: none;
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+.label_CharCounter {
+    color: whitesmoke;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.Button_AddComment {
+    margin-left: 20px;
+    width: 150px;
+    height: 40px;
 }

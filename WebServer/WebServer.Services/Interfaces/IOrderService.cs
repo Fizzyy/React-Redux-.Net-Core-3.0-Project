@@ -10,16 +10,14 @@ namespace WebServer.Services.Interfaces
 {
     public interface IOrderService
     {
-        Task<IEnumerable<object>> GetCurrentOrders(string Username);
-
-        Task<IEnumerable<object>> GetPaidOrders(string Username);
+        Task<List<UserOrdersBll>> GetPaidOrUnpaidOrders(string Username, bool type);
 
         Task<List<UserOrdersBll>> GetAllUserOrders(string Username);
 
         Task AddOrder(OrdersBll orders);
 
-        Task RemoveOrders(string[] orders);
+        Task<List<UserOrdersBll>> RemoveOrders(string Username, string[] orders);
 
-        Task PayForOrders(string Username, string[] orders);
+        Task<List<UserOrdersBll>> PayForOrders(string Username, string[] orders);
     }
 }

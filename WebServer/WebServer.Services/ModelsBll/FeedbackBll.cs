@@ -18,15 +18,18 @@ namespace WebServer.Services.ModelsBll
 
         public DateTime CommentDate { get; set; }
 
+        public string UserAvatar { get; set; }
+
         public FeedbackBll() { }
 
-        public FeedbackBll(int Id, string Username, string GameID, string Comment, DateTime CommentDate)
+        public FeedbackBll(int Id, string Username, string GameID, string Comment, DateTime CommentDate, string UserAvatar)
         {
             this.Id = Id;
             this.Username = Username;
             this.GameID = GameID;
             this.Comment = Comment;
             this.CommentDate = CommentDate;
+            this.UserAvatar = UserAvatar;
         }
     }
 }

@@ -1,0 +1,43 @@
+#divMainUsersComments {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    background-color: #191a1a;
+    margin-left: 2.5%;
+}
+
+.div_UserData {
+    width: 100%;
+    height: 3em;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.div_UserComment {
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.span_Username {
+    margin-left: 10px;
+    font-size: 23px;
+    color: whitesmoke;
+}
+
+.span_CommentDate {
+    margin-left: 20px;
+    margin-top: 5px;
+    color: whitesmoke;
+    font-size: 16px;
+}
+
+.span_UserComment {
+    margin-top: 5px;
+    margin-left: 60px;
+    color: whitesmoke;
+}

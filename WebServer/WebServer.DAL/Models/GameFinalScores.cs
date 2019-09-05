@@ -14,7 +14,7 @@ namespace WebServer.DAL.Models
 
         public double GameScore { get; set; }
 
-        //public int AmountOfVotes { get; set; }
+        public int AmountOfVotes { get; set; }
 
         public Game Game { get; set; }
     }

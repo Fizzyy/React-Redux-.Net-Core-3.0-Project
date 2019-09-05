@@ -20,11 +20,13 @@ namespace WebServer.Services.ModelsBll.Joins
 
         public string GameRating { get; set; }
 
-        public int UserScore { get; set; }
+        public double UserScore { get; set; }
 
         public string GamePlatform { get; set; }
 
         public string GameImage { get; set; }
+
+        public int AmountOfVotes { get; set; }
 
         public List<FeedbackBll> Feedbacks { get; set; }
 
