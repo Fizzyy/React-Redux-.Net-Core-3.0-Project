@@ -18,7 +18,5 @@ namespace WebServer.Services.Interfaces
         Task<object> CheckUser(UserBll user);
 
         Task<decimal> ReturnUserBalance(string Username);
-
-        Task BanUser(string Username);
     }
 }

@@ -1,4 +1,41 @@
 .divMainAccountSettings {
-    width: 100%;
+    min-width: 100%;
+    min-height: 50em;
+}
+
+#emptyDiv {
+    width: 10%;
     height: 50em;
+    float: left;
+}
+
+#UserInfoDiv {
+    width: 80%;
+    height: 50em;
+    float: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.div_UserHeaderInfo {
+    flex: 2;
+    background-color: red;
+    display: flex;
+    flex-direction: row;
+}
+
+.div_UserAction {
+    flex: 5;
+    background-color: pink;
+}
+
+.div_UserAvatar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div_UserInfo {
+    flex: 5;
 }

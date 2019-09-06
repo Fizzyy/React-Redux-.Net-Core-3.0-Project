@@ -81,18 +81,6 @@ namespace WebServer.Controllers
         }
 
         [HttpPost]
-        [Route("BanUser")]
-        public async Task<IActionResult> BanUser([FromBody]UserBll username)
-        {
-            if (username != null)
-            {
-                await userService.BanUser(username.Username);
-                return Ok();
-            }
-            return NotFound();
-        }
-
-        [HttpPost]
         [Route("SignOut")]
         public async Task<IActionResult> SignOutUser([FromBody]UserBll user)
         {

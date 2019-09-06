@@ -66,6 +66,12 @@ namespace WebServer
             services.AddTransient<IRefreshTokensRepository, RefreshTokensRepository>();
             services.AddTransient<IRefreshTokensService, RefreshTokenService>();
 
+            services.AddTransient<IBannedUsersRepository, BannedUsersRepository>();
+            services.AddTransient<IBannedUsersService, BannedUsersService>();
+
+            services.AddTransient<IOffersRepository, OffersRepository>();
+            services.AddTransient<IOffersService, OffersService>();
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("MyPolicy", policy => policy.Requirements.Add(new AccountRequirement()));

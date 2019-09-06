@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace WebServer.DAL.Models
+namespace WebServer.Services.ModelsBll
 {
-    public class Offers
+    public class OffersBll
     {
-        [ForeignKey("Game")]
-        [Key]
         public string GameID { get; set; }
 
         public double GameOfferAmount { get; set; }
@@ -17,7 +13,5 @@ namespace WebServer.DAL.Models
         public decimal GameNewPrice { get; set; }
 
         public DateTime EndOfOffer { get; set; }
-
-        public Game Game { get; set; }
     }
 }

@@ -24,9 +24,6 @@ namespace WebServer.DAL.Models
         [Required]
         public decimal UserBalance { get; set; }
 
-        [Required]
-        public bool isUserBanned { get; set; }
-
         public string Role { get; set; }
 
         public string UserImage { get; set; }

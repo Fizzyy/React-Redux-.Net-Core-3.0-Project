@@ -50,12 +50,5 @@ namespace WebServer.DAL.Repository.Classes
             if (user != null) return user.UserBalance;
             return 0;
         }
-
-        public async Task BanUser(string Username)
-        {
-            var user = await commonContext.Users.FindAsync(Username);
-            if (user != null) user.isUserBanned = true;
-            await commonContext.SaveChangesAsync();
-        }
     }
 }

@@ -17,18 +17,20 @@ namespace WebServer.Services.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IRefreshTokensRepository refreshTokensRepository;
+        private readonly IBannedUsersRepository bannedUsersRepository;
 
         private readonly IFeedbackService feedbackService;
         private readonly IGameMarkService gameMarkService;
         private readonly IOrderService orderService;
 
-        public UserService(IUserRepository userRepository, IRefreshTokensRepository refreshTokensRepository, IFeedbackService feedbackService, IGameMarkService gameMarkService, IOrderService orderService)
+        public UserService(IUserRepository userRepository, IRefreshTokensRepository refreshTokensRepository, IFeedbackService feedbackService, IGameMarkService gameMarkService, IOrderService orderService, IBannedUsersRepository bannedUsersRepository)
         {
             this.userRepository = userRepository;
             this.refreshTokensRepository = refreshTokensRepository;
             this.feedbackService = feedbackService;
             this.gameMarkService = gameMarkService;
             this.orderService = orderService;
+            this.bannedUsersRepository = bannedUsersRepository;
         }
 
         public async Task<IEnumerable<User>> GetUsers()
@@ -46,7 +48,6 @@ namespace WebServer.Services.Services
                 Username = founduser.Username,
                 UserBalance = founduser.UserBalance,
                 Role = founduser.Role,
-                isUserBanned = founduser.isUserBanned,
                 Feedbacks = await feedbackService.GetUserFeedback(Username),
                 GameMarks = await gameMarkService.GetAllUserScores(Username),
                 Orders = await orderService.GetAllUserOrders(Username)
@@ -56,13 +57,25 @@ namespace WebServer.Services.Services
 
         public Task AddUser(UserBll user)
         {
-            return userRepository.AddUser(new User { Username = user.Username, Password = Encrypting.GetHashFromPassword(user.Password), isUserBanned = false, UserBalance = 0, Role = "User" });
+            return userRepository.AddUser(new User { Username = user.Username, Password = Encrypting.GetHashFromPassword(user.Password), UserBalance = 0, Role = "User" });
         }
 
         public async Task<object> CheckUser(UserBll user)
         {
             var founduser = await userRepository.CheckUser(new User { Username = user.Username, Password = Encrypting.GetHashFromPassword(user.Password) });
             if (founduser == null) return null;
+
+            var isThisUserBanned = await bannedUsersRepository.FindBannedUser(user.Username);
+            if (isThisUserBanned != null)
+            {
+                object ban = new
+                {
+                    BanReason = isThisUserBanned.BanReason,
+                    BanDate = isThisUserBanned.BanDate
+                };
+
+                return ban;
+            }
 
             UserBll FoundUserBll = new UserBll
             {
@@ -94,11 +107,6 @@ namespace WebServer.Services.Services
         public Task<decimal> ReturnUserBalance(string Username)
         {
             return userRepository.ReturnUserBalance(Username);
-        }
-
-        public Task BanUser(string Username)
-        {
-            return userRepository.BanUser(Username);
         }
     }
 }

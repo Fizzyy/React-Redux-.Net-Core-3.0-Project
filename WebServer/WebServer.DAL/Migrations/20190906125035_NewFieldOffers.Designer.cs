@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebServer.DAL.Context;
 
 namespace WebServer.DAL.Migrations
 {
     [DbContext(typeof(CommonContext))]
-    partial class CommonContextModelSnapshot : ModelSnapshot
+    [Migration("20190906125035_NewFieldOffers")]
+    partial class NewFieldOffers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +155,7 @@ namespace WebServer.DAL.Migrations
 
                     b.Property<decimal>("GameNewPrice");
 
-                    b.Property<double>("GameOfferAmount");
+                    b.Property<int>("GameOfferAmount");
 
                     b.HasKey("GameID");
 
