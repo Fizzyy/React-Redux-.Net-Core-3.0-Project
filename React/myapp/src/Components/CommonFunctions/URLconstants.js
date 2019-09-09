@@ -31,6 +31,7 @@ const baseURLfeedback = MainURL + 'api/Feedback';
 const getcurrentgamefeedback = '/GetCurrentGameFeedback/';
 const addfeedback = '/AddFeedback';
 const getuserfeedback = '/GetUserFeedback/';
+const updatefeedback = '/UpdateFeedback';
 
 const baseURLgamemark = MainURL + 'api/GameMark';
 const getavgmark = '/GetAverageMark/';
@@ -64,6 +65,7 @@ export const GETPAIDORDERS = baseURLorder + getpaidorders;
 export const GETCURRENTGAMEFEEDBACK = baseURLfeedback + getcurrentgamefeedback;
 export const ADDFEEDBACK = baseURLfeedback + addfeedback;
 export const GETUSERFEEDBACK = baseURLfeedback + getuserfeedback;
+export const UPDATEFEEDBACK = baseURLfeedback + updatefeedback;
 
 export const GETAVERAGEMARK = baseURLgamemark + getavgmark;
 export const GETUSERSMARK = baseURLgamemark + getusersmark;

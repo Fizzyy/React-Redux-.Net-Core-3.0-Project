@@ -1,0 +1,32 @@
+$adwad: 109px;
+
+.mainDivUserComments {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-info {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.div_Comment {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.ul_UserComments {
+    list-style-type: none;
+    padding-inline-start: 0;
+}
+
+.li_UserComments {
+    display: inline;
+    font-size: 18px;
+    margin: 0 10px 0 10px;
+}
+
+.span_Comment {
+    margin-left: 10px;
+}

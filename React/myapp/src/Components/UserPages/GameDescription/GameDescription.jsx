@@ -1,7 +1,7 @@
 import React from 'react';
 import '../GameDescription/GameDescription.css';
 import { axiosGet, axiosPost } from '../../CommonFunctions/axioses';
-import { GETCHOSENGAME, ADDORDER, GETSAMEGENREGAMES, ADDSCORE } from '../../CommonFunctions/URLconstants';
+import { GETCHOSENGAME, ADDORDER, GETSAMEGENREGAMES, ADDSCORE, ADDFEEDBACK } from '../../CommonFunctions/URLconstants';
 import { connect } from 'react-redux';
 import RatingStars from '../RatingStars/RatingStars';
 import Button from 'react-bootstrap/Button';
@@ -65,6 +65,23 @@ class GameDescription extends React.Component {
         let res = await axiosPost(ADDSCORE, { Username: this.props.userData.username, GameID: this.state.gameFullDescription.gameID, Score: +newRating });
         if (res.status === 200) {
             this.setState({ spinnerVisibility: false, gameFullDescription: { ...this.state.gameFullDescription, userScore: newRating } });
+        }
+    }
+
+    addFeedback = async () => {
+        let res = await axiosPost(ADDFEEDBACK, {
+            username: this.props.userData.username,
+            gameID: this.props.match.params.gameID,
+            comment: this.state.userComment
+        });
+        if (res.status === 200) {
+            alert('added');
+            this.setState({
+                gameFullDescription: {
+                    ...this.state.gameFullDescription,
+                    feedbacks: res.data
+                }
+            });
         }
     }
 
@@ -160,7 +177,7 @@ class GameDescription extends React.Component {
                         </div>
                         <div id="commentOptions">
                             <label className="label_CharCounter">{this.state.userComment.length}/500</label>
-                            <Button variant="outline-info" className="Button_AddComment">Добавить</Button>
+                            <Button variant="outline-info" className="Button_AddComment" onClick={this.addFeedback}>Добавить</Button>
                         </div>
                     </div>
                 </div>
