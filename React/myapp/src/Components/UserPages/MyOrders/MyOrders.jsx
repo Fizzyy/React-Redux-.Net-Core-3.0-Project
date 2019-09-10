@@ -26,7 +26,6 @@ class MyOrders extends React.Component {
             const decoding = jwt_decode(token);
             let res = await axiosGet(GETUNPAIDORDERS + this.props.userData.username);
             if (res.status === 200) {
-                debugger;
                 for (let i = 0; i < res.data.length; i++) {
                     this.state.totalSumToPay += res.data[i].totalSum;
                 }

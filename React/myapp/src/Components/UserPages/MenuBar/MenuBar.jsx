@@ -33,7 +33,7 @@ class MenuBar extends React.Component {
                     </div>
                 </div>
                 <div className="divMainBar_divsInsideBar">
-                    <Link to="/SignUp" className="Links">Акции</Link>
+                    <Link to="/Offers" className="Links">Акции</Link>
                 </div>
             </>
         );

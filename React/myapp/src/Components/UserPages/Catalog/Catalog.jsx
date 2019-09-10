@@ -1,11 +1,10 @@
 import React from 'react';
 import '../Catalog/Catalog.css';
 import { axiosGet, axiosPost } from '../../CommonFunctions/axioses';
-import { GETCURRENTPLATFORMGAMES } from '../../CommonFunctions/URLconstants';
 import GameBlockInfo from './GameBlockInfo';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
-import { ORDERGAMES, GETGAMESBYREGEX } from '../../CommonFunctions/URLconstants';
+import { ORDERGAMES, GETGAMESBYREGEX, GETCURRENTPLATFORMGAMES, GETOFFERGAMES } from '../../CommonFunctions/URLconstants';
 import { search } from 'react-icons-kit/fa/search';
 import { Icon } from 'react-icons-kit';
 import Container from 'react-bootstrap/Container';
@@ -23,12 +22,22 @@ class Catalog extends React.Component {
     }
 
     componentDidMount() {
-        (async () => {
-            let res = await axiosGet(GETCURRENTPLATFORMGAMES + this.props.match.params.gamePlatform);
-            if (res.status === 200) {
-                this.setState({ games: res.data });
-            }
-        })()
+        if (this.props.isItOffer) {
+            (async () => {
+                let res = await axiosGet(GETOFFERGAMES);
+                if (res.status === 200) {
+                    this.setState({ games: res.data });
+                }
+            })();
+        }
+        else {
+            (async () => {
+                let res = await axiosGet(GETCURRENTPLATFORMGAMES + this.props.match.params.gamePlatform);
+                if (res.status === 200) {
+                    this.setState({ games: res.data });
+                }
+            })();
+        }
     }
 
     componentDidUpdate(preProps, preState) {
@@ -63,7 +72,7 @@ class Catalog extends React.Component {
     }
 
     getGamesByGenres = async (e) => {
-        let res = await axiosPost(ORDERGAMES, { GamePlatform: this.props.match.params.gamePlatform, Type: 'Genre', TypeValue: e.target.value });
+        let res = await axiosGet(ORDERGAMES + `GamePlatform=${this.props.match.params.gamePlatform}&Type=Genre&TypeValue=${e.target.value}`);
         if (res.status == 200) {
             this.setState({ games: res.data });
         }
@@ -79,8 +88,11 @@ class Catalog extends React.Component {
     render() {
         return (
             <div id="divMainCatalog">
+                <div className="emptyblocks" />
                 <div id="divMainCatalog_Options">
-                    <h2 style={{ marginTop: '15px' }}>{this.props.match.params.gamePlatform}</h2>
+                    <h2 style={{ marginTop: '15px' }}>
+                        {this.props.isItOffer ? "Акции" : this.props.match.params.gamePlatform}
+                    </h2>
                     <div id="divMainCatalog_Options_Selects">
                         <h4 style={{ marginLeft: '40px', marginTop: '10px' }}>Сортировка:</h4>
                         <div className="divContainer_Sort">
@@ -158,24 +170,42 @@ class Catalog extends React.Component {
                             <Row className="bootstrap_RowCatalog">
                                 {this.state.games.map((x) => {
                                     return (
-                                        <Col md={2}>
-                                            <GameBlockInfo
-                                                gameID={x.gameID}
-                                                gameName={x.gameName}
-                                                gameJenre={x.gameJenre}
-                                                gamePrice={x.gamePrice}
-                                                gameRating={x.gameRating}
-                                                gameScore={x.gameScore}
-                                                gamePlatform={this.props.match.params.gamePlatform}
-                                                gameImage={x.gameImage}
-                                            />
-                                        </Col>
-                                    );
+                                        this.props.isItOffer ?
+                                            <Col md={2}>
+                                                <GameBlockInfo
+                                                    isItOffer={true}
+                                                    gameID={x.gameID}
+                                                    gameName={x.gameName}
+                                                    gameJenre={x.gameJenre}
+                                                    gameRating={x.gameRating}
+                                                    gameScore={x.gameScore}
+                                                    gamePlatform={x.gamePlatform}
+                                                    gameOfferAmount={x.gameOfferAmount}
+                                                    gameImage={x.gameImage}
+                                                    oldGamePrice={x.oldGamePrice}
+                                                    newGamePrice={x.newGamePrice}
+                                                />
+                                            </Col>
+                                            :
+                                            <Col md={2}>
+                                                <GameBlockInfo
+                                                    gameID={x.gameID}
+                                                    gameName={x.gameName}
+                                                    gameJenre={x.gameJenre}
+                                                    gamePrice={x.oldGamePrice}
+                                                    gameRating={x.gameRating}
+                                                    gameScore={x.gameScore}
+                                                    gamePlatform={this.props.match.params.gamePlatform}
+                                                    gameImage={x.gameImage}
+                                                />
+                                            </Col>
+                                    )
                                 })}
                             </Row>
                         </Container>
                     </div>
                 </div>
+                <div className="emptyblocks" />
             </div>
         );
     }

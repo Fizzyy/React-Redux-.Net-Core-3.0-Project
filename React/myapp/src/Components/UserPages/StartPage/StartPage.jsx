@@ -36,9 +36,6 @@ class StartPage extends React.Component {
                         </Carousel>
                     </div>
                 </div>
-                <div>
-                    <Link to="/Catalog/PS4">ps4</Link>
-                </div>
             </div>
         );
     }

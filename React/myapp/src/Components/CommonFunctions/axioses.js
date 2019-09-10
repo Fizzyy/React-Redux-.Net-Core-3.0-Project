@@ -11,13 +11,37 @@ function createAxios() {
 }
 
 export async function axiosPost(url, data) {
-    return await createAxios().post(url, data).then(response => { return response; }).catch(error => { return error; })
+    return await createAxios().post(url, data).then(response => {
+        if (response.headers.accesstoken != undefined) {
+            localStorage.setItem('Token', response.headers.accesstoken);
+            localStorage.setItem('RefreshToken', response.headers.refreshtoken);
+        }
+        return response;
+    }).catch(error => { return error; })
 }
 
 export async function axiosGet(url) {
-    return await createAxios().get(url).then(response => { return response; }).catch(error => { return error; })
+    return await createAxios().get(url).then(response => {
+        if (response.headers.accesstoken != undefined) {
+            localStorage.setItem('Token', response.headers.accesstoken);
+            localStorage.setItem('RefreshToken', response.headers.refreshtoken);
+        }
+        return response;
+    }).catch(error => { return error; })
 }
 
 export async function axiosDelete(url) {
-    return await createAxios().delete(url).then(response => { return response; }).catch(error => { return error; })
+    return await createAxios().delete(url).then(response => {
+        return response;
+    }).catch(error => { return error; })
+}
+
+export async function axiosPut(url, data) {
+    return await createAxios().put(url, data).then(response => {
+        if (response.headers.accesstoken != undefined) {
+            localStorage.setItem('Token', response.headers.accesstoken);
+            localStorage.setItem('RefreshToken', response.headers.refreshtoken);
+        }
+        return response;
+    }).catch(error => { return error; })
 }

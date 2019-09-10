@@ -15,18 +15,19 @@
     float: left;
     display: flex;
     flex-direction: column;
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 .div_UserHeaderInfo {
-    height: 230px;
+    height: 250px;
     background-color: red;
     display: flex;
     flex-direction: row;
 }
 
 .div_UserAction {
-    height: 80%;
-    background-color: pink;
+    max-height: 40em;
 }
 
 .div_UserAvatar {
@@ -38,6 +39,7 @@
 
 .div_UserInfo {
     flex: 5;
+
 }
 
 .commentsOptions {
@@ -47,6 +49,7 @@
 .comments {
     overflow-y: auto;
     min-height: 31em;
+    position: relative;
 }
 
 .changedCommentsArea {
@@ -75,4 +78,21 @@
     width: 80%;
     height: 100%;
     float: left;
+}
+
+.starContainer {
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+}
+
+.deleteButton {
+    width: 30px;
+    height: 30px;
+}
+
+.spinnerAlign {
+    position: absolute;
+    right: 0;
+    left: 0;
 }

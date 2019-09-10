@@ -22,9 +22,10 @@ class GameBlockInfo extends React.Component {
                     {this.props.isItOffer ?
                         <div className="divMainGameBlock_OfferDiv">
                             <Icon size={24} icon={fire} />
-                            <label style={{ marginLeft: '5px', marginTop: '2px' }}>Скидка 20%</label>
+                            <label style={{ marginLeft: '5px', marginTop: '2px' }}>Скидка {this.props.gameOfferAmount}%</label>
                         </div>
-                        : null}
+                        : null
+                    }
                     <div id="divMainGameBlock_Info">
                         <label style={{ fontSize: 20, marginLeft: '5px', color: 'black' }}>{this.props.gameName}</label>
                         <div className="divMainGameBlock_Info_Ratings">
@@ -34,8 +35,8 @@ class GameBlockInfo extends React.Component {
                     <div id="divMainGameBlock_Price">
                         {this.props.isItOffer ?
                             <>
-                                <label className="OfferPrice">2p</label>
-                                <label className="NormalPriceCrossed">3p</label>
+                                <label className="OfferPrice">{this.props.newGamePrice}p</label>
+                                <label className="NormalPriceCrossed">{this.props.oldGamePrice}p</label>
                             </>
                             :
                             <label className="NormalPrice">{this.props.gamePrice}p</label>

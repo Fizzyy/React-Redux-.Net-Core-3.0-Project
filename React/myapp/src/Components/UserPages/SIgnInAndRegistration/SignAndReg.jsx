@@ -5,7 +5,7 @@ import '../SIgnInAndRegistration/SignAndReg.css';
 import { Icon } from 'react-icons-kit';
 import { user_circle } from 'react-icons-kit/ikons/user_circle';
 import { key } from 'react-icons-kit/ionicons/key';
-import { axiosPost } from '../../CommonFunctions/axioses';
+import axios from 'axios';
 import { AUTHORIZATION, REGISTRATION } from '../../CommonFunctions/URLconstants';
 import store from '../../_REDUX/Storage';
 import jwt_decode from 'jwt-decode';
@@ -34,28 +34,25 @@ class SignInAndRegistration extends React.Component {
     sendDataToServer = async () => {
         let response = undefined;
         this.props.registration ?
-            response = await axiosPost(REGISTRATION, { username: this.state.username, password: this.state.password1 })
+            await axios.post(REGISTRATION, { username: this.state.username, password: this.state.password1 }).then(responsee => { response = responsee })
             :
-            response = await axiosPost(AUTHORIZATION, { username: this.state.username, password: this.state.password1 });
-
+            await axios.post(AUTHORIZATION, { username: this.state.username, password: this.state.password1 }).then(responsee => { response = responsee });
         if (response.status === 200) {
-            if (!this.props.registration) {
-                localStorage.setItem('Token', response.data.token.access_token);
-                localStorage.setItem('RefreshToken', response.data.refreshToken);
+            localStorage.setItem('Token', response.data.token.access_token);
+            localStorage.setItem('RefreshToken', response.data.refreshToken);
 
-                let tokendata = jwt_decode(response.data.token.access_token);
-                if (tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] == "Admin") this.props.history.push('/Admin');
+            let tokendata = jwt_decode(response.data.token.access_token);
+            if (tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] == "Admin") this.props.history.push('/Admin');
 
-                store.dispatch({
-                    type: 'LOGGED_USER',
-                    username: tokendata["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
-                    userRole: tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
-                    userBalance: Number(tokendata.UserBalance),
-                    isUserLogged: true
-                });
-                this.handleClose();
-            }
+            store.dispatch({
+                type: 'LOGGED_USER',
+                username: tokendata["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+                userRole: tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+                userBalance: Number(tokendata.UserBalance),
+                isUserLogged: true
+            });
         };
+        this.handleClose();
     }
 
     render() {

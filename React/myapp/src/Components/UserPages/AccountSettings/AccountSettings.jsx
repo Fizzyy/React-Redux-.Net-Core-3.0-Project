@@ -1,8 +1,8 @@
 import React from 'react';
 import '../AccountSettings/AccountSettings.css';
-import { axiosGet, axiosPost } from '../../CommonFunctions/axioses';
+import { axiosGet, axiosPost, axiosDelete, axiosPut } from '../../CommonFunctions/axioses';
 import { Image, Transformation } from 'cloudinary-react';
-import { GETFULLUSERINFO, UPDATEFEEDBACK } from '../../CommonFunctions/URLconstants';
+import { GETFULLUSERINFO, UPDATEFEEDBACK, DELETEGAMEMARK, DELETEFEEDBACK } from '../../CommonFunctions/URLconstants';
 import { connect } from 'react-redux';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -11,6 +11,7 @@ import Moment from 'moment';
 import LoadingSpinner from '../../CommonFunctions/LoadingSpinner';
 import UserComments from '../AccountSettings/UserComments';
 import Button from 'react-bootstrap/Button';
+import RatingStars from '../RatingStars/RatingStars';
 
 class AccountSettings extends React.Component {
     constructor(props) {
@@ -49,7 +50,7 @@ class AccountSettings extends React.Component {
     }
 
     UpdateComment = async () => {
-        let res = await axiosPost(UPDATEFEEDBACK, {
+        let res = await axiosPut(UPDATEFEEDBACK, {
             Id: this.state.selectedComment.commentID,
             Username: this.props.user.username,
             GameID: this.state.selectedComment.gameID,
@@ -65,6 +66,31 @@ class AccountSettings extends React.Component {
         }
     }
 
+    deleteMark = async (e) => {
+        let res = await axiosDelete(DELETEGAMEMARK + `Username=${this.props.user.username}&scoreID=${e.target.value}`);
+        if (res.status === 200) {
+            this.setState({
+                userInfo: {
+                    ...this.state.userInfo,
+                    gameMarks: res.data
+                }
+            });
+        }
+    }
+
+    deleteFeedback = async () => {
+        let res = await axiosDelete(DELETEFEEDBACK + `Username=${this.props.user.username}&FeedBackID=${this.state.selectedComment.commentID}`);
+        if (res.status === 200) {
+            this.setState({
+                userInfo: {
+                    ...this.state.userInfo,
+                    feedbacks: res.data
+                },
+                comment: ''
+            });
+        }
+    }
+
     render() {
         return (
             <div className="divMainAccountSettings">
@@ -72,7 +98,7 @@ class AccountSettings extends React.Component {
                 <div id="UserInfoDiv">
                     <div className="div_UserHeaderInfo">
                         <div className="div_UserAvatar">
-                            <Image publicId="iTechArt/bof86omvdaggy8cxvjvm" cloudName="djlynoeio" width="210" height="210">
+                            <Image publicId={this.state.userInfo.userImage} cloudName="djlynoeio" width="210" height="210">
                                 <Transformation radius="max" />
                             </Image>
                         </div>
@@ -104,7 +130,9 @@ class AccountSettings extends React.Component {
                                                     <td>{x.totalSum}</td>
                                                 </tr>
                                             );
-                                        }) : <LoadingSpinner color="black" width={60} height={60} visible={true} />}
+                                        }) : <div className="spinnerAlign">
+                                                <LoadingSpinner color="black" width={60} height={60} visible={true} />
+                                            </div>}
                                     </tbody>
                                 </Table>
                             </Tab>
@@ -122,7 +150,9 @@ class AccountSettings extends React.Component {
                                                 commentDate={Moment(x.commentDate).format("DD-MM-YYYY")}
                                             />
                                         );
-                                    }) : <LoadingSpinner color="black" width={60} height={60} visible={true} />}
+                                    }) : <div className="spinnerAlign">
+                                            <LoadingSpinner color="black" width={60} height={60} visible={true} />
+                                        </div>}
                                 </div>
                                 <div className="commentsOptions">
                                     <div className="fieldCommentArea">
@@ -132,13 +162,39 @@ class AccountSettings extends React.Component {
                                         <label>{this.state.selectedComment.comment.length}/500</label>
                                         <div className="buttonsContainer">
                                             <Button variant="outline-primary" style={{ marginBottom: '10px' }} onClick={this.UpdateComment}>Сохранить</Button>
-                                            <Button variant="outline-danger">Удалить</Button>
+                                            <Button variant="outline-danger" onClick={this.deleteFeedback}>Удалить</Button>
                                         </div>
                                     </div>
                                 </div>
                             </Tab>
                             <Tab eventKey="marks" title="Оценки">
-                                <div style={{ backgroundColor: 'green', width: '100px', height: '100px' }} />
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>Название</th>
+                                            <th>Платформа</th>
+                                            <th>Оценка</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.state.userInfo.gameMarks && this.state.userInfo.gameMarks.length ? this.state.userInfo.gameMarks.map((x) => {
+                                            return (
+                                                <tr key={x.scoreID}>
+                                                    <td>{x.gameName}</td>
+                                                    <td>{x.gamePlatform}</td>
+                                                    <td>
+                                                        <div className="starContainer">
+                                                            <RatingStars isItEditable={true} gameScore={x.score} size={26} starColor="orange" />
+                                                        </div>
+                                                    </td>
+                                                    <td><Button variant="outline-danger" size="sm" onClick={this.deleteMark} value={x.scoreID}>Удалить</Button></td>
+                                                </tr>
+                                            );
+                                        }) : <div className="spinnerAlign">
+                                                <LoadingSpinner color="black" width={60} height={60} visible={true} />
+                                            </div>}
+                                    </tbody>
+                                </Table>
                             </Tab>
                         </Tabs>
                     </div>

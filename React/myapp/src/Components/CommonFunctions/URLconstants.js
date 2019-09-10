@@ -32,11 +32,16 @@ const getcurrentgamefeedback = '/GetCurrentGameFeedback/';
 const addfeedback = '/AddFeedback';
 const getuserfeedback = '/GetUserFeedback/';
 const updatefeedback = '/UpdateFeedback';
+const deletefeedback = '/DeleteFeedback?';
 
 const baseURLgamemark = MainURL + 'api/GameMark';
 const getavgmark = '/GetAverageMark/';
 const getusersmark = '/GetUserMarks/';
 const addscore = '/AddScore';
+const deletescore = '/DeleteScore?';
+
+const baseURLoffers = MainURL + 'api/Offers';
+const getalloffers = '/GetOfferGames';
 
 export const REGISTRATION = baseURLuser + register;
 export const AUTHORIZATION = baseURLuser + login;
@@ -66,7 +71,11 @@ export const GETCURRENTGAMEFEEDBACK = baseURLfeedback + getcurrentgamefeedback;
 export const ADDFEEDBACK = baseURLfeedback + addfeedback;
 export const GETUSERFEEDBACK = baseURLfeedback + getuserfeedback;
 export const UPDATEFEEDBACK = baseURLfeedback + updatefeedback;
+export const DELETEFEEDBACK = baseURLfeedback + deletefeedback;
 
 export const GETAVERAGEMARK = baseURLgamemark + getavgmark;
 export const GETUSERSMARK = baseURLgamemark + getusersmark;
 export const ADDSCORE = baseURLgamemark + addscore;
+export const DELETEGAMEMARK = baseURLgamemark + deletescore;
+
+export const GETOFFERGAMES = baseURLoffers + getalloffers;
