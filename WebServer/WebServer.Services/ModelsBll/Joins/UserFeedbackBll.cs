@@ -6,6 +6,8 @@ namespace WebServer.Services.ModelsBll.Joins
 {
     public class UserFeedbackBll
     {
+        public int CommentID { get;set; }
+
         public string Username { get; set; }
 
         public string GameName { get; set; }

@@ -8,6 +8,7 @@ using WebServer.DAL.Repository.Interfaces;
 using WebServer.Services.Interfaces;
 using WebServer.Services.ModelsBll.Joins;
 using WebServer.Services.ModelsBll;
+using WebServer.Services.Mapper;
 
 namespace WebServer.Services.Services
 {
@@ -18,14 +19,16 @@ namespace WebServer.Services.Services
         private readonly IGameMarkRepository gameMarkRepository;
         private readonly IFeedbackRepository feedbackRepository;
         private readonly IUserRepository userRepository;
+        private readonly IOffersRepository offersRepository;
 
-        public GameService(IGameRepository gameRepository, IGameFinalScoreRepository gameFinalScoreRepository, IFeedbackRepository feedbackRepository, IGameMarkRepository gameMarkRepository, IUserRepository userRepository)
+        public GameService(IGameRepository gameRepository, IGameFinalScoreRepository gameFinalScoreRepository, IFeedbackRepository feedbackRepository, IGameMarkRepository gameMarkRepository, IUserRepository userRepository, IOffersRepository offersRepository)
         {
             this.gameRepository = gameRepository;
             this.gameFinalScoreRepository = gameFinalScoreRepository;
             this.feedbackRepository = feedbackRepository;
             this.gameMarkRepository = gameMarkRepository;
             this.userRepository = userRepository;
+            this.offersRepository = offersRepository;
         }
 
         public Task<IEnumerable<Game>> GetAllGames()
@@ -42,10 +45,27 @@ namespace WebServer.Services.Services
             foreach (var game in games)
             {
                 var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
+                //var offer = await offersRepository.GetOffer(game.GameID);
+                //if (offer == null)
+                //{
+                //    offer.GameNewPrice = 0;
+                //    offer.GameOfferAmount = 0;
+                //}
+
                 returnedgames.Add(new GameDescriptionBll
-                (
-                    game.GameID, game.GameName, gamescores.GameScore, game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
-                ));
+                {
+                    GameID = game.GameID,
+                    GameName = game.GameName,
+                    OldGamePrice = game.GamePrice,
+                    //NewGamePrice = offer.GameNewPrice,
+                    AmountOfVotes = gamescores.AmountOfVotes,
+                    GameImage = game.GameImage,
+                    //GameOfferAmount = offer.GameOfferAmount,
+                    GameJenre = game.GameJenre,
+                    GamePlatform = game.GamePlatform,
+                    GameRating = game.GameRating
+                });
+
             }
             return returnedgames;
         }
@@ -74,7 +94,7 @@ namespace WebServer.Services.Services
                     }
                 case "Rating":
                     {
-                        if (TypeValue != "All")
+                        if (TypeValue != "All+")
                         {
                             games = games.Where(x => x.GameRating == TypeValue).ToList();
                         }
@@ -128,10 +148,21 @@ namespace WebServer.Services.Services
             foreach (var game in games)
             {
                 var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
+                var offer = await offersRepository.GetOffer(game.GameID);
+
                 returnedgames.Add(new GameDescriptionBll
-                (
-                    game.GameID, game.GameName, gamescores.GameScore, game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
-                ));
+                {
+                    GameID = game.GameID,
+                    GameName = game.GameName,
+                    OldGamePrice = game.GamePrice,
+                    NewGamePrice = offer.GameNewPrice,
+                    AmountOfVotes = gamescores.AmountOfVotes,
+                    GameImage = game.GameImage,
+                    GameOfferAmount = offer.GameOfferAmount,
+                    GameJenre = game.GameJenre,
+                    GamePlatform = game.GamePlatform,
+                    GameRating = game.GameRating
+                });
             }
             return returnedgames;
         }
@@ -142,6 +173,7 @@ namespace WebServer.Services.Services
             if (foundgame == null) return null;
 
             var gamescores = await gameFinalScoreRepository.GetGame(GameID);
+            var offer = await offersRepository.GetOffer(GameID);
 
             List<FeedbackBll> feedbacks = new List<FeedbackBll>();
             foreach (var feedback in await feedbackRepository.GetCurrentGameFeedback(foundgame.GameID))
@@ -150,21 +182,22 @@ namespace WebServer.Services.Services
                 feedbacks.Add(new FeedbackBll(feedback.Id, feedback.Username, feedback.GameID, feedback.Comment, feedback.CommentDate, user.UserImage));
             }
 
-            GameDescriptionBll gameDescription = new GameDescriptionBll
-            {
-                GameID = foundgame.GameID,
-                GameName = foundgame.GameName,
-                GameScore = gamescores.GameScore,
-                GameJenre = foundgame.GameJenre,
-                GamePlatform = foundgame.GamePlatform,
-                GamePrice = foundgame.GamePrice,
-                GameRating = foundgame.GameRating,
-                UserScore = gamescores.GameScore,
-                Feedbacks = feedbacks,
-                GameImage = foundgame.GameImage,
-                AmountOfVotes = gamescores.AmountOfVotes
-            };
-            return gameDescription;
+            //GameDescriptionBll gameDescription = new GameDescriptionBll
+            //{
+            //    GameID = foundgame.GameID,
+            //    GameName = foundgame.GameName,
+            //    GameScore = gamescores.GameScore,
+            //    GameJenre = foundgame.GameJenre,
+            //    GamePlatform = foundgame.GamePlatform,
+            //    GamePrice = foundgame.GamePrice,
+            //    GameRating = foundgame.GameRating,
+            //    UserScore = gamescores.GameScore,
+            //    Feedbacks = feedbacks,
+            //    GameImage = foundgame.GameImage,
+            //    AmountOfVotes = gamescores.AmountOfVotes
+            //};
+            var e = GameDescriptionMapper.GetGameDescription(foundgame, offer, gamescores, feedbacks);
+            return e;
         }
 
         public async Task AddGame(GameBll game)

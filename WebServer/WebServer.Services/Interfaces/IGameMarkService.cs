@@ -14,6 +14,6 @@ namespace WebServer.Services.Interfaces
 
         Task<double> AddScore(GameMarkBll score);
 
-        Task RemoveScore(string GameMarkID);
+        Task<List<UserScoresBll>> RemoveScore(string Username, int GameMarkID);
     }
 }

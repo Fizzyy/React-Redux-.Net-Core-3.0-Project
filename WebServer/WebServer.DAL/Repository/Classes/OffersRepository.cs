@@ -18,6 +18,11 @@ namespace WebServer.DAL.Repository.Classes
             this.commonContext = commonContext;
         }
 
+        public async Task<IEnumerable<Offers>> GetAllOffers()
+        {
+            return await Task.FromResult(commonContext.Offers);
+        }
+
         public async Task AddGameOffer(Offers offer)
         {
             var DefaultGame = await commonContext.Games.FindAsync(offer.GameID);
@@ -36,7 +41,7 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task<Offers> GetOffer(string OfferID)
         {
-            var offer = await commonContext.Offers.FindAsync(OfferID);
+            var offer = await commonContext.Offers.FirstOrDefaultAsync(x => x.GameID == OfferID);
             if (offer != null) return offer;
             return null;
         }

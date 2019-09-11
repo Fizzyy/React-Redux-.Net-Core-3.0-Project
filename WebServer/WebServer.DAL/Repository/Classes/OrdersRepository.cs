@@ -26,7 +26,7 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task<IEnumerable<Orders>> GetAllUserOrders(string Username)
         {
-            var UserOrders = await Task.FromResult(commonContext.Orders.Where(x => x.Username == Username));
+            var UserOrders = await Task.FromResult(commonContext.Orders.Where(x => x.Username == Username && x.isOrderPaid == false).OrderByDescending(x => x.OrderDate));
             if (UserOrders != null) return UserOrders;
             return null;
         }

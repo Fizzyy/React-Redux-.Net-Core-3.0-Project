@@ -36,28 +36,28 @@ namespace WebServer
         {
             try
             { 
-            string jwtToken, refreshtoken;
+                string jwtToken, refreshtoken;
 
-                //var abc = context.Requirements.ToArray()[1];
-                //var type = abc.GetType().GetProperty("AllowedRoles").GetValue(abc, null);
-                //var value = type.GetType().GetProperties().GetValue(0);
+                var abc = context.Requirements.ToArray()[1];
+                var type = abc.GetType().GetProperty("AllowedRoles").GetValue(abc, null);
+                var value = type.GetType();
 
                 HttpContext httpContext = httpContextAccessor.HttpContext;
-            jwtToken = httpContext.Request.Headers["AccessToken"];
-            refreshtoken = httpContext.Request.Headers["RefreshToken"];
+                jwtToken = httpContext.Request.Headers["AccessToken"];
+                refreshtoken = httpContext.Request.Headers["RefreshToken"];
 
-            //var actionContext = (AuthorizationFilterContext)context.Resource;
-            //jwtToken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "AccessToken").Value.FirstOrDefault();
-            //refreshtoken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "RefreshToken").Value.FirstOrDefault();
+                var actionContext = context.Resource;
+                //jwtToken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "AccessToken").Value.FirstOrDefault();
+                //refreshtoken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "RefreshToken").Value.FirstOrDefault();
 
-            if (jwtToken == null || refreshtoken == null)
-            {
-                context.Fail();
-                httpContext.Response.StatusCode = 401; 
-                return;
-            }
+                if (jwtToken == null || refreshtoken == null)
+                {
+                    context.Fail();
+                    httpContext.Response.StatusCode = 401;
+                    return;
+                }
 
-            var claims = TokenService.VerifyToken(jwtToken);
+                var claims = TokenService.VerifyToken(jwtToken);
 
                 if (claims == null)
                 {
@@ -67,20 +67,13 @@ namespace WebServer
                     var role = principal.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
                     var balance = principal.FindFirst("UserBalance").Value;
 
-                    /*if (!httpContext.User.HasClaim(ClaimTypes.Role, "User") || !httpContext.User.HasClaim(ClaimTypes.Role, "Admin"))
-                    {
-                        context.Fail();
-                        httpContext.Response.StatusCode = 401;
-                        return;
-                    }*/
-
                     var savedRefreshToken = await refreshTokensService.GetRefreshToken(username);
-                    if (savedRefreshToken.RefreshToken != refreshtoken)
-                    {
-                        context.Fail();
-                        httpContext.Response.StatusCode = 401;
-                        return;
-                    }
+                    //if (savedRefreshToken.RefreshToken != refreshtoken)
+                    //{
+                    //    context.Fail();
+                    //    httpContext.Response.StatusCode = 401;
+                    //    return;
+                    //}
 
                     var identity = ClaimsService.GetIdentity(new UserBll
                     {
@@ -94,14 +87,14 @@ namespace WebServer
                     await refreshTokensService.DeleteRefreshToken(username);
                     await refreshTokensService.SaveRefreshToken(username, newRefreshToken);
 
-                    PropertyInfo propertyInfo = token.GetType().GetProperty("access_token");
+                    var propertyInfo = token.GetType().GetProperty("access_token");
                     string temp = (string)propertyInfo.GetValue(token, null);
 
-                    httpContext.Response.Headers["Token"] = temp;
+                    httpContext.Response.Headers["AccessToken"] = temp;
                     httpContext.Response.Headers["RefreshToken"]= newRefreshToken;
 
-                    httpContext.Request.Headers["Token"] = temp;
-                    httpContext.Request.Headers["RefreshToken"] = newRefreshToken;
+                    //httpContext.Request.Headers["AccessToken"] = temp;
+                    //httpContext.Request.Headers["RefreshToken"] = newRefreshToken;
                 }
             }
             catch (Exception e)
@@ -109,7 +102,6 @@ namespace WebServer
                 throw e;
             }
             context.Succeed(requirement);
-            await Task.Yield();
         }
     }
 }

@@ -36,6 +36,7 @@ namespace WebServer.Services.Services
 
                 list.Add(new UserFeedbackBll
                 {
+                    CommentID = feedback.Id,
                     Username = Username,
                     Comment = feedback.Comment,
                     CommentDate = feedback.CommentDate,
@@ -54,9 +55,23 @@ namespace WebServer.Services.Services
             return await feedbackRepository.GetCurrentGameFeedback(feedback.GameID);
         }
 
-        public Task RemoveFeedback(string FeedbackID)
+        public async Task<List<UserFeedbackBll>> UpdateFeedback(FeedbackBll feedback)
         {
-            return feedbackRepository.RemoveFeedback(FeedbackID);
+            await feedbackRepository.UpdateComment(new Feedback
+            {
+                Id = feedback.Id,
+                GameID = feedback.GameID,
+                Username = feedback.Username,
+                Comment = feedback.Comment,
+                CommentDate = DateTime.Now.Date,
+            });
+            return await GetUserFeedback(feedback.Username);
+        }
+
+        public async Task<List<UserFeedbackBll>> RemoveFeedback(string Username, int FeedbackID)
+        {
+            await feedbackRepository.RemoveFeedback(FeedbackID);
+            return await GetUserFeedback(Username);
         }
     }
 }

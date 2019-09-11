@@ -21,7 +21,6 @@
 
 .div_UserHeaderInfo {
     height: 250px;
-    background-color: red;
     display: flex;
     flex-direction: row;
 }
@@ -34,12 +33,11 @@
     flex: 1;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .div_UserInfo {
-    flex: 5;
-
+    flex: 6;
 }
 
 .commentsOptions {
@@ -95,4 +93,54 @@
     position: absolute;
     right: 0;
     left: 0;
+}
+
+.optionsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.userHeader {
+    text-align: left;
+    h1 {
+        margin-left: 20px;
+    }
+}
+
+.buttonsInfo {
+    width:100%;
+    text-align: left;
+    padding-top: 30px;
+
+    span {
+        margin-left: 20px;
+        font-size: 18px;
+        font-family: 'Purista';
+    }
+
+    button {
+        margin-left: 20px;
+    }
+}
+
+.buttonsOptions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 55px 0 0 20px;
+    position: relative;
+
+    .optButton {
+        margin-right: 10px;
+    }
+
+    .leaveButton {
+        position: absolute;
+        right: 0;
+    }
+}
+
+.nav-tabs .nav-link {
+    color: black;
 }

@@ -43,10 +43,21 @@ namespace WebServer.DAL.Repository.Classes
             await commonContext.SaveChangesAsync();
         }
 
-        public async Task RemoveFeedback(string FeedbackID)
+        public async Task UpdateComment(Feedback feedback)
         {
-            var feedback = await commonContext.Feedbacks.FindAsync(int.Parse(FeedbackID));
-            commonContext.Remove(feedback);
+            var comment = await commonContext.Feedbacks.FindAsync(feedback.Id);
+            if (comment != null)
+            {
+                comment.Comment = feedback.Comment;
+                comment.CommentDate = feedback.CommentDate;
+            }
+            await commonContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveFeedback(int FeedbackID)
+        {
+            var feedback = await commonContext.Feedbacks.FindAsync(FeedbackID);
+            if (feedback != null) commonContext.Remove(feedback);
             await commonContext.SaveChangesAsync();
         }
     }

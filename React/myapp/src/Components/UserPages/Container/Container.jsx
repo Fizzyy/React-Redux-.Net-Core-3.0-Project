@@ -10,37 +10,49 @@ import AccountSettings from '../AccountSettings/AccountSettings';
 import MyOrders from '../MyOrders/MyOrders';
 import SignInAndRegistration from '../SIgnInAndRegistration/SignAndReg';
 import jwt_decode from 'jwt-decode';
+import { connect } from 'react-redux';
 
 class Container extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showModal: true
+        }
+    }
+
     render() {
-        // if (res !== null && res["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] == "Admin") {
-        //     return (<h1>ANIME!</h1>);
-        // }
-        // else {
         return (
-            <div id='mainBlockForUser'>
-                <div id='menuBar'>
-                    <MenuBar />
+            this.props.userData.userRole != "Admin" ?
+                <div id='mainBlockForUser'>
+                    <div id='menuBar'>
+                        <MenuBar />
+                    </div>
+                    <div id='bodyy'>
+                        <Route exact path="/" render={() => <StartPage />} />
+                        <Route path="/SignIn" render={props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="login" />} />
+                        <Route path="/SignUp" render={props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="registration" />} />
+                        <Route path="/Catalog">
+                            <Route exact path="/Catalog/:gamePlatform" render={props => <Catalog {...props} />} />
+                            <Route exact path="/Catalog/:gamePlatform/:gameID" render={props => <GameDescription {...props} />} />
+                        </Route>
+                        <Route path="/AccountSettings" render={props => <AccountSettings {...props} />} />
+                        <Route path="/MyOrders" component={MyOrders} />
+                        <Route path="/Offers" render={props => <Catalog {...props} isItOffer={true} />} />
+                    </div>
+                    <div id='footer'>
+                        <Footer />
+                    </div>
                 </div>
-                <div id='bodyy'>
-                    <Route exact path="/" render={() => <StartPage />} />
-                    <Route path="/SignIn" render={props => <SignInAndRegistration {...props} registration={false} />} />
-                    <Route path="/SignUp" render={props => <SignInAndRegistration {...props} registration={true} />} />
-                    <Route path="/Catalog">
-                        <Route exact path="/Catalog/:gamePlatform" render={props => <Catalog {...props} />} />
-                        <Route exact path="/Catalog/:gamePlatform/:gameID" render={props => <GameDescription {...props} />} />
-                    </Route>
-                    <Route path="/AccountSettings" component={AccountSettings} />
-                    <Route path="/MyOrders" component={MyOrders} />
-                    <Route path="/Offers" render={props => <Catalog {...props} isItOffer={true} />} />
-                </div>
-                <div id='footer'>
-                    <Footer />
-                </div>
-            </div>
+                :
+                <h1>admin</h1>
         );
-        //}
     }
 }
 
-export default Container;
+const mapStateToProps = function (store) {
+    return {
+        userData: store
+    };
+}
+
+export default connect(mapStateToProps)(Container);

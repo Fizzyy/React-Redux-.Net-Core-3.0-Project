@@ -80,13 +80,13 @@ namespace WebServer.Controllers
             return NotFound();
         }
 
-        [HttpPost]
-        [Route("SignOut")]
-        public async Task<IActionResult> SignOutUser([FromBody]UserBll user)
+        [HttpDelete]
+        [Route("SignOut/{Username}")]
+        public async Task<IActionResult> SignOutUser(string Username)
         {
-            if (user != null)
+            if (Username != null)
             {
-                await refreshTokensService.DeleteRefreshToken(user.Username);
+                await refreshTokensService.DeleteRefreshToken(Username);
                 return Ok();
             }
             else return BadRequest();

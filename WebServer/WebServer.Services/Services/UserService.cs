@@ -48,9 +48,10 @@ namespace WebServer.Services.Services
                 Username = founduser.Username,
                 UserBalance = founduser.UserBalance,
                 Role = founduser.Role,
+                UserImage = founduser.UserImage,
                 Feedbacks = await feedbackService.GetUserFeedback(Username),
                 GameMarks = await gameMarkService.GetAllUserScores(Username),
-                Orders = await orderService.GetAllUserOrders(Username)
+                Orders = await orderService.GetAllUserOrders(Username),
             };
             return user;
         }

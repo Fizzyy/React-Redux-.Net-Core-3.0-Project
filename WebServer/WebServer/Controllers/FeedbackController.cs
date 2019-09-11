@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WebServer.DAL.Models;
 using WebServer.Services.Interfaces;
 using WebServer.Services.ModelsBll;
+using WebServer.Services.ModelsBll.Joins;
 
 namespace WebServer.Controllers
 {
@@ -40,8 +42,8 @@ namespace WebServer.Controllers
         {
             try
             {
-                await feedbackService.AddFeedback(feedback);
-                return Ok();
+                List<Feedback> feedbacks = await feedbackService.AddFeedback(feedback);
+                return Ok(feedbacks);
             }
             catch(Exception ex)
             {
@@ -49,14 +51,22 @@ namespace WebServer.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("DeleteFeedback/{FeedbackID}")]
-        public async Task<IActionResult> DeleteFeedback(string FeedBackID)
+        [HttpPut]
+        [Route("UpdateFeedback")]
+        public async Task<IActionResult> UpdateFeedback([FromBody]FeedbackBll model)
         {
-            if (FeedBackID != null)
+            await feedbackService.UpdateFeedback(model);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("DeleteFeedback")]
+        public async Task<IActionResult> DeleteFeedback([FromQuery]string Username, [FromQuery]int FeedBackID)
+        {
+            if (Username != null)
             {
-                await feedbackService.RemoveFeedback(FeedBackID);
-                return Ok();
+                List<UserFeedbackBll> feedbacks = await feedbackService.RemoveFeedback(Username, FeedBackID);
+                return Ok(feedbacks);
             }
             return NotFound();
         }

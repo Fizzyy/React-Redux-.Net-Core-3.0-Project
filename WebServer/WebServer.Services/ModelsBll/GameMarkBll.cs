@@ -11,7 +11,7 @@ namespace WebServer.Services.ModelsBll
 
         public string GameID { get; set; }
 
-        public int Score { get; set; }
+        public double Score { get; set; }
 
         public User User { get; set; }
 

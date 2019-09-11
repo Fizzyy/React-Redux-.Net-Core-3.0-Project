@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebServer.DAL.Models;
 using WebServer.Services.Interfaces;
 using WebServer.Services.ModelsBll;
+using WebServer.Services.ModelsBll.Joins;
 
 namespace WebServer.Controllers
 {
@@ -27,12 +28,12 @@ namespace WebServer.Controllers
             return Ok(res);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("DeleteScore")]
-        public async Task<IActionResult> DeleteScore([FromBody]GameMarkBll model)
+        public async Task<IActionResult> DeleteScore([FromQuery]string Username, [FromQuery]int scoreID)
         {
-            await gameMarkService.RemoveScore(model.GameID);
-            return Ok();
+            List<UserScoresBll> scores = await gameMarkService.RemoveScore(Username, scoreID);
+            return Ok(scores);
         }
     }
 }

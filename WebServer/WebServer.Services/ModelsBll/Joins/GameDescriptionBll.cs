@@ -28,16 +28,22 @@ namespace WebServer.Services.ModelsBll.Joins
 
         public int AmountOfVotes { get; set; }
 
+        public decimal OldGamePrice { get; set; }
+
+        public decimal NewGamePrice { get; set; }
+
+        public double GameOfferAmount { get; set; }
+
         public List<FeedbackBll> Feedbacks { get; set; }
 
         public GameDescriptionBll() { }
 
-        public GameDescriptionBll(string GameID, string GameName, double GameScore, decimal GamePrice, string GameRating, string GameJenre, string GameImage)
+        public GameDescriptionBll(string GameID, string GameName, double GameScore, decimal OldGamePrice, string GameRating, string GameJenre, string GameImage)
         {
             this.GameID = GameID;
             this.GameName = GameName;
             this.GameScore = GameScore;
-            this.GamePrice = GamePrice;
+            this.OldGamePrice = OldGamePrice;
             this.GameImage = GameImage;
             this.GameRating = GameRating;
             this.GameJenre = GameJenre;

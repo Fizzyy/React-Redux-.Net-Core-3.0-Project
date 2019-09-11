@@ -55,9 +55,10 @@ namespace WebServer.Services.Services
             return obj.GameScore;
         }
 
-        public Task RemoveScore(string GameMarkID)
+        public async Task<List<UserScoresBll>> RemoveScore(string Username, int GameMarkID)
         {
-            return gameMarkRepository.RemoveScore(GameMarkID);
+            await gameMarkRepository.RemoveScore(GameMarkID);
+            return await GetAllUserScores(Username);
         }
     }
 }

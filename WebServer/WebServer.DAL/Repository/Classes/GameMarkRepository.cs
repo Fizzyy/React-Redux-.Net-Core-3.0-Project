@@ -58,7 +58,7 @@ namespace WebServer.DAL.Repository.Classes
             await commonContext.SaveChangesAsync();
         }
 
-        public async Task RemoveScore(string GameMarkID)
+        public async Task RemoveScore(int GameMarkID)
         {
             var mark = await commonContext.GameMarks.FindAsync(GameMarkID);
             commonContext.Remove(mark);

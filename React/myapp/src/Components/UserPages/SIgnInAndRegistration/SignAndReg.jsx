@@ -14,7 +14,7 @@ class SignInAndRegistration extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: true,
+            show: false,
             username: '',
             password1: '',
             password2: '',
@@ -22,9 +22,19 @@ class SignInAndRegistration extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.setState({ show: true });
+    }
+
+    componentDidUpdate(preProps) {
+        if (this.props.showModal !== preProps.showModal) {
+            this.setState({ show: this.props.showModal });
+        }
+    }
+
     handleClose = () => {
         this.setState({ show: false });
-        this.props.history.push("/");
+        this.props.showOrHideModal(false);
     }
 
     setData = (e) => {
@@ -48,37 +58,79 @@ class SignInAndRegistration extends React.Component {
                 type: 'LOGGED_USER',
                 username: tokendata["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
                 userRole: tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
-                userBalance: Number(tokendata.UserBalance),
+                userBalance: +tokendata.UserBalance,
                 isUserLogged: true
             });
         };
         this.handleClose();
     }
 
+    login = () => {
+        return (
+            <>
+                <div className="modal-body-divs">
+                    <Icon icon={user_circle} size={26} />
+                    <label className="modal-body-labels">Логин:</label>
+                    <input type="text" className="modal-body-inputs" name="username" onChange={this.setData} />
+                </div>
+                <div className="modal-body-divs">
+                    <Icon icon={key} size={26} />
+                    <label className="modal-body-labels">Пароль:</label>
+                    <input type="password" name="password1" onChange={this.setData} />
+                </div>
+            </>
+        );
+    }
+
+    registration = () => {
+        return (
+            <>
+                {this.login()}
+                <div className="modal-body-divs">
+                    <Icon icon={key} size={26} />
+                    <label className="modal-body-labels">Повторите пароль:</label>
+                    <input type="password" name="password2" onChange={this.setData} />
+                </div>
+            </>
+        );
+    }
+
+    updateBalance = () => {
+        return (
+            <h1>balance</h1>
+        );
+    }
+
+    updatePassword = () => {
+        return (
+            <h1>password</h1>
+        );
+    }
+
     render() {
         return (
             <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{this.props.registration ? "Регистрация" : "Вход"}</Modal.Title>
+                    <Modal.Title>
+                        {(() => {
+                            switch (this.props.type) {
+                                case 'login': return ("Вход");
+                                case 'registration': return ("Регистрация");
+                                case 'balance': return ("Пополнение баланса");
+                                case 'password': return ("Смена пароля");
+                            }
+                        })()}
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="modal-body-divs">
-                        <Icon icon={user_circle} size={26} />
-                        <label className="modal-body-labels">Логин:</label>
-                        <input type="text" className="modal-body-inputs" name="username" onChange={this.setData} />
-                    </div>
-                    <div className="modal-body-divs">
-                        <Icon icon={key} size={26} />
-                        <label className="modal-body-labels">Пароль:</label>
-                        <input type="password" name="password1" onChange={this.setData} />
-                    </div>
-                    {this.props.registration ?
-                        <div className="modal-body-divs">
-                            <Icon icon={key} size={26} />
-                            <label className="modal-body-labels">Повторите пароль:</label>
-                            <input type="password" name="password2" onChange={this.setData} />
-                        </div>
-                        : null}
+                    {(() => {
+                        switch (this.props.type) {
+                            case 'login': return (this.login());
+                            case 'registration': return (this.registration());
+                            case 'balance': return (this.updateBalance());
+                            case 'password': return (this.updatePassword());
+                        }
+                    })()}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="outline-primary" onClick={this.sendDataToServer} id="SignInButton">{this.props.registration ? "Регистрация" : "Вход"}</Button>

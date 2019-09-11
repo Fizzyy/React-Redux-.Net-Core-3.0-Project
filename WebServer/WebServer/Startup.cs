@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -76,8 +77,10 @@ namespace WebServer
             {
                 options.AddPolicy("MyPolicy", policy => policy.Requirements.Add(new AccountRequirement()));
             });
-            services.AddTransient<IAuthorizationHandler, AuthFilter>();
-            services.AddHttpContextAccessor();
+            services.AddScoped<IAuthorizationHandler, AuthFilter>();
+            //services.AddHttpContextAccessor();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -121,6 +124,7 @@ namespace WebServer
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
+                .WithExposedHeaders("AccessToken", "RefreshToken")
                 //.AllowCredentials()
                 );
 

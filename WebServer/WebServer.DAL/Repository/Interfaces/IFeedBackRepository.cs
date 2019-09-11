@@ -14,6 +14,8 @@ namespace WebServer.DAL.Repository.Interfaces
 
         Task AddFeedback(Feedback feedback);
 
-        Task RemoveFeedback(string FeedbackID);
+        Task UpdateComment(Feedback feedback);
+
+        Task RemoveFeedback(int FeedbackID);
     }
 }

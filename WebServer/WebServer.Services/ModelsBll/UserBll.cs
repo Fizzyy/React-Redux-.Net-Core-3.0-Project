@@ -17,6 +17,8 @@ namespace WebServer.Services.ModelsBll
 
         public string Role { get; set; }
 
+        public string UserImage { get; set; }
+
         public List<UserOrdersBll> Orders { get; set; }
         public List<UserFeedbackBll> Feedbacks { get; set; }
         public List<UserScoresBll> GameMarks { get; set; }

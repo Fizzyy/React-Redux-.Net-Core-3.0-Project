@@ -19,6 +19,14 @@ namespace WebServer.Controllers
             this.offersService = offersService;
         }
 
+        [HttpGet]
+        [Route("GetOfferGames")]
+        public async Task<IActionResult> GetOfferGames()
+        {
+            var OfferGames = await offersService.GetAllOfferGames();
+            return Ok(OfferGames);
+        }
+
         [HttpPost]
         [Route("AddOffer")]
         public async Task<IActionResult> AddOffer([FromBody]OffersBll model)
@@ -47,8 +55,12 @@ namespace WebServer.Controllers
         [Route("GetOffer/{OfferID}")]
         public async Task<IActionResult> GetOffer(string OfferID)
         {
-            Offers offer = await offersService.GetOffer(OfferID);
-            return Ok();
+            if (OfferID != null)
+            {
+                Offers offer = await offersService.GetOffer(OfferID);
+                return Ok();
+            }
+            return NotFound();
         }
     }
 }

@@ -1,8 +1,8 @@
 import React from 'react';
-import '../AccountSettings/AccountSettings.css';
+import '../AccountSettings/AccountSettings.scss';
 import { axiosGet, axiosPost, axiosDelete, axiosPut } from '../../CommonFunctions/axioses';
 import { Image, Transformation } from 'cloudinary-react';
-import { GETFULLUSERINFO, UPDATEFEEDBACK, DELETEGAMEMARK, DELETEFEEDBACK } from '../../CommonFunctions/URLconstants';
+import { GETFULLUSERINFO, UPDATEFEEDBACK, DELETEGAMEMARK, DELETEFEEDBACK, SIGNOUTUSER } from '../../CommonFunctions/URLconstants';
 import { connect } from 'react-redux';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -12,6 +12,8 @@ import LoadingSpinner from '../../CommonFunctions/LoadingSpinner';
 import UserComments from '../AccountSettings/UserComments';
 import Button from 'react-bootstrap/Button';
 import RatingStars from '../RatingStars/RatingStars';
+import store from '../../_REDUX/Storage';
+import Modal from '../SIgnInAndRegistration/SignAndReg';
 
 class AccountSettings extends React.Component {
     constructor(props) {
@@ -20,7 +22,9 @@ class AccountSettings extends React.Component {
             userInfo: {},
             selectedComment: {
                 comment: ''
-            }
+            },
+            showModal: false,
+            modalType: ''
         }
     }
 
@@ -91,6 +95,28 @@ class AccountSettings extends React.Component {
         }
     }
 
+    changeSettings = async (e) => {
+        switch (e.target.name) {
+            case 'password': {
+                this.setState({ showModal: true, modalType: 'password' });
+                break;
+            }
+            case 'balance': {
+                this.setState({ showModal: true, modalType: 'balance' });
+                break;
+            }
+            case 'leave': {
+                let res = await axiosDelete(SIGNOUTUSER + this.props.user.username);
+                if (res.status === 200) {
+                    store.dispatch({ type: 'LOGGED_USER', username: 'Войти', userRole: 'User', isLogged: false });
+                    localStorage.clear();
+                    this.props.history.push("/");
+                }
+                break;
+            }
+        }
+    }
+
     render() {
         return (
             <div className="divMainAccountSettings">
@@ -103,7 +129,21 @@ class AccountSettings extends React.Component {
                             </Image>
                         </div>
                         <div className="div_UserInfo">
-                            <h1>{this.props.user.username}</h1>
+                            <div className="optionsContainer">
+                                <div className="userHeader">
+                                    <h1>{this.props.user.username}</h1>
+                                </div>
+                                <div className="buttonsInfo">
+                                    <span>Текущий баланс: {this.props.user.userBalance}p</span>
+                                    <Button variant="outline-info" size="sm" name="balance" onClick={this.changeSettings}>Пополнить</Button>
+                                </div>
+                                <div className="buttonsOptions">
+                                    <Button variant="outline-primary" className="optButton" name="password" onClick={this.changeSettings}>Изменить пароль</Button>
+
+                                    <Button variant="outline-primary" className="optButton" name="password"><input type="file" className="optButton" name="avatar" title="Изменить аватар" />Изменить аватар</Button>
+                                    <Button variant="outline-danger" onClick={this.changeSettings} className="leaveButton" name="leave">Выйти</Button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="div_UserAction">
@@ -199,6 +239,7 @@ class AccountSettings extends React.Component {
                         </Tabs>
                     </div>
                 </div>
+                <Modal showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type={this.state.modalType} />
                 <div id="emptyDiv" />
             </div>
         );

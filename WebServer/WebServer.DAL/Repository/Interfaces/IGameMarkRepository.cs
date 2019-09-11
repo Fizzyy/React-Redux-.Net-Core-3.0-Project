@@ -14,6 +14,6 @@ namespace WebServer.DAL.Repository.Interfaces
 
         Task AddScore(GameMark score);
 
-        Task RemoveScore(string GameMarkID);
+        Task RemoveScore(int GameMarkID);
     }
 }
