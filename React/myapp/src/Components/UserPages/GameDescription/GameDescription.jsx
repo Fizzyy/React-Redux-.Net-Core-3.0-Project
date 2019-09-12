@@ -11,6 +11,7 @@ import PC1 from '../../../pc1.jpg';
 import PC2 from '../../../pc2.jpg';
 import LoadingSpinner from '../../CommonFunctions/LoadingSpinner';
 import UsersComments from '../GameDescription/UsersComments';
+import { NotificationManager } from 'react-notifications';
 
 class GameDescription extends React.Component {
     constructor(props) {
@@ -55,9 +56,9 @@ class GameDescription extends React.Component {
             amount: +this.state.amount,
             totalsum: this.state.totalprice
         });
-        if (response.status === 200) alert('Successfully ordered!')
-        if (response.status == 400) alert('Not ordered!');
-        if (response.status == 401) return this.props.history.push('/SignIn');
+        if (response.status === 200) NotificationManager.success('Заказ добавлен!', 'Успешно', 5000);
+        if (response.status === 400) NotificationManager.error('Войдите в аккаунт чтобы продолжить!', 'Ошибка', 5000);
+        if (response.status === 401) return this.props.history.push('/SignIn');
     }
 
     ratingChanged = async (newRating) => {
@@ -93,12 +94,12 @@ class GameDescription extends React.Component {
                     <div id="divMainGrid">
                         <div id="gameImage">
                             <Image cloudName="djlynoeio" publicId={this.state.gameFullDescription.gameImage} id="gamePoster" />
-                            {this.state.isItOffer ?
+                            {this.state.gameFullDescription.gameOfferAmount !== 0 ?
                                 <>
-                                    <h4 className="span_ShortInfo_OldPrice">RUB {this.state.gameFullDescription.gamePrice}</h4>
-                                    <h4 className="span_ShortInfo_NewPrice">RUB 10</h4>
+                                    <h4 className="span_ShortInfo_OldPrice">RUB {this.state.gameFullDescription.oldGamePrice}</h4>
+                                    <h4 className="span_ShortInfo_NewPrice">RUB {this.state.gameFullDescription.gamePrice}</h4>
                                 </>
-                                : <h4 className="label_PriceInfo">RUB {this.state.gameFullDescription.gamePrice}</h4>
+                                : <h4 className="label_PriceInfo">RUB {this.state.gameFullDescription.oldGamePrice}</h4>
                             }
                         </div>
                         <div id="header">
@@ -144,7 +145,7 @@ class GameDescription extends React.Component {
                         <div id="buttons">
                             <div className="div_InputAndButton">
                                 <p>Количество:</p>
-                                <input type="number" className="input_AmountOfGames" min="1" max="10" />
+                                <input type="number" className="input_AmountOfGames" min="1" max="10" defaultValue="1" onChange={this.setAmount} />
                                 <Button variant="outline-success" className="buyButton" onClick={this.addOrder}>В корзину</Button>
                             </div>
                             <div>

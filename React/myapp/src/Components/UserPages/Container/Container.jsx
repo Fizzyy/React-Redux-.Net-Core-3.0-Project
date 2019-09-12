@@ -9,8 +9,12 @@ import GameDescription from '../GameDescription/GameDescription';
 import AccountSettings from '../AccountSettings/AccountSettings';
 import MyOrders from '../MyOrders/MyOrders';
 import SignInAndRegistration from '../SIgnInAndRegistration/SignAndReg';
-import jwt_decode from 'jwt-decode';
 import { connect } from 'react-redux';
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer } from 'react-notifications';
+import AdminStartPage from '../../AdminPages/StartPage/StartPage';
+import AdminMenuBar from '../../AdminPages/MenuBar/MenuBar';
+import Games from '../../AdminPages/Games/Games';
 
 class Container extends React.Component {
     constructor(props) {
@@ -38,13 +42,26 @@ class Container extends React.Component {
                         <Route path="/AccountSettings" render={props => <AccountSettings {...props} />} />
                         <Route path="/MyOrders" component={MyOrders} />
                         <Route path="/Offers" render={props => <Catalog {...props} isItOffer={true} />} />
+                        <NotificationContainer />
                     </div>
                     <div id='footer'>
                         <Footer />
                     </div>
                 </div>
                 :
-                <h1>admin</h1>
+                <div id='mainBlockForAdmin'>
+                    <Route path="/Admin">
+                        <div>
+                            <AdminMenuBar />
+                        </div>
+                        <div>
+                            <Route exact path="/Admin" component={AdminStartPage} />
+                            <Route exact path="/Admin/Games" render={props => <Games />} />
+                            <Route exact path="/Admin/Users" render={() => { return (<h1>users</h1>) }} />
+                            <Route exact path="/Admin/LogOut" render={() => { return (<h1>logout</h1>) }} />
+                        </div>
+                    </Route>
+                </div>
         );
     }
 }

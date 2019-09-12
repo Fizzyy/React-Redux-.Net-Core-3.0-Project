@@ -1,11 +1,11 @@
 import React from 'react';
 import '../MyOrders/MyOrders.css';
-import { axiosGet, axiosPost, axiosDelete } from '../../CommonFunctions/axioses';
+import { axiosGet, axiosPost } from '../../CommonFunctions/axioses';
 import { GETUNPAIDORDERS, DELETEORDERS, PAYFORORDERS } from '../../CommonFunctions/URLconstants';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import jwt_decode from 'jwt-decode';
-import Table from 'react-bootstrap/Table'
+import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
 class MyOrders extends React.Component {
@@ -51,6 +51,7 @@ class MyOrders extends React.Component {
     }
 
     deleteOrders = async () => {
+        this.state.totalSumToPay = 0;
         let response = await axiosPost(DELETEORDERS, { Username: this.props.userData.username, orders: this.state.selectedOrders });
         if (response.status === 200) {
             for (let i = 0; i < response.data.length; i++) {
@@ -58,7 +59,7 @@ class MyOrders extends React.Component {
             }
             this.setState({
                 orders: response.data,
-                userBalance: this.state.tempSum,
+                userBalance: this.state.userBalance,
                 totalSumToPay: this.state.totalSumToPay
             });
         }

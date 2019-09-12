@@ -14,7 +14,7 @@ class UsersComments extends React.Component {
                 <div className="div_UserData">
                     <div style={{ marginLeft: '5px' }}>
                         <CloudinaryContext cloudName="djlynoeio">
-                            <Image publicId="iTechArt/vkcsbeutnsindtai34b1">
+                            <Image publicId={this.props.userImage}>
                                 <Transformation height="45" width="45" crop="fill" radius="max" />
                             </Image>
                         </CloudinaryContext>

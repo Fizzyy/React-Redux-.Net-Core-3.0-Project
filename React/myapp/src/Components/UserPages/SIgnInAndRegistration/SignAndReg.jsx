@@ -23,7 +23,7 @@ class SignInAndRegistration extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ show: true });
+        this.setState({ show: this.props.showModal });
     }
 
     componentDidUpdate(preProps) {

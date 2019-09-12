@@ -52,7 +52,7 @@ class Catalog extends React.Component {
         if (this.state.orderingType1 !== preState.orderingType1 || this.state.orderingType2 !== preState.orderingType2) {
             (async () => {
                 let temp = this.state.orderingType1 + this.state.orderingType2;
-                let res = await axiosPost(ORDERGAMES, { GamePlatform: this.props.match.params.gamePlatform, Type: temp });
+                let res = await axiosGet(ORDERGAMES + `GamePlatform=${this.props.match.params.gamePlatform}&Type=${temp}&TypeValue=${null}`);
                 if (res.status === 200) {
                     this.setState({ games: res.data });
                 }
@@ -170,35 +170,20 @@ class Catalog extends React.Component {
                             <Row className="bootstrap_RowCatalog">
                                 {this.state.games.map((x) => {
                                     return (
-                                        this.props.isItOffer ?
-                                            <Col md={2}>
-                                                <GameBlockInfo
-                                                    isItOffer={true}
-                                                    gameID={x.gameID}
-                                                    gameName={x.gameName}
-                                                    gameJenre={x.gameJenre}
-                                                    gameRating={x.gameRating}
-                                                    gameScore={x.gameScore}
-                                                    gamePlatform={x.gamePlatform}
-                                                    gameOfferAmount={x.gameOfferAmount}
-                                                    gameImage={x.gameImage}
-                                                    oldGamePrice={x.oldGamePrice}
-                                                    newGamePrice={x.newGamePrice}
-                                                />
-                                            </Col>
-                                            :
-                                            <Col md={2}>
-                                                <GameBlockInfo
-                                                    gameID={x.gameID}
-                                                    gameName={x.gameName}
-                                                    gameJenre={x.gameJenre}
-                                                    gamePrice={x.oldGamePrice}
-                                                    gameRating={x.gameRating}
-                                                    gameScore={x.gameScore}
-                                                    gamePlatform={this.props.match.params.gamePlatform}
-                                                    gameImage={x.gameImage}
-                                                />
-                                            </Col>
+                                        <Col md={2}>
+                                            <GameBlockInfo
+                                                gameID={x.gameID}
+                                                gameName={x.gameName}
+                                                gameJenre={x.gameJenre}
+                                                gameRating={x.gameRating}
+                                                gameScore={x.gameScore}
+                                                gamePlatform={x.gamePlatform}
+                                                gameOfferAmount={x.gameOfferAmount}
+                                                gameImage={x.gameImage}
+                                                oldGamePrice={x.oldGamePrice}
+                                                newGamePrice={x.gamePrice}
+                                            />
+                                        </Col>
                                     )
                                 })}
                             </Row>

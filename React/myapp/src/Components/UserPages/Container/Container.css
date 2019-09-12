@@ -5,6 +5,13 @@
     flex-direction: column;
 }
 
+#mainBlockForAdmin {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: row;
+}
+
 #menuBar {
     width: 100%; 
 }
@@ -12,9 +19,6 @@
 #bodyy {
     width: 100%;
     padding-top: 7.5em;
-    /* height: auto; */
-    /* overflow-y: scroll;
-    scroll-behavior: smooth; */
 }
 
 #footer {

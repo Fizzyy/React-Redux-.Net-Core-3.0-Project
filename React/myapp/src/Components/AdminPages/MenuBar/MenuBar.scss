@@ -1,0 +1,31 @@
+.menuSpace {
+    width: 5em;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-content: flex-start;
+
+    div {
+        width: 5em;
+        position: relative;
+
+        .menuIcons {
+            padding: 20px 0 20px 0;
+            color: whitesmoke;
+        }
+
+        &:hover {
+            .menuIcons {
+                padding: 20px 0 20px 0;
+                color:red;
+            }
+        }
+    }
+
+    #logOut {
+        position: absolute;
+        bottom: 0;
+    }
+}

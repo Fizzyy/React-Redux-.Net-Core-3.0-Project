@@ -19,7 +19,7 @@ class GameBlockInfo extends React.Component {
             <Link to={`/Catalog/${this.props.gamePlatform}/${this.props.gameID}`}>
                 <div id="divMainGameBlock">
                     <Image cloudName="djlynoeio" publicId={this.props.gameImage} id="divMainGameBlock_Image" />
-                    {this.props.isItOffer ?
+                    {this.props.gameOfferAmount !== 0 ?
                         <div className="divMainGameBlock_OfferDiv">
                             <Icon size={24} icon={fire} />
                             <label style={{ marginLeft: '5px', marginTop: '2px' }}>Скидка {this.props.gameOfferAmount}%</label>
@@ -33,13 +33,13 @@ class GameBlockInfo extends React.Component {
                         </div>
                     </div>
                     <div id="divMainGameBlock_Price">
-                        {this.props.isItOffer ?
+                        {this.props.gameOfferAmount !== 0 ?
                             <>
                                 <label className="OfferPrice">{this.props.newGamePrice}p</label>
                                 <label className="NormalPriceCrossed">{this.props.oldGamePrice}p</label>
                             </>
                             :
-                            <label className="NormalPrice">{this.props.gamePrice}p</label>
+                            <label className="NormalPrice">{this.props.oldGamePrice}p</label>
                         }
                     </div>
                 </div>
