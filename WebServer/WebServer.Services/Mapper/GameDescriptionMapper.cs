@@ -9,23 +9,24 @@ namespace WebServer.Services.Mapper
 {
     public class GameDescriptionMapper
     {
-        public static GameDescriptionBll GetGameDescription(Game game, Offers offer, GameFinalScores scores, List<FeedbackBll> feedbacks)
+        public static GameDescriptionBll GetGameDescription(Game game, Offers offer, GameFinalScores scores, List<FeedbackBll> feedbacks, double UserScore)
         {
-            GameDescriptionBll gameDesc = new GameDescriptionBll
+            return new GameDescriptionBll
             {
                 GameID = game.GameID,
                 GameName = game.GameName,
+                GamePrice = offer != null ? offer.GameNewPrice : 0,
                 OldGamePrice = game.GamePrice,
-                NewGamePrice = offer.GameNewPrice,
                 AmountOfVotes = scores.AmountOfVotes,
+                GameScore = scores.GameScore,
                 GameImage = game.GameImage,
-                GameOfferAmount = offer.GameOfferAmount,
+                GameOfferAmount = offer != null ? offer.GameOfferAmount : 0,
                 GameJenre = game.GameJenre,
                 GamePlatform = game.GamePlatform,
                 GameRating = game.GameRating,
-                Feedbacks = feedbacks
+                Feedbacks = feedbacks,
+                UserScore = UserScore
             };
-            return gameDesc;
         }
     }
 }

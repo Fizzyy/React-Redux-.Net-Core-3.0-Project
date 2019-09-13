@@ -160,7 +160,6 @@ class GameDescription extends React.Component {
                                 <LoadingSpinner color="orange" width={20} height={20} visible={this.state.spinnerVisibility} />
                             </div>
                         </div>
-                        <div id="others"></div>
                         <div id="userReviews">
                             {this.state.gameFullDescription && this.state.gameFullDescription.feedbacks ? this.state.gameFullDescription.feedbacks.map((x) => {
                                 return (

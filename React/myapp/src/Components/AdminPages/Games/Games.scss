@@ -11,9 +11,11 @@
     overflow-y: auto;
 }
 
+.addButton {
+    margin-top: 20px;
+}
+
 .gameInfo {
-    height: 100%;
-    min-width: 90em;
     //background-color: grey;
     display: flex;
     flex-direction: row;
@@ -60,5 +62,30 @@
 }
 
 .gameFullInfo {
+    display: flex;
+    flex-direction: column;
+}
 
+.gametables {
+    display: flex;
+    flex-direction: row;
+    margin-top: 50px;
+
+    table {
+        margin-left: 50px;
+    }
+}
+
+.gamescreens {
+    margin: 30px 0 0 50px;
+    width: 65em;
+    display: flex;
+    flex-direction: row;
+
+    div {
+        margin-right: 10px;
+        width: 30em;
+        height: 15em;
+        background-color: blue;
+    }
 }

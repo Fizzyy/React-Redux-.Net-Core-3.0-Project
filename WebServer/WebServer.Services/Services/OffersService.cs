@@ -35,8 +35,8 @@ namespace WebServer.Services.Services
                 {
                     GameID = game.GameID,
                     GameName = game.GameName,
-                    OldGamePrice = game.GamePrice,
-                    NewGamePrice = offer.GameNewPrice,
+                    GamePrice = game.OldGamePrice,
+                    OldGamePrice = offer.GameNewPrice,
                     AmountOfVotes = game.AmountOfVotes,
                     GameImage = game.GameImage,
                     GameOfferAmount = offer.GameOfferAmount,

@@ -78,7 +78,15 @@ namespace WebServer.Services.Services
         public Task AddOrder(OrdersBll order)
         {
             var date = DateTime.Now;
-            return orderRepository.AddOrder(new Orders { Username = order.Username, GameID = order.GameID, Amount = order.Amount, OrderDate = date, TotalSum = order.TotalSum, isOrderPaid = false });
+            return orderRepository.AddOrder(new Orders
+            {
+                Username = order.Username,
+                GameID = order.GameID,
+                Amount = order.Amount,
+                OrderDate = date,
+                TotalSum = order.TotalSum,
+                isOrderPaid = false
+            });
         }
 
         public async Task<List<UserOrdersBll>> RemoveOrders(string Username, string[] orders)

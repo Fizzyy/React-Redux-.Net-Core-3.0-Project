@@ -15,6 +15,7 @@ import { NotificationContainer } from 'react-notifications';
 import AdminStartPage from '../../AdminPages/StartPage/StartPage';
 import AdminMenuBar from '../../AdminPages/MenuBar/MenuBar';
 import Games from '../../AdminPages/Games/Games';
+import Users from '../../AdminPages/Users/Users';
 
 class Container extends React.Component {
     constructor(props) {
@@ -56,8 +57,8 @@ class Container extends React.Component {
                         </div>
                         <div>
                             <Route exact path="/Admin" component={AdminStartPage} />
-                            <Route exact path="/Admin/Games" render={props => <Games />} />
-                            <Route exact path="/Admin/Users" render={() => { return (<h1>users</h1>) }} />
+                            <Route exact path="/Admin/Games" component={Games} />
+                            <Route exact path="/Admin/Users" render={() => <Users />} />
                             <Route exact path="/Admin/LogOut" render={() => { return (<h1>logout</h1>) }} />
                         </div>
                     </Route>

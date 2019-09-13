@@ -38,9 +38,9 @@ namespace WebServer
             { 
                 string jwtToken, refreshtoken;
 
-                var abc = context.Requirements.ToArray()[1];
-                var type = abc.GetType().GetProperty("AllowedRoles").GetValue(abc, null);
-                var value = type.GetType();
+                //var abc = context.Requirements.ToArray()[1];
+                //var type = abc.GetType().GetProperty("AllowedRoles").GetValue(abc, null);
+                //var value = type.GetType();
 
                 HttpContext httpContext = httpContextAccessor.HttpContext;
                 jwtToken = httpContext.Request.Headers["AccessToken"];

@@ -10,7 +10,7 @@ namespace WebServer.Services.Interfaces
 {
     public interface IGameService
     {
-        Task<IEnumerable<Game>> GetAllGames();
+        Task<List<GameDescriptionBll>> GetAllGames();
 
         Task<List<GameDescriptionBll>> GetCurrentPlatformGames(string GamePlatform);
 

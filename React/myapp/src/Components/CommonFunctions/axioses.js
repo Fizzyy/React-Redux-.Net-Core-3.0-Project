@@ -12,7 +12,7 @@ function createAxios() {
 
 export async function axiosPost(url, data) {
     return await createAxios().post(url, data).then(response => {
-        if (response.headers.accesstoken != undefined) {
+        if (response.headers.accesstoken) {
             localStorage.setItem('Token', response.headers.accesstoken);
             localStorage.setItem('RefreshToken', response.headers.refreshtoken);
         }
@@ -22,7 +22,7 @@ export async function axiosPost(url, data) {
 
 export async function axiosGet(url) {
     return await createAxios().get(url).then(response => {
-        if (response.headers.accesstoken != undefined) {
+        if (response.headers.accesstoken) {
             localStorage.setItem('Token', response.headers.accesstoken);
             localStorage.setItem('RefreshToken', response.headers.refreshtoken);
         }
@@ -30,15 +30,15 @@ export async function axiosGet(url) {
     }).catch(error => { return error; })
 }
 
-export async function axiosDelete(url) {
-    return await createAxios().delete(url).then(response => {
+export async function axiosDelete(url, idArray) {
+    return await createAxios().delete(url, { data: { idArray } }).then(response => {
         return response;
     }).catch(error => { return error; })
 }
 
 export async function axiosPut(url, data) {
     return await createAxios().put(url, data).then(response => {
-        if (response.headers.accesstoken != undefined) {
+        if (response.headers.accesstoken) {
             localStorage.setItem('Token', response.headers.accesstoken);
             localStorage.setItem('RefreshToken', response.headers.refreshtoken);
         }

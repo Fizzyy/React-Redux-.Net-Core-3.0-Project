@@ -31,9 +31,35 @@ namespace WebServer.Services.Services
             this.offersRepository = offersRepository;
         }
 
-        public Task<IEnumerable<Game>> GetAllGames()
+        public async Task<List<GameDescriptionBll>> GetAllGames()
         {
-            return gameRepository.GetAllGames();
+            var list = new List<GameDescriptionBll>();
+        
+            var allgames = await gameRepository.GetAllGames();
+            foreach (var game in allgames)
+            {
+                var TotalFeedback = new List<FeedbackBll>();
+
+                var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
+                var feedbacks = await feedbackRepository.GetCurrentGameFeedback(game.GameID);
+
+                foreach (var feedback in feedbacks)
+                {
+                    TotalFeedback.Add(new FeedbackBll
+                    {
+
+                        Id = feedback.Id,
+                        Comment = feedback.Comment,
+                        CommentDate = feedback.CommentDate,
+                        Username = feedback.Username,
+                        GameID = game.GameID
+
+                    });
+                }
+                
+                list.Add(GameDescriptionMapper.GetGameDescription(game, null, gamescores, TotalFeedback, 0));
+            }
+            return list;
         }
 
         public async Task<List<GameDescriptionBll>> GetCurrentPlatformGames(string GamePlatform)
@@ -45,27 +71,9 @@ namespace WebServer.Services.Services
             foreach (var game in games)
             {
                 var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
-                //var offer = await offersRepository.GetOffer(game.GameID);
-                //if (offer == null)
-                //{
-                //    offer.GameNewPrice = 0;
-                //    offer.GameOfferAmount = 0;
-                //}
+                var offer = await offersRepository.GetOffer(game.GameID);
 
-                returnedgames.Add(new GameDescriptionBll
-                {
-                    GameID = game.GameID,
-                    GameName = game.GameName,
-                    OldGamePrice = game.GamePrice,
-                    //NewGamePrice = offer.GameNewPrice,
-                    AmountOfVotes = gamescores.AmountOfVotes,
-                    GameImage = game.GameImage,
-                    //GameOfferAmount = offer.GameOfferAmount,
-                    GameJenre = game.GameJenre,
-                    GamePlatform = game.GamePlatform,
-                    GameRating = game.GameRating
-                });
-
+                returnedgames.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0));
             }
             return returnedgames;
         }
@@ -80,10 +88,9 @@ namespace WebServer.Services.Services
             foreach (var game in foundgames)
             {
                 var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
-                games.Add(new GameDescriptionBll
-                (
-                    game.GameID, game.GameName, gamescores.GameScore, game.GamePrice, game.GameRating, game.GameJenre, game.GameImage
-                ));
+                var offer = await offersRepository.GetOffer(game.GameID);
+
+                games.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0));
             }
             switch (Type)
             {
@@ -150,19 +157,7 @@ namespace WebServer.Services.Services
                 var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
                 var offer = await offersRepository.GetOffer(game.GameID);
 
-                returnedgames.Add(new GameDescriptionBll
-                {
-                    GameID = game.GameID,
-                    GameName = game.GameName,
-                    OldGamePrice = game.GamePrice,
-                    NewGamePrice = offer.GameNewPrice,
-                    AmountOfVotes = gamescores.AmountOfVotes,
-                    GameImage = game.GameImage,
-                    GameOfferAmount = offer.GameOfferAmount,
-                    GameJenre = game.GameJenre,
-                    GamePlatform = game.GamePlatform,
-                    GameRating = game.GameRating
-                });
+                returnedgames.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0));
             }
             return returnedgames;
         }
@@ -174,6 +169,7 @@ namespace WebServer.Services.Services
 
             var gamescores = await gameFinalScoreRepository.GetGame(GameID);
             var offer = await offersRepository.GetOffer(GameID);
+            var userScore = await gameMarkRepository.GetCurrentUserScore(GameID, Username);
 
             List<FeedbackBll> feedbacks = new List<FeedbackBll>();
             foreach (var feedback in await feedbackRepository.GetCurrentGameFeedback(foundgame.GameID))
@@ -182,22 +178,7 @@ namespace WebServer.Services.Services
                 feedbacks.Add(new FeedbackBll(feedback.Id, feedback.Username, feedback.GameID, feedback.Comment, feedback.CommentDate, user.UserImage));
             }
 
-            //GameDescriptionBll gameDescription = new GameDescriptionBll
-            //{
-            //    GameID = foundgame.GameID,
-            //    GameName = foundgame.GameName,
-            //    GameScore = gamescores.GameScore,
-            //    GameJenre = foundgame.GameJenre,
-            //    GamePlatform = foundgame.GamePlatform,
-            //    GamePrice = foundgame.GamePrice,
-            //    GameRating = foundgame.GameRating,
-            //    UserScore = gamescores.GameScore,
-            //    Feedbacks = feedbacks,
-            //    GameImage = foundgame.GameImage,
-            //    AmountOfVotes = gamescores.AmountOfVotes
-            //};
-            var e = GameDescriptionMapper.GetGameDescription(foundgame, offer, gamescores, feedbacks);
-            return e;
+            return GameDescriptionMapper.GetGameDescription(foundgame, offer, gamescores, feedbacks, userScore);
         }
 
         public async Task AddGame(GameBll game)

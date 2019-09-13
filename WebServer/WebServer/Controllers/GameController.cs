@@ -24,7 +24,7 @@ namespace WebServer.Controllers
         [Route("GetAllGames")]
         public async Task<IActionResult> GetAllGames()
         {
-            IEnumerable<Game> allgames = await gameService.GetAllGames();
+            List<GameDescriptionBll> allgames = await gameService.GetAllGames();
             return Ok(allgames);
         }
 
