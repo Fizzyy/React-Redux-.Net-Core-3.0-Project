@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebServer.DAL.Models;
 using WebServer.Services.ModelsBll;
+using WebServer.Services.ModelsBll.Joins;
 
 namespace WebServer.Services.Interfaces
 {
@@ -11,7 +12,7 @@ namespace WebServer.Services.Interfaces
     {
         Task<IEnumerable<User>> GetUsers();
 
-        Task<UserBll> GetCurrentUser(string Username);
+        Task<UsersDescriptionBll> GetCurrentUser(string Username);
 
         Task AddUser(UserBll user);
 

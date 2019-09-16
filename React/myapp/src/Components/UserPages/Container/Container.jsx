@@ -2,7 +2,7 @@ import React from 'react';
 import MenuBar from '../MenuBar/MenuBar';
 import '../Container/Container.css';
 import Footer from '../Footer/Footer';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import StartPage from '../StartPage/StartPage';
 import Catalog from '../Catalog/Catalog';
 import GameDescription from '../GameDescription/GameDescription';
@@ -16,6 +16,7 @@ import AdminStartPage from '../../AdminPages/StartPage/StartPage';
 import AdminMenuBar from '../../AdminPages/MenuBar/MenuBar';
 import Games from '../../AdminPages/Games/Games';
 import Users from '../../AdminPages/Users/Users';
+import Offers from '../../AdminPages/Offers/Offers';
 
 class Container extends React.Component {
     constructor(props) {
@@ -43,6 +44,7 @@ class Container extends React.Component {
                         <Route path="/AccountSettings" render={props => <AccountSettings {...props} />} />
                         <Route path="/MyOrders" component={MyOrders} />
                         <Route path="/Offers" render={props => <Catalog {...props} isItOffer={true} />} />
+                        {/* <Redirect to="/" /> */}
                         <NotificationContainer />
                     </div>
                     <div id='footer'>
@@ -55,11 +57,11 @@ class Container extends React.Component {
                         <div>
                             <AdminMenuBar />
                         </div>
-                        <div>
+                        <div className="components">
                             <Route exact path="/Admin" component={AdminStartPage} />
                             <Route exact path="/Admin/Games" component={Games} />
                             <Route exact path="/Admin/Users" render={() => <Users />} />
-                            <Route exact path="/Admin/LogOut" render={() => { return (<h1>logout</h1>) }} />
+                            <Route exact path="/Admin/Offers" render={() => <Offers />} />
                         </div>
                     </Route>
                 </div>

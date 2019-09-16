@@ -107,6 +107,10 @@ class SignInAndRegistration extends React.Component {
         );
     }
 
+    banUser = () => {
+        return (<h1>ban</h1>);
+    }
+
     render() {
         return (
             <Modal show={this.state.show} onHide={this.handleClose}>
@@ -118,6 +122,7 @@ class SignInAndRegistration extends React.Component {
                                 case 'registration': return ("Регистрация");
                                 case 'balance': return ("Пополнение баланса");
                                 case 'password': return ("Смена пароля");
+                                case 'ban': return "Бан пользователя";
                             }
                         })()}
                     </Modal.Title>
@@ -129,11 +134,22 @@ class SignInAndRegistration extends React.Component {
                             case 'registration': return (this.registration());
                             case 'balance': return (this.updateBalance());
                             case 'password': return (this.updatePassword());
+                            case 'ban': return this.banUser();
                         }
                     })()}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="outline-primary" onClick={this.sendDataToServer} id="SignInButton">{this.props.registration ? "Регистрация" : "Вход"}</Button>
+                    <Button variant="outline-primary" onClick={this.sendDataToServer} id="SignInButton">
+                        {(() => {
+                            switch (this.props.type) {
+                                case 'login': return "Вход";
+                                case 'registration': return "Регистрация";
+                                case 'balance': return "Пополнить";
+                                case 'password': return "Обновить";
+                                case 'ban': return "Забанить";
+                            }
+                        })()}
+                    </Button>
                 </Modal.Footer>
             </Modal>
         );

@@ -33,7 +33,13 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task AddUser(User user)
         {
-            commonContext.Users.Add(user);
+            foreach (var person in commonContext.Users)
+            {
+                if (person.Username.ToLower() != user.Username.ToLower())
+                {
+                    commonContext.Users.Add(user);
+                }
+            }
             await commonContext.SaveChangesAsync();
         }
 

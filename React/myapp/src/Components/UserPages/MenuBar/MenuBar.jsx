@@ -24,13 +24,11 @@ class MenuBar extends React.Component {
                     <Link to='/' className='Links'>Главная</Link>
                 </div>
                 <div className="divMainBar_divsInsideBar">
-                    <div id="dropDownButtonCategory">
-                        <DropdownButton title="Категория" id="dropDownButton">
-                            <Dropdown.Item><Icon size={16} icon={windows} /><Link to="/Catalog/PC" className="dropDownItemsSpans">PC Windows</Link></Dropdown.Item>
-                            <Dropdown.Item><Icon size={16} icon={playstation} /><Link to="/Catalog/PS4" className="dropDownItemsSpans">Playstation 4</Link></Dropdown.Item>
-                            <Dropdown.Item><Icon size={16} icon={xbox} /><Link to="/Catalog/XBOXONE" className="dropDownItemsSpans">Xbox One</Link></Dropdown.Item>
-                        </DropdownButton>
-                    </div>
+                    <DropdownButton title="Категория" id="dropDownButton">
+                        <Dropdown.Item><Icon size={16} icon={windows} /><Link to="/Catalog/PC" className="dropDownItemsSpans">PC Windows</Link></Dropdown.Item>
+                        <Dropdown.Item><Icon size={16} icon={playstation} /><Link to="/Catalog/PS4" className="dropDownItemsSpans">Playstation 4</Link></Dropdown.Item>
+                        <Dropdown.Item><Icon size={16} icon={xbox} /><Link to="/Catalog/XBOXONE" className="dropDownItemsSpans">Xbox One</Link></Dropdown.Item>
+                    </DropdownButton>
                 </div>
                 <div className="divMainBar_divsInsideBar">
                     <Link to="/Offers" className="Links">Акции</Link>

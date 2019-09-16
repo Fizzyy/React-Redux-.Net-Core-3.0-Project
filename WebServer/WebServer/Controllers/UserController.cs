@@ -28,7 +28,7 @@ namespace WebServer.Controllers
         [Route("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
-            IEnumerable<User> users = await userService.GetUsers();
+            var users = await userService.GetUsers();
             return Ok(users);
         }
 

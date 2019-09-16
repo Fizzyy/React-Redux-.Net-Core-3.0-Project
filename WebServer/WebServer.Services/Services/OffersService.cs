@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WebServer.DAL.Models;
 using WebServer.DAL.Repository.Interfaces;
 using WebServer.Services.Interfaces;
+using WebServer.Services.Mapper;
 using WebServer.Services.ModelsBll;
 using WebServer.Services.ModelsBll.Joins;
 
@@ -35,8 +36,8 @@ namespace WebServer.Services.Services
                 {
                     GameID = game.GameID,
                     GameName = game.GameName,
-                    GamePrice = game.OldGamePrice,
-                    OldGamePrice = offer.GameNewPrice,
+                    GamePrice = offer.GameNewPrice,
+                    OldGamePrice = game.OldGamePrice,
                     AmountOfVotes = game.AmountOfVotes,
                     GameImage = game.GameImage,
                     GameOfferAmount = offer.GameOfferAmount,
@@ -44,6 +45,7 @@ namespace WebServer.Services.Services
                     GamePlatform = game.GamePlatform,
                     GameRating = game.GameRating
                 });
+                //games.Add(GameDescriptionMapper.GetGameDescription(game, offer, null, null, 0));
             }
 
             return games;

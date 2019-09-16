@@ -1,14 +1,17 @@
 #divMainCatalog {
     width: 100%;
     min-height: 55em;
+    margin-top: 30px;
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
 #divMainCatalog_Options {
-    width: 15%;
+    min-width: 12%;
     display: flex;
     flex-direction: column;
+    text-align: left;
 }
 
 #divMainCatalog_Options_Selects {
@@ -20,14 +23,21 @@
 }
 
 #divMainCatalog_Games {
-    width: 85%;
+    min-width: 40%;
+    max-width: 50%;
     display: flex;
     flex-direction: column;
 }
 
 .divContainer_Sort {
+    margin-top: 10px;
+}
+
+.criteria-type {
     margin-top: 15px;
-    margin-left: 40px;
+    div {
+        margin-top: 5px;
+    }
 }
 
 #divMainCatalog_Games_GameBlockInfo {
@@ -40,8 +50,16 @@
 }
 
 #divMainCatalog_Options_Radios {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
     margin-top: 10px;
     text-align: left;
+
+    ul {
+        padding-left: 0px;
+    }
 }
 
 .bootstrap_RowCatalog {

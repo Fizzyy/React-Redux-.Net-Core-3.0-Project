@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Catalog/Catalog.css';
+import '../Catalog/Catalog.scss'
 import { axiosGet, axiosPost } from '../../CommonFunctions/axioses';
 import GameBlockInfo from './GameBlockInfo';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -88,31 +88,51 @@ class Catalog extends React.Component {
     render() {
         return (
             <div id="divMainCatalog">
-                <div className="emptyblocks" />
                 <div id="divMainCatalog_Options">
-                    <h2 style={{ marginTop: '15px' }}>
+                    <h2>
                         {this.props.isItOffer ? "Акции" : this.props.match.params.gamePlatform}
                     </h2>
                     <div id="divMainCatalog_Options_Selects">
-                        <h4 style={{ marginLeft: '40px', marginTop: '10px' }}>Сортировка:</h4>
-                        <div className="divContainer_Sort">
-                            <label>Критерий:</label>
-                            <select className="Selects" style={{ width: '100px' }} onChange={this.setOrderType1} name="orderingType1">
-                                <option value="Name">Имя</option>
-                                <option value="Price">Цена</option>
-                                <option value="Score">Рейтинг</option>
-                            </select>
-                        </div>
-                        <div className="divContainer_Sort">
-                            <label>Тип:</label>
-                            <select className="Selects" onChange={this.setOrderType1} name="orderingType2">
-                                <option value="Asc">По возрастанию</option>
-                                <option value="Desc">По убыванию</option>
-                            </select>
+                        <h4 style={{ marginTop: '10px' }}>Сортировка:</h4>
+                        <div className="criteria-type">
+                            <div>
+                                <label>Критерий:</label>
+                                <select className="Selects" style={{ width: '100px' }} onChange={this.setOrderType1} name="orderingType1">
+                                    <option value="Name">Имя</option>
+                                    <option value="Price">Цена</option>
+                                    <option value="Score">Рейтинг</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Тип:</label>
+                                <select className="Selects" onChange={this.setOrderType1} name="orderingType2">
+                                    <option value="Asc">По возрастанию</option>
+                                    <option value="Desc">По убыванию</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                    {this.props.isItOffer ?
+                        <div id="divMainCatalog_Options_Radios">
+                            <h4>Платформы:</h4>
+                            <ul>
+                                <li className="liStyles" >
+                                    <input type="radio" name="jenres" value="All" defaultChecked onChange={this.getGamesByGenres} />Все
+                            </li>
+                                <li className="liStyles" >
+                                    <input type="radio" name="jenres" value="Shooter" onChange={this.getGamesByGenres} />PS4
+                            </li>
+                                <li className="liStyles" >
+                                    <input type="radio" name="jenres" value="Strategy" onChange={this.getGamesByGenres} />XONE
+                            </li>
+                                <li className="liStyles" >
+                                    <input type="radio" name="jenres" value="Racing" onChange={this.getGamesByGenres} />PC
+                            </li>
+                            </ul>
+                        </div> : null
+                    }
                     <div id="divMainCatalog_Options_Radios">
-                        <h4 style={{ marginLeft: '40px' }}>Жанры:</h4>
+                        <h4>Жанры:</h4>
                         <ul>
                             <li className="liStyles" >
                                 <input type="radio" name="jenres" value="All" defaultChecked onChange={this.getGamesByGenres} />Все
@@ -132,7 +152,7 @@ class Catalog extends React.Component {
                         </ul>
                     </div>
                     <div id="divMainCatalog_Options_Radios">
-                        <h4 style={{ marginLeft: '40px' }}>Возраст:</h4>
+                        <h4>Возраст:</h4>
                         <ul>
                             <li className="liStyles" >
                                 <input type="radio" name="rating" value="All" defaultChecked onChange={this.getGamesByRating} />Все
@@ -151,7 +171,7 @@ class Catalog extends React.Component {
                 </div>
                 <div id="divMainCatalog_Games">
                     <div>
-                        <InputGroup style={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px', width: '30em' }}>
+                        <InputGroup style={{ marginBottom: '20px', marginLeft: '30px', width: '30em' }}>
                             <InputGroup.Prepend>
                                 <InputGroup.Text id="btnGroupAddon">
                                     <Icon icon={search} size={18} />
@@ -170,7 +190,7 @@ class Catalog extends React.Component {
                             <Row className="bootstrap_RowCatalog">
                                 {this.state.games.map((x) => {
                                     return (
-                                        <Col md={2}>
+                                        <Col md={3}>
                                             <GameBlockInfo
                                                 gameID={x.gameID}
                                                 gameName={x.gameName}
@@ -190,7 +210,6 @@ class Catalog extends React.Component {
                         </Container>
                     </div>
                 </div>
-                <div className="emptyblocks" />
             </div>
         );
     }

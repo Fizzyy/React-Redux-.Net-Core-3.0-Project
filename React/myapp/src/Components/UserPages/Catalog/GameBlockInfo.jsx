@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Catalog/Catalog.css';
+import '../Catalog/Catalog.scss';
 import RatingStars from '../RatingStars/RatingStars';
 import { fire } from 'react-icons-kit/metrize/fire';
 import { Icon } from 'react-icons-kit';

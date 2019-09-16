@@ -11,6 +11,9 @@
     height: 100%;
     float: left;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .divMainBar_divsInsideBar_UserData {
@@ -45,23 +48,12 @@
 .Links {
     color: whitesmoke;
     font-size: 20px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 35%;
     text-decoration: none;
 }
 
 .Links:hover {
     color: red;
     text-decoration: none;
-}
-
-#dropDownButtonCategory {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 29%;
 }
 
 #dropDownButton {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task<BannedUsers> FindBannedUser(string Username)
         {
-            var BannedUser = await commonContext.BannedUsers.FindAsync(Username);
+            var BannedUser = await commonContext.BannedUsers.FirstOrDefaultAsync(x => x.Username == Username);
             if (BannedUser != null) return BannedUser;
             return null;
         }

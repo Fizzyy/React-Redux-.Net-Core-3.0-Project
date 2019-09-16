@@ -8,6 +8,7 @@ using WebServer.DAL.Models;
 using WebServer.DAL.Repository;
 using WebServer.DAL.Repository.Interfaces;
 using WebServer.Services.Interfaces;
+using WebServer.Services.Mapper;
 using WebServer.Services.ModelsBll;
 using WebServer.Services.ModelsBll.Joins;
 
@@ -38,22 +39,17 @@ namespace WebServer.Services.Services
             return await userRepository.GetUsers();
         }
 
-        public async Task<UserBll> GetCurrentUser(string Username)
+        public async Task<UsersDescriptionBll> GetCurrentUser(string Username)
         {
             var founduser = await userRepository.GetCurrentUser(Username);
             if (founduser == null) return null;
 
-            UserBll user = new UserBll
-            {
-                Username = founduser.Username,
-                UserBalance = founduser.UserBalance,
-                Role = founduser.Role,
-                UserImage = founduser.UserImage,
-                Feedbacks = await feedbackService.GetUserFeedback(Username),
-                GameMarks = await gameMarkService.GetAllUserScores(Username),
-                Orders = await orderService.GetAllUserOrders(Username),
-            };
-            return user;
+            var banuser = await bannedUsersRepository.FindBannedUser(Username);
+            var feedbacks = await feedbackService.GetUserFeedback(Username);
+            var orders = await orderService.GetAllUserOrders(Username);
+            var gamemarks = await gameMarkService.GetAllUserScores(Username);
+
+            return UserDescriptionMapper.GetUser(founduser, banuser, feedbacks, gamemarks, orders);
         }
 
         public Task AddUser(UserBll user)
