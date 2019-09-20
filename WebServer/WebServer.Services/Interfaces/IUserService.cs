@@ -16,6 +16,8 @@ namespace WebServer.Services.Interfaces
 
         Task AddUser(UserBll user);
 
+        Task<string> ResetPassword(string Username, string OldPassword, string NewPassword);
+
         Task<object> CheckUser(UserBll user);
 
         Task<decimal> ReturnUserBalance(string Username);

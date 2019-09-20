@@ -62,6 +62,9 @@ namespace WebServer.DAL.Repository.Classes
         {
             var mark = await commonContext.GameMarks.FindAsync(GameMarkID);
             commonContext.Remove(mark);
+            var game = await commonContext.GameFinalScores.FindAsync(mark.GameID);
+            game.AmountOfVotes -= 1;
+            if (game.AmountOfVotes == 0) game.GameScore = 0;
             await commonContext.SaveChangesAsync();
         }
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../MenuBar/MenuBar.css';
+import '../MenuBar/MenuBar.scss';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';

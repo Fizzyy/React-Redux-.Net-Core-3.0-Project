@@ -12,6 +12,10 @@ namespace WebServer.Services.Interfaces
     {
         Task<List<GameDescriptionBll>> GetAllOfferGames();
 
+        Task<List<GameDescriptionBll>> GetOffersFromPlatform(string GamePlatform);
+
+        Task<List<GameDescriptionBll>> GetOffersByRegex(string GamePlatform, string GameName);
+
         Task AddGameOffer(OffersBll offer);
 
         Task UpdateOffer(OffersBll offer);

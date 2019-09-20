@@ -7,6 +7,9 @@ namespace WebServer.Services.ModelsBll
     public class MoneyKeysBll
     {
         public string KeyCode { get; set; }
+
         public decimal Value { get; set; }
+
+        public bool isActive { get; set; }
     }
 }

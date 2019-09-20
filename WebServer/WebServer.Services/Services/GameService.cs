@@ -78,7 +78,7 @@ namespace WebServer.Services.Services
             return returnedgames;
         }
 
-        public async Task<List<GameDescriptionBll>> OrderGames(string GamePlatform, string Type, string TypeValue)
+        public async Task<List<GameDescriptionBll>> OrderGames(string GamePlatform, string Type, string Age, string Genre)
         {
             List<GameDescriptionBll> games = new List<GameDescriptionBll>();
 
@@ -92,58 +92,40 @@ namespace WebServer.Services.Services
 
                 games.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0));
             }
-            switch (Type)
+
+            if (Genre != "All" && Age != "All+")
             {
-                case "Genre":
-                    {
-                        if (TypeValue != "All") games = games.Where(x => x.GameJenre == TypeValue).ToList();
-                        break;
-                    }
-                case "Rating":
-                    {
-                        if (TypeValue != "All+")
-                        {
-                            games = games.Where(x => x.GameRating == TypeValue).ToList();
-                        }
-                        break;
-                    }
-                case "NameAsc":
-                    {
-                        games = games.OrderBy(x => x.GameName).ToList();
-                        break;
-                    }
-                case "NameDesc":
-                    {
-                        games = games.OrderByDescending(x => x.GameName).ToList();
-                        break;
-                    }
-                case "PriceAsc":
-                    {
-                        games = games.OrderBy(x => x.GamePrice).ToList();
-                        break;
-                    }
-                case "PriceDesc":
-                    {
-                        games = games.OrderByDescending(x => x.GamePrice).ToList();
-                        break;
-                    }
-                case "ScoreAsc":
-                    {
-                        games = games.OrderBy(x => x.GameScore).ToList();
-                        break;
-                    }
-                case "ScoreDesc":
-                    {
-                        games = games.OrderByDescending(x => x.GameScore).ToList();
-                        break;
-                    }
+                games = games.Where(x => x.GameJenre == Genre && x.GameRating == Age).ToList();
+                games = GameDescriptionMapper.OrderGamesBy(Type, games);
+            }
+            else if (Genre == "All" && Age != "All+")
+            {
+                games = games.Where(x => x.GameRating == Age).ToList();
+                games = GameDescriptionMapper.OrderGamesBy(Type, games);
+            }
+            else if (Genre != "All" && Age == "All+")
+            {
+                games = games.Where(x => x.GameJenre == Genre).ToList();
+                games = GameDescriptionMapper.OrderGamesBy(Type, games);
+            }
+            else if (Genre == "All" && Age == "All+")
+            {
+                games = GameDescriptionMapper.OrderGamesBy(Type, games);
             }
             return games;
         }
 
-        public async Task<IEnumerable<Game>> GetSameJenreGames(string GameGenre, string GameID)
+        public async Task<List<GameDescriptionBll>> GetSameJenreGames(string GameGenre, string GameID)
         {
-            return await gameRepository.GetSameJenreGames(GameGenre, GameID);
+            var list = new List<GameDescriptionBll>();
+            var games = await gameRepository.GetSameJenreGames(GameGenre, GameID);
+            foreach (var game in games)
+            {
+                var score = await gameFinalScoreRepository.GetGame(game.GameID);
+
+                list.Add(GameDescriptionMapper.GetGameDescription(game, null, score, null, 0));
+            }
+            return list;
         }
 
         public async Task<List<GameDescriptionBll>> GetGamesByRegex(string GamePlatform, string GameName)

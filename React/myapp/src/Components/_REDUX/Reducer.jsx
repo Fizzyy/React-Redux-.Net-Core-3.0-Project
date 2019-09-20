@@ -14,6 +14,10 @@ export default function userDataReducer(state = userData, action) {
             userBalance: action.userBalance,
             isUserLogged: action.isUserLogged
         };
+        case 'UPDATE_BALANCE': return {
+            ...state,
+            userBalance: state.userBalance + action.userBalance
+        };
     }
     return state;
 }

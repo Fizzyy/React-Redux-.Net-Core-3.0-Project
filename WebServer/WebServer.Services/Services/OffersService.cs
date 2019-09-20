@@ -51,6 +51,32 @@ namespace WebServer.Services.Services
             return games;
         }
 
+        public async Task<List<GameDescriptionBll>> GetOffersFromPlatform(string GamePlatform)
+        {
+            var offergames = new List<GameDescriptionBll>();
+            var games = await gameService.GetCurrentPlatformGames(GamePlatform);
+
+            foreach (var game in games)
+            {
+                if (game.GameOfferAmount != 0) offergames.Add(game);
+            }
+
+            return offergames;
+        }
+
+        public async Task<List<GameDescriptionBll>> GetOffersByRegex(string Platform, string GameName)
+        {
+            var offergames = new List<GameDescriptionBll>();
+            var games = await gameService.GetGamesByRegex(Platform, GameName);
+
+            foreach (var game in games)
+            {
+                if (game.GameOfferAmount != 0) offergames.Add(game);
+            }
+
+            return offergames;
+        }
+
         public async Task AddGameOffer(OffersBll offer)
         {
             await offersRepository.AddGameOffer(new Offers

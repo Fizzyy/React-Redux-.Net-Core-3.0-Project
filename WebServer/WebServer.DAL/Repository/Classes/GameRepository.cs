@@ -7,6 +7,7 @@ using WebServer.DAL.Models;
 using WebServer.DAL.Repository.Interfaces;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebServer.DAL.Repository.Classes
 {
@@ -26,6 +27,7 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task<IEnumerable<Game>> GetCurrentPlatformGames(string GamePlatform)
         {
+            if (GamePlatform == "All") return await Task.FromResult(commonContext.Games);
             return await Task.FromResult(commonContext.Games.Where(x => x.GamePlatform == GamePlatform));
         }
 
@@ -44,8 +46,13 @@ namespace WebServer.DAL.Repository.Classes
         public async Task<List<Game>> GetGamesByRegex(string GamePlatform, string GameName)
         {
             List<Game> games = new List<Game>();
-            var platformgames = await Task.FromResult(commonContext.Games.Where(x => x.GamePlatform == GamePlatform).ToList());
+            List<Game> platformgames = new List<Game>();
+
+            if (GamePlatform != "All") platformgames = await commonContext.Games.Where(x => x.GamePlatform == GamePlatform).ToListAsync();
+            else platformgames = await commonContext.Games.ToListAsync();
+
             if (GameName == null || GameName == "") return platformgames;
+
             Regex regex = new Regex($@"^{GameName}\w*", RegexOptions.IgnoreCase);
             foreach (var game in platformgames)
             {

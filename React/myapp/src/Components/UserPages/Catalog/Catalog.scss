@@ -16,6 +16,16 @@
 
 #divMainCatalog_Options_Selects {
     text-align: left;
+    margin-top: 15px;
+}
+
+.searchField {
+    margin: 0 0 20px 30px;
+    width: 30em;
+
+    .form-control:focus {
+        box-shadow: none;
+    }
 }
 
 .Selects {
@@ -64,6 +74,10 @@
 
 .bootstrap_RowCatalog {
     margin: 20px 0 0 0;
+
+    h4 {
+        margin-left: 15px;
+    }
 }
 
 .container {

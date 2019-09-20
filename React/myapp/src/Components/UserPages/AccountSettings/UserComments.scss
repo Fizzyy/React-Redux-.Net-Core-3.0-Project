@@ -5,6 +5,19 @@ $adwad: 109px;
     display: flex;
     flex-direction: column;
     background-color: #f4f4f4;
+
+    &:hover {
+        background-color: grey;
+        transition-duration: .2s;
+        li {
+            color: whitesmoke;
+            transition-duration: .2s;
+        }
+        span {
+            color: whitesmoke;
+            transition-duration: .2s;
+        }
+    }
 }
 
 .comment-info {

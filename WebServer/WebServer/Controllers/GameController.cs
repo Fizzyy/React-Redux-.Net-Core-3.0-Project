@@ -42,11 +42,11 @@ namespace WebServer.Controllers
 
         [HttpGet]
         [Route("OrderGames")]
-        public async Task<IActionResult> OrderGames([FromQuery]string GamePlatform, [FromQuery]string Type, [FromQuery]string TypeValue)
+        public async Task<IActionResult> OrderGames([FromQuery]string GamePlatform, [FromQuery]string Type, [FromQuery]string Age, [FromQuery]string Genre)
         {
             try
             {
-                IEnumerable<GameDescriptionBll> games = await gameService.OrderGames(GamePlatform, Type, TypeValue);
+                IEnumerable<GameDescriptionBll> games = await gameService.OrderGames(GamePlatform, Type, Age, Genre);
                 return Ok(games);
             }
             catch (Exception ex)
@@ -67,7 +67,7 @@ namespace WebServer.Controllers
         [Route("GetSameGenreGames")]
         public async Task<IActionResult> GetSameGenreGames([FromQuery]string GameGenre, [FromQuery]string GameID)
         {
-            IEnumerable<Game> games = await gameService.GetSameJenreGames(GameGenre, GameID);
+            List<GameDescriptionBll> games = await gameService.GetSameJenreGames(GameGenre, GameID);
             return Ok(games);
         }
 

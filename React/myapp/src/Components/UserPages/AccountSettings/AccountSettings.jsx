@@ -14,6 +14,7 @@ import Button from 'react-bootstrap/Button';
 import RatingStars from '../RatingStars/RatingStars';
 import store from '../../_REDUX/Storage';
 import Modal from '../SIgnInAndRegistration/SignAndReg';
+import axios from 'axios';
 
 class AccountSettings extends React.Component {
     constructor(props) {
@@ -24,8 +25,10 @@ class AccountSettings extends React.Component {
                 comment: ''
             },
             showModal: false,
-            modalType: ''
+            modalType: '',
+            inputFile: undefined
         }
+        this.myRef = React.createRef();
     }
 
     componentDidMount() {
@@ -117,6 +120,26 @@ class AccountSettings extends React.Component {
         }
     }
 
+    selectFile = () => {
+        this.setState({ inputFile: this.myRef.current.files[0] });
+        let formdata = new FormData();
+        formdata.append('file', this.state.inputFile);
+        formdata.append('upload_preset', 'iTechArt');
+        axios.post("https://api.cloudinary.com/v1_1/djlynoeio/image/upload", formdata).then(response => {
+            this.setState({
+                userInfo: {
+                    ...this.state.userInfo,
+                    userImage: response.data.public_id
+                }
+            })
+        });
+    }
+
+    selectAvatar = () => {
+        this.myRef.current.value = '';
+        this.myRef.current.click();
+    }
+
     render() {
         return (
             <div className="divMainAccountSettings">
@@ -140,7 +163,9 @@ class AccountSettings extends React.Component {
                                 <div className="buttonsOptions">
                                     <Button variant="outline-primary" className="optButton" name="password" onClick={this.changeSettings}>Изменить пароль</Button>
 
-                                    <Button variant="outline-primary" className="optButton" name="password"><input type="file" className="optButton" name="avatar" title="Изменить аватар" />Изменить аватар</Button>
+                                    <Button variant="outline-primary" className="optButton" onClick={this.selectAvatar}>
+                                        <input type="file" hidden ref={this.myRef} onChange={this.selectFile} className="optButton" name="avatar" title="Изменить аватар" />
+                                        Изменить аватар</Button>
                                     <Button variant="outline-danger" onClick={this.changeSettings} className="leaveButton" name="leave">Выйти</Button>
                                 </div>
                             </div>
@@ -239,7 +264,7 @@ class AccountSettings extends React.Component {
                         </Tabs>
                     </div>
                 </div>
-                <Modal showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type={this.state.modalType} />
+                <Modal showModal={this.state.showModal} username={this.props.user.username} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type={this.state.modalType} />
                 <div id="emptyDiv" />
             </div>
         );

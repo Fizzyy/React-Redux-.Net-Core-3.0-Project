@@ -4,7 +4,7 @@ import { axiosGet, axiosPost } from '../../CommonFunctions/axioses';
 import GameBlockInfo from './GameBlockInfo';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
-import { ORDERGAMES, GETGAMESBYREGEX, GETCURRENTPLATFORMGAMES, GETOFFERGAMES } from '../../CommonFunctions/URLconstants';
+import { ORDERGAMES, GETGAMESBYREGEX, GETCURRENTPLATFORMGAMES, GETOFFERGAMES, GETOFFERSBYREGEX, GETOFFERSFROMPLATFORM } from '../../CommonFunctions/URLconstants';
 import { search } from 'react-icons-kit/fa/search';
 import { Icon } from 'react-icons-kit';
 import Container from 'react-bootstrap/Container';
@@ -17,7 +17,10 @@ class Catalog extends React.Component {
         this.state = {
             games: [],
             orderingType1: 'Name',
-            orderingType2: 'Asc'
+            orderingType2: 'Asc',
+            gamePlatform: 'All',
+            gameGenre: 'All',
+            gameRating: 'All'
         }
     }
 
@@ -47,41 +50,65 @@ class Catalog extends React.Component {
                 if (res.status === 200) {
                     this.setState({ games: res.data });
                 }
-            })()
+            })();
         }
         if (this.state.orderingType1 !== preState.orderingType1 || this.state.orderingType2 !== preState.orderingType2) {
             (async () => {
-                let temp = this.state.orderingType1 + this.state.orderingType2;
-                let res = await axiosGet(ORDERGAMES + `GamePlatform=${this.props.match.params.gamePlatform}&Type=${temp}&TypeValue=${null}`);
+                let res = await axiosGet(ORDERGAMES + `gamePlatform=${this.props.match.params.gamePlatform}&type=${this.state.orderingType1 + this.state.orderingType2}&genre=${this.state.gameGenre}&age=${this.state.gameRating}%2B`);
                 if (res.status === 200) {
                     this.setState({ games: res.data });
                 }
-            })()
+            })();
         }
     }
 
-    setOrderType1 = (e) => {
+    setOrderType = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    getGamesByRating = async (e) => {
-        let res = await axiosGet(ORDERGAMES + `GamePlatform=${this.props.match.params.gamePlatform}&Type=Rating&TypeValue=${e.target.value}%2B`);
-        if (res.status == 200) {
+    getGamesByPlatform = async (e) => {
+        this.setState({ gamePlatform: e.target.value });
+        let res = await axiosGet(GETOFFERSFROMPLATFORM + e.target.value);
+        if (res.status === 200) {
             this.setState({ games: res.data });
+        }
+    }
+
+    getGamesByRating = async (e) => {
+        this.state.gameRating = e.target.value;
+        let res = await axiosGet(ORDERGAMES + `gamePlatform=${this.props.match.params.gamePlatform}&genre=${this.state.gameGenre}&age=${e.target.value}%2B`);
+        if (res.status == 200) {
+            this.setState({ games: res.data, gameRating: this.state.gameRating });
         }
     }
 
     getGamesByGenres = async (e) => {
-        let res = await axiosGet(ORDERGAMES + `GamePlatform=${this.props.match.params.gamePlatform}&Type=Genre&TypeValue=${e.target.value}`);
+        this.state.gameGenre = e.target.value;
+        let res = await axiosGet(ORDERGAMES + `gamePlatform=${this.props.match.params.gamePlatform}&genre=${e.target.value}&age=${this.state.gameRating}%2B`);
         if (res.status == 200) {
-            this.setState({ games: res.data });
+            this.setState({ games: res.data, gameGenre: this.state.gameGenre });
         }
     }
 
     getGamesByRegex = async (e) => {
-        let res = await axiosGet(GETGAMESBYREGEX + `GamePlatform=${this.props.match.params.gamePlatform}&GameName=${e.target.value}`);
-        if (res.status === 200) {
-            this.setState({ games: res.data });
+        if (!this.props.isItOffer) {
+            let res = await axiosGet(GETGAMESBYREGEX + `GamePlatform=${this.props.match.params.gamePlatform}&GameName=${e.target.value}`);
+            if (res.status === 200) {
+                this.setState({ games: res.data });
+            }
+        } else {
+            let res = await axiosGet(GETOFFERSBYREGEX + `GamePlatform=${this.state.gamePlatform}&GameName=${e.target.value}`);
+            if (res.status === 200) {
+                this.setState({ games: res.data });
+            }
+        }
+    }
+
+    getPlatformFullName = () => {
+        switch (this.props.match.params.gamePlatform) {
+            case 'PS4': return <i>PlayStation 4</i>;
+            case 'XBOXONE': return <i>Xbox One</i>;
+            case 'PC': return <i>PC</i>;
         }
     }
 
@@ -90,14 +117,14 @@ class Catalog extends React.Component {
             <div id="divMainCatalog">
                 <div id="divMainCatalog_Options">
                     <h2>
-                        {this.props.isItOffer ? "Акции" : this.props.match.params.gamePlatform}
+                        {this.props.isItOffer ? "Акции" : this.getPlatformFullName()}
                     </h2>
                     <div id="divMainCatalog_Options_Selects">
                         <h4 style={{ marginTop: '10px' }}>Сортировка:</h4>
                         <div className="criteria-type">
                             <div>
                                 <label>Критерий:</label>
-                                <select className="Selects" style={{ width: '100px' }} onChange={this.setOrderType1} name="orderingType1">
+                                <select className="Selects" onChange={this.setOrderType} name="orderingType1">
                                     <option value="Name">Имя</option>
                                     <option value="Price">Цена</option>
                                     <option value="Score">Рейтинг</option>
@@ -105,7 +132,7 @@ class Catalog extends React.Component {
                             </div>
                             <div>
                                 <label>Тип:</label>
-                                <select className="Selects" onChange={this.setOrderType1} name="orderingType2">
+                                <select className="Selects" onChange={this.setOrderType} name="orderingType2">
                                     <option value="Asc">По возрастанию</option>
                                     <option value="Desc">По убыванию</option>
                                 </select>
@@ -117,16 +144,16 @@ class Catalog extends React.Component {
                             <h4>Платформы:</h4>
                             <ul>
                                 <li className="liStyles" >
-                                    <input type="radio" name="jenres" value="All" defaultChecked onChange={this.getGamesByGenres} />Все
+                                    <input type="radio" name="platforms" value="All" defaultChecked onChange={this.getGamesByPlatform} />Все
                             </li>
                                 <li className="liStyles" >
-                                    <input type="radio" name="jenres" value="Shooter" onChange={this.getGamesByGenres} />PS4
+                                    <input type="radio" name="platforms" value="PS4" onChange={this.getGamesByPlatform} />Playstation 4
                             </li>
                                 <li className="liStyles" >
-                                    <input type="radio" name="jenres" value="Strategy" onChange={this.getGamesByGenres} />XONE
+                                    <input type="radio" name="platforms" value="XBOXONE" onChange={this.getGamesByPlatform} />Xbox One
                             </li>
                                 <li className="liStyles" >
-                                    <input type="radio" name="jenres" value="Racing" onChange={this.getGamesByGenres} />PC
+                                    <input type="radio" name="platforms" value="PC" onChange={this.getGamesByPlatform} />PC
                             </li>
                             </ul>
                         </div> : null
@@ -171,7 +198,7 @@ class Catalog extends React.Component {
                 </div>
                 <div id="divMainCatalog_Games">
                     <div>
-                        <InputGroup style={{ marginBottom: '20px', marginLeft: '30px', width: '30em' }}>
+                        <InputGroup className="searchField">
                             <InputGroup.Prepend>
                                 <InputGroup.Text id="btnGroupAddon">
                                     <Icon icon={search} size={18} />
@@ -188,7 +215,7 @@ class Catalog extends React.Component {
                     <div id="divMainCatalog_Games_GameBlockInfo">
                         <Container>
                             <Row className="bootstrap_RowCatalog">
-                                {this.state.games.map((x) => {
+                                {this.state.games.length !== 0 ? this.state.games.map((x) => {
                                     return (
                                         <Col md={3}>
                                             <GameBlockInfo
@@ -205,7 +232,7 @@ class Catalog extends React.Component {
                                             />
                                         </Col>
                                     )
-                                })}
+                                }) : <h4>Ваш запрос не дал результатов</h4>}
                             </Row>
                         </Container>
                     </div>

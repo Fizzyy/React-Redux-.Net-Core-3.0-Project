@@ -13,7 +13,7 @@ class Users extends React.Component {
         super(props);
         this.state = {
             users: [],
-            selectedUser: {},
+            selectedUser: null,
             showModal: false,
             showResetPass: false
         }
@@ -29,13 +29,15 @@ class Users extends React.Component {
     }
 
     componentDidUpdate(preProps, preState) {
-        if (this.state.selectedUser.banReason !== preState.selectedUser.banReason) {
-            (async () => {
-                let res = await axiosGet(GETFULLUSERINFO + this.state.selectedUser.username);
-                if (res.status === 200) {
-                    this.setState({ selectedUser: res.data });
-                }
-            })()
+        if (this.state.selectedUser && this.state.selectedUser.banReason) {
+            if ((preState.selectedUser && preState.selectedUser.banReason) && this.state.selectedUser.banReason !== preState.selectedUser.banReason) {
+                (async () => {
+                    let res = await axiosGet(GETFULLUSERINFO + this.state.selectedUser.username);
+                    if (res.status === 200) {
+                        this.setState({ selectedUser: res.data });
+                    }
+                })()
+            }
         }
     }
 
@@ -88,121 +90,123 @@ class Users extends React.Component {
                         </tbody>
                     </Table>
                 </div>
-                <div className="usersInfo">
-                    <div className="userDesc">
-                        <div>
-                            <CloudinaryContext cloudName="djlynoeio">
-                                <Image publicId={this.state.selectedUser.userImage} height="220" width="220" />
-                            </CloudinaryContext>
-                        </div>
-                        <div className="userShortInfo">
-                            {this.state.selectedUser.banReason === "-" ?
-                                <Button className="banButton" variant="outline-danger" onClick={this.banUser}>Забанить</Button>
-                                :
-                                <Button className="banButton" variant="outline-danger" onClick={this.unbanUser}>Разбанить</Button>
-                            }
-                            <div className="temps">
-                                <h1>{this.state.selectedUser.username}</h1>
+                {this.state.selectedUser ?
+                    <div className="usersInfo">
+                        <div className="userDesc">
+                            <div>
+                                <CloudinaryContext cloudName="djlynoeio">
+                                    <Image publicId={this.state.selectedUser.userImage} height="220" width="220" />
+                                </CloudinaryContext>
                             </div>
-                            <div className="temps">
-                                <span>Баланс: {this.state.selectedUser.userBalance}</span>
-                            </div>
-                            <div className="temps" name="passButton">
-                                {!this.state.showResetPass ?
-                                    <Button variant="outline-info" onClick={() => { this.setState({ showResetPass: true }) }}>Сбросить пароль</Button>
-                                    :
-                                    <>
-                                        <input type="text" />
-                                        <Button variant="outline-info" size="sm" className="resetPass" onClick={this.resetPassword}>Сбросить</Button>
-                                    </>
-                                }
-                            </div>
-                            <div className="temps">
+                            <div className="userShortInfo">
                                 {this.state.selectedUser.banReason === "-" ?
-                                    <div className="activeUser">Статус: активен</div>
-                                    : <>
-                                        <div className="bannedUser">Статус: забанен</div>
-                                        <div className="bannedUser">Причина: {this.state.selectedUser.banReason} ({Moment(this.state.selectedUser.banDate).format("DD-MM-YYYY")})</div>
-                                    </>}
+                                    <Button className="banButton" variant="outline-danger" onClick={this.banUser}>Забанить</Button>
+                                    :
+                                    <Button className="banButton" variant="outline-danger" onClick={this.unbanUser}>Разбанить</Button>
+                                }
+                                <div className="temps">
+                                    <h1>{this.state.selectedUser.username}</h1>
+                                </div>
+                                <div className="temps">
+                                    <span>Баланс: {this.state.selectedUser.userBalance}</span>
+                                </div>
+                                <div className="temps" name="passButton">
+                                    {!this.state.showResetPass ?
+                                        <Button variant="outline-info" onClick={() => { this.setState({ showResetPass: true }) }}>Сбросить пароль</Button>
+                                        :
+                                        <>
+                                            <input type="text" />
+                                            <Button variant="outline-info" size="sm" className="resetPass" onClick={this.resetPassword}>Сбросить</Button>
+                                        </>
+                                    }
+                                </div>
+                                <div className="temps">
+                                    {this.state.selectedUser.banReason === "-" ?
+                                        <div className="activeUser">Статус: активен</div>
+                                        : <>
+                                            <div className="bannedUser">Статус: забанен</div>
+                                            <div className="bannedUser">Причина: {this.state.selectedUser.banReason} ({Moment(this.state.selectedUser.banDate).format("DD-MM-YYYY")})</div>
+                                        </>}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="userTables">
+                            <div className="userGameMarks">
+                                <h1>Оценки</h1>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Название</th>
+                                            <th>Платформа</th>
+                                            <th>Оценка</th>
+                                        </tr>
+                                    </thead>
+                                    {this.state.selectedUser.gameMarks && this.state.selectedUser.gameMarks.length ? this.state.selectedUser.gameMarks.map((x) => {
+                                        return (
+                                            <tr key={x.scoreID}>
+                                                <td>{x.scoreID}</td>
+                                                <td>{x.gameName}</td>
+                                                <td>{x.gamePlatform}</td>
+                                                <td>{x.score}</td>
+                                            </tr>
+                                        );
+                                    }) : null}
+                                </Table>
+                            </div>
+                            <div className="userOrders">
+                                <h1>Заказы</h1>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Название</th>
+                                            <th>Платформа</th>
+                                            <th>Дата заказа</th>
+                                            <th>Сумма</th>
+                                        </tr>
+                                    </thead>
+                                    {this.state.selectedUser.orders && this.state.selectedUser.orders.length ? this.state.selectedUser.orders.map((x) => {
+                                        return (
+                                            <tr key={x.orderID}>
+                                                <td>{x.orderID}</td>
+                                                <td>{x.gameName}</td>
+                                                <td>{x.gamePlatform}</td>
+                                                <td>{Moment(x.orderDate).format("DD-MM-YYYY")}</td>
+                                                <td>{x.totalSum}</td>
+                                            </tr>
+                                        );
+                                    }) : null}
+                                </Table>
+                            </div>
+                            <div className="userFeedbacks">
+                                <h1>Комментарии</h1>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Название</th>
+                                            <th>Платформа</th>
+                                            <th>Дата</th>
+                                            <th>Комментарий</th>
+                                        </tr>
+                                    </thead>
+                                    {this.state.selectedUser.feedbacks && this.state.selectedUser.feedbacks.length ? this.state.selectedUser.feedbacks.map((x) => {
+                                        return (
+                                            <tr key={x.commentID}>
+                                                <td>{x.commentID}</td>
+                                                <td>{x.gameName}</td>
+                                                <td>{x.gamePlatform}</td>
+                                                <td>{Moment(x.orderDate).format("DD-MM-YYYY")}</td>
+                                                <td>{x.comment}</td>
+                                            </tr>
+                                        );
+                                    }) : null}
+                                </Table>
                             </div>
                         </div>
                     </div>
-                    <div className="userTables">
-                        <div className="userGameMarks">
-                            <h1>Оценки</h1>
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Название</th>
-                                        <th>Платформа</th>
-                                        <th>Оценка</th>
-                                    </tr>
-                                </thead>
-                                {this.state.selectedUser.gameMarks && this.state.selectedUser.gameMarks.length ? this.state.selectedUser.gameMarks.map((x) => {
-                                    return (
-                                        <tr key={x.scoreID}>
-                                            <td>{x.scoreID}</td>
-                                            <td>{x.gameName}</td>
-                                            <td>{x.gamePlatform}</td>
-                                            <td>{x.score}</td>
-                                        </tr>
-                                    );
-                                }) : null}
-                            </Table>
-                        </div>
-                        <div className="userOrders">
-                            <h1>Заказы</h1>
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Название</th>
-                                        <th>Платформа</th>
-                                        <th>Дата заказа</th>
-                                        <th>Сумма</th>
-                                    </tr>
-                                </thead>
-                                {this.state.selectedUser.orders && this.state.selectedUser.orders.length ? this.state.selectedUser.orders.map((x) => {
-                                    return (
-                                        <tr key={x.orderID}>
-                                            <td>{x.orderID}</td>
-                                            <td>{x.gameName}</td>
-                                            <td>{x.gamePlatform}</td>
-                                            <td>{Moment(x.orderDate).format("DD-MM-YYYY")}</td>
-                                            <td>{x.totalSum}</td>
-                                        </tr>
-                                    );
-                                }) : null}
-                            </Table>
-                        </div>
-                        <div className="userFeedbacks">
-                            <h1>Комментарии</h1>
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Название</th>
-                                        <th>Платформа</th>
-                                        <th>Дата</th>
-                                        <th>Комментарий</th>
-                                    </tr>
-                                </thead>
-                                {this.state.selectedUser.feedbacks && this.state.selectedUser.feedbacks.length ? this.state.selectedUser.feedbacks.map((x) => {
-                                    return (
-                                        <tr key={x.commentID}>
-                                            <td>{x.commentID}</td>
-                                            <td>{x.gameName}</td>
-                                            <td>{x.gamePlatform}</td>
-                                            <td>{Moment(x.orderDate).format("DD-MM-YYYY")}</td>
-                                            <td>{x.comment}</td>
-                                        </tr>
-                                    );
-                                }) : null}
-                            </Table>
-                        </div>
-                    </div>
-                </div>
+                    : null}
             </div>
         );
     }

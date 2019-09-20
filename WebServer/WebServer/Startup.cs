@@ -73,9 +73,12 @@ namespace WebServer
             services.AddTransient<IOffersRepository, OffersRepository>();
             services.AddTransient<IOffersService, OffersService>();
 
+            services.AddTransient<IMoneyKeysRepository, MoneyKeysRepository>();
+            services.AddTransient<IMoneyKeysService, MoneyKeysService>();
+
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("MyPolicy", policy => policy.Requirements.Add(new AccountRequirement()));
+                options.AddPolicy("MyPolicy", policy => policy.Requirements.Add(new AuthFilter()));
             });
             services.AddScoped<IAuthorizationHandler, AuthFilter>();
             //services.AddHttpContextAccessor();

@@ -7,6 +7,7 @@ const returnuserbalance = '/ReturnUserBalance/';
 const signoutuser = '/SignOut/';
 const getallusers1 = '/GetAllUsers';
 const getfulluserinfo = '/GetUserFullInfo/';
+const resetpassword = '/ResetPassword?';
 
 const baseURLcatalog = MainURL + 'api/Game';
 const getallgames1 = '/GetAllGames'
@@ -41,10 +42,16 @@ const deletescore = '/DeleteScore?';
 
 const baseURLoffers = MainURL + 'api/Offers';
 const getalloffers = '/GetOfferGames';
+const getoffersbyregex = '/GetOffersByRegex?';
+const getoffersfromplatform = '/GetOffersFromPlatform/';
 
 const baseURLbannedusers = MainURL + 'api/BannedUsers';
 const banuser = '/GrantBan';
 const revokeban = '/RevokeBan/';
+
+const baseURLbalance = MainURL + 'api/MoneyKeys';
+const activatekey = '/ActivateKey?';
+const addkey = '/AddKey';
 
 export const REGISTRATION = baseURLuser + register;
 export const AUTHORIZATION = baseURLuser + login;
@@ -52,6 +59,7 @@ export const USERBALANCE = baseURLuser + returnuserbalance;
 export const SIGNOUTUSER = baseURLuser + signoutuser;
 export const GETALLUSERS = baseURLuser + getallusers1;
 export const GETFULLUSERINFO = baseURLuser + getfulluserinfo;
+export const RESETPASSWORD = baseURLuser + resetpassword;
 
 export const GETALLGAMES = baseURLcatalog + getallgames1;
 export const GETCURRENTPLATFORMGAMES = baseURLcatalog + GetCurrentPlatformGames1;
@@ -81,6 +89,11 @@ export const ADDSCORE = baseURLgamemark + addscore;
 export const DELETEGAMEMARK = baseURLgamemark + deletescore;
 
 export const GETOFFERGAMES = baseURLoffers + getalloffers;
+export const GETOFFERSBYREGEX = baseURLoffers + getoffersbyregex;
+export const GETOFFERSFROMPLATFORM = baseURLoffers + getoffersfromplatform;
 
 export const BANUSER = baseURLbannedusers + banuser;
 export const REVOKEBAN = baseURLbannedusers + revokeban;
+
+export const ACTIVATEKEY = baseURLbalance + activatekey;
+export const ADDKEY = baseURLbalance + addkey;

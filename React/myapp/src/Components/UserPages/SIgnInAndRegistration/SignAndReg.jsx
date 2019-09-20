@@ -1,14 +1,15 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import '../SIgnInAndRegistration/SignAndReg.css';
+import '../SIgnInAndRegistration/SignAndReg.scss';
 import { Icon } from 'react-icons-kit';
 import { user_circle } from 'react-icons-kit/ikons/user_circle';
 import { key } from 'react-icons-kit/ionicons/key';
 import axios from 'axios';
-import { AUTHORIZATION, REGISTRATION } from '../../CommonFunctions/URLconstants';
+import { AUTHORIZATION, REGISTRATION, ACTIVATEKEY, RESETPASSWORD } from '../../CommonFunctions/URLconstants';
 import store from '../../_REDUX/Storage';
 import jwt_decode from 'jwt-decode';
+import { axiosPost } from '../../CommonFunctions/axioses';
 
 class SignInAndRegistration extends React.Component {
     constructor(props) {
@@ -16,9 +17,11 @@ class SignInAndRegistration extends React.Component {
         this.state = {
             show: false,
             username: '',
+            oldPassword: '',
             password1: '',
             password2: '',
-            arePasswordsSame: false
+            arePasswordsSame: true,
+            isOldPassCorrect: true
         }
     }
 
@@ -26,9 +29,14 @@ class SignInAndRegistration extends React.Component {
         this.setState({ show: this.props.showModal });
     }
 
-    componentDidUpdate(preProps) {
+    componentDidUpdate(preProps, preState) {
         if (this.props.showModal !== preProps.showModal) {
             this.setState({ show: this.props.showModal });
+        }
+
+        if (this.state.password2 !== preState.password2 || this.state.password1 !== preState.password1) {
+            if (this.state.password1 === this.state.password2) this.setState({ arePasswordsSame: true });
+            else this.setState({ arePasswordsSame: false });
         }
     }
 
@@ -65,6 +73,33 @@ class SignInAndRegistration extends React.Component {
         this.handleClose();
     }
 
+    updateUserBalance = async () => {
+        let res = await axiosPost(ACTIVATEKEY + `username=${this.props.username}&keycode=${this.state.password1}`);
+        if (res.status === 200) {
+            if (Number(res.data) === 0) this.setState({ isOldPassCorrect: false });
+            else {
+                store.dispatch({ type: 'UPDATE_BALANCE', userBalance: Number(res.data) });
+                this.setState({ show: false });
+            }
+        }
+    }
+
+    resetPassword = async () => {
+        let res = await axiosPost(RESETPASSWORD + `username=${this.props.username}&oldpassword=${this.state.oldPassword}&newpassword=${this.state.password1}`);
+        if (res.status === 200) this.setState({ show: false });
+        if (res.status === 204) this.setState({ isOldPassCorrect: false });
+    }
+
+    propsToButton = () => {
+        switch (this.props.type) {
+            case 'login': return <Button variant="outline-primary" onClick={this.sendDataToServer} id="SignInButton">Вход</Button>;
+            case 'registration': return <Button variant="outline-success" onClick={this.sendDataToServer} id="SignInButton">Регистрация</Button>;
+            case 'balance': return <Button variant="outline-info" id="SignInButton" onClick={this.updateUserBalance}>Пополнить</Button>;
+            case 'password': return <Button variant="outline-primary" id="SignInButton" onClick={this.resetPassword}>Обновить</Button>;
+            case 'ban': return <Button variant="outline-danger" id="SignInButton">Забанить</Button>;
+        }
+    }
+
     login = () => {
         return (
             <>
@@ -97,13 +132,57 @@ class SignInAndRegistration extends React.Component {
 
     updateBalance = () => {
         return (
-            <h1>balance</h1>
+            <div className="updateBalanceBody">
+                <div>
+                    <span>Введите код: </span>
+                    <input type="text" name="password1" onChange={this.checkNewPasswords} />
+                </div>
+                {!this.state.isOldPassCorrect ?
+                    <span className="statusMessage" style={{ color: 'red' }}>Данный код недействителен</span>
+                    : null}
+            </div>
         );
+    }
+
+    checkNewPasswords = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     updatePassword = () => {
         return (
-            <h1>password</h1>
+            <div className="updatePasswordBody">
+                <div className="passwordSpans">
+                    <div>
+                        <span>Старый пароль:</span>
+                    </div>
+                    <div>
+                        <span>Новый пароль:</span>
+                    </div>
+                    <div>
+                        <span>Подтвердите пароль:</span>
+                    </div>
+                </div>
+                <div className="passwordInputs">
+                    <div>
+                        <input type="password" onChange={this.checkNewPasswords} name="oldPassword" />
+                        {!this.state.isOldPassCorrect ?
+                            <label>Неверный пароль</label>
+                            : null}
+                    </div>
+                    <div>
+                        <input type="password" onChange={this.checkNewPasswords} name="password1" />
+                        {!this.state.arePasswordsSame ?
+                            <label>пароли не совпадают</label>
+                            : null}
+                    </div>
+                    <div>
+                        <input type="password" onChange={this.checkNewPasswords} name="password2" />
+                        {!this.state.arePasswordsSame ?
+                            <label>пароли не совпадают</label>
+                            : null}
+                    </div>
+                </div>
+            </div>
         );
     }
 
@@ -139,17 +218,7 @@ class SignInAndRegistration extends React.Component {
                     })()}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="outline-primary" onClick={this.sendDataToServer} id="SignInButton">
-                        {(() => {
-                            switch (this.props.type) {
-                                case 'login': return "Вход";
-                                case 'registration': return "Регистрация";
-                                case 'balance': return "Пополнить";
-                                case 'password': return "Обновить";
-                                case 'ban': return "Забанить";
-                            }
-                        })()}
-                    </Button>
+                    {this.propsToButton()}
                 </Modal.Footer>
             </Modal>
         );

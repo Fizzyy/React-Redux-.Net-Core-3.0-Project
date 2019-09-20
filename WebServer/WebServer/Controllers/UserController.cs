@@ -93,6 +93,18 @@ namespace WebServer.Controllers
         }
 
         [HttpPost]
+        [Route("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromQuery]string Username, [FromQuery]string OldPassword, [FromQuery]string NewPassword)
+        {
+            if (Username != null && OldPassword != null && NewPassword != null)
+            {
+                var res = await userService.ResetPassword(Username, OldPassword, NewPassword);
+                return Ok(res);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
         [Route("RefreshToken")]
         public async Task<IActionResult> RefreshToken()
         {

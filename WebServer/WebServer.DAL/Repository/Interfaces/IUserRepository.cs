@@ -12,6 +12,8 @@ namespace WebServer.DAL.Repository.Interfaces
 
         Task<User> GetCurrentUser(string Username);
 
+        Task<string> ResetPassword(string Username, string OldPassword, string NewPassword);
+
         Task AddUser(User user);
 
         Task<User> CheckUser(User user);

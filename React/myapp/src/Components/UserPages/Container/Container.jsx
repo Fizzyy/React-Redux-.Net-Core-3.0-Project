@@ -5,7 +5,7 @@ import Footer from '../Footer/Footer';
 import { Route, Redirect } from 'react-router-dom';
 import StartPage from '../StartPage/StartPage';
 import Catalog from '../Catalog/Catalog';
-import GameDescription from '../GameDescription/GameDescription';
+import GameDescription2 from '../GameDescription/GameDescription2';
 import AccountSettings from '../AccountSettings/AccountSettings';
 import MyOrders from '../MyOrders/MyOrders';
 import SignInAndRegistration from '../SIgnInAndRegistration/SignAndReg';
@@ -39,7 +39,7 @@ class Container extends React.Component {
                         <Route path="/SignUp" render={props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="registration" />} />
                         <Route path="/Catalog">
                             <Route exact path="/Catalog/:gamePlatform" render={props => <Catalog {...props} />} />
-                            <Route exact path="/Catalog/:gamePlatform/:gameID" render={props => <GameDescription {...props} />} />
+                            <Route exact path="/Catalog/:gamePlatform/:gameID" render={props => <GameDescription2 {...props} />} />
                         </Route>
                         <Route path="/AccountSettings" render={props => <AccountSettings {...props} />} />
                         <Route path="/MyOrders" component={MyOrders} />

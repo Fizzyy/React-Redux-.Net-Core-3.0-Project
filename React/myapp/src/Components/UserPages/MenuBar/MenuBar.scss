@@ -3,7 +3,7 @@
     height: 7.5em;
     background-color: black;
     position: fixed;
-    z-index: 10;
+    z-index: 20;
 }
 
 .divMainBar_divsInsideBar {
@@ -21,19 +21,22 @@
     width: 13%;
     height: 100%;
     right: 0;
-}
-
-#divUserInfo {
-    position: absolute;
-    top: 3%;
-    left: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .divUserInfo_divs {
-    position: relative;
-    margin-top: 20px;
     text-align: left;
     color: whitesmoke;
+    
+    &:first-child {
+        padding-bottom: 10px;
+    }
+
+    &:last-child {
+        padding-top: 10px;
+    }
 }
 
 .divForUnloggedUser {
@@ -61,6 +64,27 @@
     font-size: 20px;
     background-color: black;
     border-color: black;
+
+    .btn {
+        &:focus {
+            box-shadow: none;
+            outline: 0;
+        }
+    }
+
+    .btn-primary {
+        &:focus {
+        box-shadow: none;
+        outline: 0;
+        }
+    }
+
+    .btn-primary.dropdown-toggle {
+        &:focus {
+        box-shadow: none;
+        outline: 0;
+        }
+    }
 }
 
 #dropDownButton:active {

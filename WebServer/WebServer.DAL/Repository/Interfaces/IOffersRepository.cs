@@ -8,7 +8,7 @@ namespace WebServer.DAL.Repository.Interfaces
 {
     public interface IOffersRepository
     {
-        Task<IEnumerable<Offers>> GetAllOffers();
+        Task<IEnumerable<Offers>> GetAllOffers(); 
 
         Task AddGameOffer(Offers offer);
 

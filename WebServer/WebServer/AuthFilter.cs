@@ -18,13 +18,13 @@ namespace WebServer
 {
     public class AccountRequirement : IAuthorizationRequirement { }
 
-    public class AuthFilter : AuthorizationHandler<AccountRequirement>
+    public class AuthFilter : AuthorizationHandler<AuthFilter>, IAuthorizationRequirement
     {
         private readonly IRefreshTokensService refreshTokensService;
         private readonly IHttpContextAccessor httpContextAccessor;
         protected string role;
 
-        //public AuthFilter() { }
+        public AuthFilter() { }
 
         public AuthFilter(IRefreshTokensService refreshTokensService, IHttpContextAccessor httpContextAccessor)
         {
@@ -32,7 +32,7 @@ namespace WebServer
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AccountRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthFilter requirement)
         {
             try
             { 
@@ -91,10 +91,7 @@ namespace WebServer
                     string temp = (string)propertyInfo.GetValue(token, null);
 
                     httpContext.Response.Headers["AccessToken"] = temp;
-                    httpContext.Response.Headers["RefreshToken"]= newRefreshToken;
-
-                    //httpContext.Request.Headers["AccessToken"] = temp;
-                    //httpContext.Request.Headers["RefreshToken"] = newRefreshToken;
+                    httpContext.Response.Headers["RefreshToken"] = newRefreshToken;
                 }
             }
             catch (Exception e)

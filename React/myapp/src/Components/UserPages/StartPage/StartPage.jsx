@@ -1,9 +1,10 @@
 import React from 'react';
-import '../StartPage/StartPage.css';
+import '../StartPage/StartPage.scss';
 import Carousel from 'react-bootstrap/Carousel';
 import PC1 from '../../../pc1.jpg';
 import PC2 from '../../../pc2.jpg';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class StartPage extends React.Component {
     constructor(props) {
@@ -12,28 +13,17 @@ class StartPage extends React.Component {
 
     render() {
         return (
-            <div id="divMainStartPage">
-                <div id="divMainStartPage_header">
-                    <h2>Добро пожаловать!</h2>
-                </div>
-                <div id="divForCarousel">
-                    <div id="divCarouselContainer">
-                        <Carousel>
-                            <Carousel.Item>
-                                <img className="d-block w-100" src={PC1} />
-                                <Carousel.Caption>
-                                    <h3>First slide label</h3>
-                                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img className="d-block w-100" src={PC2} />
-                                <Carousel.Caption>
-                                    <h3>Second slide label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
-                        </Carousel>
+            <div id="mainStartPage">
+                {this.props.user.username !== "Войти" ?
+                    <div className="userGreeting">
+                        <h2>С возвращением, {this.props.user.username}!</h2>
+                    </div>
+                    : null}
+                <div className="mainContainer">
+                    <div className="platformContainer">
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 </div>
             </div>
@@ -41,4 +31,10 @@ class StartPage extends React.Component {
     }
 }
 
-export default StartPage;
+const mapStateToProps = function (store) {
+    return {
+        user: store
+    };
+}
+
+export default connect(mapStateToProps)(StartPage);

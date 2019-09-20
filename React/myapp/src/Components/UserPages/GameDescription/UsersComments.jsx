@@ -12,7 +12,7 @@ class UsersComments extends React.Component {
         return (
             <div id="divMainUsersComments">
                 <div className="div_UserData">
-                    <div style={{ marginLeft: '5px' }}>
+                    <div>
                         <CloudinaryContext cloudName="djlynoeio">
                             <Image publicId={this.props.userImage}>
                                 <Transformation height="45" width="45" crop="fill" radius="max" />

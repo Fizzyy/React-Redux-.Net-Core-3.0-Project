@@ -57,6 +57,12 @@ namespace WebServer.Services.Services
             return userRepository.AddUser(new User { Username = user.Username, Password = Encrypting.GetHashFromPassword(user.Password), UserBalance = 0, Role = "User" });
         }
 
+        public async Task<string> ResetPassword(string Username, string OldPassword, string NewPassword)
+        {
+            var str = await userRepository.ResetPassword(Username, Encrypting.GetHashFromPassword(OldPassword), Encrypting.GetHashFromPassword(NewPassword));
+            return str;
+        }
+
         public async Task<object> CheckUser(UserBll user)
         {
             var founduser = await userRepository.CheckUser(new User { Username = user.Username, Password = Encrypting.GetHashFromPassword(user.Password) });

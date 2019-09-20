@@ -48,11 +48,11 @@ namespace WebServer.Services.Services
             return userscores;
         }
 
-        public async Task<double> AddScore(GameMarkBll score)
+        public async Task<GameFinalScores> AddScore(GameMarkBll score)
         {
             await gameMarkRepository.AddScore(new GameMark { Username = score.Username, GameID = score.GameID, Score = score.Score, GameMarkDate = DateTime.Now.Date });
             var obj = await gameFinalScoreRepository.UpdateScore(new GameFinalScores { GameID = score.GameID });
-            return obj.GameScore;
+            return obj;
         }
 
         public async Task<List<UserScoresBll>> RemoveScore(string Username, int GameMarkID)

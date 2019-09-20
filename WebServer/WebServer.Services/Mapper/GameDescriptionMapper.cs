@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WebServer.DAL.Models;
 using WebServer.Services.ModelsBll;
@@ -15,7 +16,7 @@ namespace WebServer.Services.Mapper
             {
                 GameID = game.GameID,
                 GameName = game.GameName,
-                GamePrice = offer != null ? offer.GameNewPrice : 0,
+                GamePrice = offer != null ? offer.GameNewPrice : game.GamePrice,
                 OldGamePrice = game.GamePrice,
                 AmountOfVotes = scores.AmountOfVotes,
                 GameScore = scores.GameScore,
@@ -27,6 +28,20 @@ namespace WebServer.Services.Mapper
                 Feedbacks = feedbacks,
                 UserScore = UserScore
             };
+        }
+
+        public static List<GameDescriptionBll> OrderGamesBy(string Type, List<GameDescriptionBll> games)
+        {
+            switch(Type)
+            {
+                case "NameAsc": games = games.OrderBy(x => x.GameName).ToList(); break;
+                case "NameDesc": games = games.OrderByDescending(x => x.GameName).ToList(); break;
+                case "PriceAsc": games = games.OrderBy(x => x.GamePrice).ToList(); break;
+                case "PriceDesc": games = games.OrderByDescending(x => x.GamePrice).ToList(); break;
+                case "ScoreAsc": games = games.OrderBy(x => x.GameScore).ToList(); break;
+                case "ScoreDesc": games = games.OrderByDescending(x => x.GameScore).ToList(); break;
+            }
+            return games;
         }
     }
 }

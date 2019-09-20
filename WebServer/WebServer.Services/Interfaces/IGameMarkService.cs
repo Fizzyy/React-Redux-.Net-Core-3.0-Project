@@ -12,7 +12,7 @@ namespace WebServer.Services.Interfaces
     {
         Task<List<UserScoresBll>> GetAllUserScores(string Username);
 
-        Task<double> AddScore(GameMarkBll score);
+        Task<GameFinalScores> AddScore(GameMarkBll score);
 
         Task<List<UserScoresBll>> RemoveScore(string Username, int GameMarkID);
     }

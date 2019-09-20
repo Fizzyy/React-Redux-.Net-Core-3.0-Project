@@ -31,6 +31,18 @@ namespace WebServer.DAL.Repository.Classes
             return null;
         }
 
+        public async Task<string> ResetPassword(string Username, string OldPassword, string NewPassword)
+        {
+            var user = await commonContext.Users.FirstOrDefaultAsync(x => x.Username == Username && x.Password == OldPassword);
+            if (user != null)
+            {
+                user.Password = NewPassword;
+                await commonContext.SaveChangesAsync();
+                return "Ok";
+            }
+            return null;
+        }
+
         public async Task AddUser(User user)
         {
             foreach (var person in commonContext.Users)

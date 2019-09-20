@@ -27,6 +27,26 @@ namespace WebServer.Controllers
             return Ok(OfferGames);
         }
 
+        [HttpGet]
+        [Route("GetOffersByRegex")]
+        public async Task<IActionResult> GetOffersByRegex([FromQuery]string GamePlatform, [FromQuery]string GameName)
+        {
+            var offergames = await offersService.GetOffersByRegex(GamePlatform, GameName);
+            return Ok(offergames);
+        }
+
+        [HttpGet]
+        [Route("GetOffersFromPlatform/{GamePlatform}")]
+        public async Task<IActionResult> GetOffersFromPlatform(string GamePlatform)
+        {
+            if (GamePlatform != null)
+            {
+                var offergames = await offersService.GetOffersFromPlatform(GamePlatform);
+                return Ok(offergames);
+            }
+            return NotFound();
+        }
+
         [HttpPost]
         [Route("AddOffer")]
         public async Task<IActionResult> AddOffer([FromBody]OffersBll model)

@@ -1,0 +1,36 @@
+#mainStartPage {
+    width: 100%;
+    min-height: 52em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.userGreeting {
+    height: 3em;
+    background-color: skyblue;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainContainer {
+    width: 80%;
+    height: 60em;
+    background-color: palevioletred;
+
+    .platformContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+
+        div {
+            width: 400px;
+            min-height: 300px;
+            background-color: red;
+            border-radius: 20px;
+        }
+    }
+}
