@@ -45,21 +45,28 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task<List<Game>> GetGamesByRegex(string GamePlatform, string GameName)
         {
-            List<Game> games = new List<Game>();
-            List<Game> platformgames = new List<Game>();
-
-            if (GamePlatform != "All") platformgames = await commonContext.Games.Where(x => x.GamePlatform == GamePlatform).ToListAsync();
-            else platformgames = await commonContext.Games.ToListAsync();
-
-            if (GameName == null || GameName == "") return platformgames;
-
-            Regex regex = new Regex($@"^{GameName}\w*", RegexOptions.IgnoreCase);
-            foreach (var game in platformgames)
+            try
             {
-                Match match = regex.Match(game.GameName);
-                if (match.Success) games.Add(game); 
+                List<Game> games = new List<Game>();
+                List<Game> platformgames = new List<Game>();
+
+                if (GamePlatform != "All") platformgames = await commonContext.Games.Where(x => x.GamePlatform == GamePlatform).ToListAsync();
+                else platformgames = await commonContext.Games.ToListAsync();
+
+                if (GameName == null || GameName == "") return platformgames;
+
+                Regex regex = new Regex($@"^{GameName}\w*", RegexOptions.IgnoreCase);
+                foreach (var game in platformgames)
+                {
+                    Match match = regex.Match(game.GameName);
+                    if (match.Success) games.Add(game);
+                }
+                return games;
             }
-            return games;
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public async Task AddGame(Game game)

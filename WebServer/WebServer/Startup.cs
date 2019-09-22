@@ -76,6 +76,8 @@ namespace WebServer
             services.AddTransient<IMoneyKeysRepository, MoneyKeysRepository>();
             services.AddTransient<IMoneyKeysService, MoneyKeysService>();
 
+            services.AddSignalR();
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("MyPolicy", policy => policy.Requirements.Add(new AuthFilter()));
@@ -131,6 +133,10 @@ namespace WebServer
                 //.AllowCredentials()
                 );
 
+            //app.UseSignalR(routes => routes.MapHub<SignalR>("/chat"));
+
+            app.UseMvc();
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -144,6 +150,7 @@ namespace WebServer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<SignalR>("/chat");
             });
         }
     }

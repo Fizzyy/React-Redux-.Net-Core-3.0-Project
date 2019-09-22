@@ -131,5 +131,13 @@ namespace WebServer.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("GetGameForStartPage")]
+        public async Task<IActionResult> GetGameForStartPage()
+        {
+            var games = await gameService.GetGamesForStartPage();
+            return Ok(games);
+        }
     }
 }

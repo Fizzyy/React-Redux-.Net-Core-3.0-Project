@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebServer.DAL.Context;
@@ -60,6 +61,11 @@ namespace WebServer.DAL.Repository.Classes
                 FoundOffer.GameNewPrice = tempCost;
             }
             await commonContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Offers>> GetTop3()
+        {
+            return await Task.FromResult(commonContext.Offers.OrderBy(x => x.GameNewPrice).Take(3));
         }
     }
 }

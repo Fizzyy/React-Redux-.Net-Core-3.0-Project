@@ -29,7 +29,7 @@ namespace WebServer.DAL.Models
 
         public string GameImage { get; set; }
 
-        public bool isActive { get; set; }
+        //public bool isActive { get; set; }
 
         public List<Orders> Orders { get; set; }
         public List<Feedback> Feedbacks { get; set; }

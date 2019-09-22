@@ -9,6 +9,8 @@ namespace WebServer.DAL.Repository.Interfaces
 {
     public interface IGameFinalScoreRepository
     {
+        Task<IEnumerable<GameFinalScores>> GetTopFinalScores3();
+
         Task<GameFinalScores> GetGame(string GameID);
 
         Task<GameFinalScores> UpdateScore(GameFinalScores game);

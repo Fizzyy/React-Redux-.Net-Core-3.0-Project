@@ -217,7 +217,7 @@ class Catalog extends React.Component {
                             <Row className="bootstrap_RowCatalog">
                                 {this.state.games.length !== 0 ? this.state.games.map((x) => {
                                     return (
-                                        <Col md={3}>
+                                        <Col md={3} sm={4}>
                                             <GameBlockInfo
                                                 gameID={x.gameID}
                                                 gameName={x.gameName}

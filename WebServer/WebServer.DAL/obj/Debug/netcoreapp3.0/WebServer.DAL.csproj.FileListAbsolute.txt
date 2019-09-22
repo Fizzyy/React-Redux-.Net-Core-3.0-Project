@@ -20,3 +20,14 @@ D:\Kursach\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.Assembl
 D:\Kursach\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.AssemblyInfo.cs
 D:\Kursach\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.dll
 D:\Kursach\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.pdb
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.csprojAssemblyReference.cache
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.csproj.CoreCompileInputs.cache
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.AssemblyInfoInputs.cache
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.AssemblyInfo.cs
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.dll
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.pdb
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\bin\Debug\netcoreapp3.0\WebServer.DAL.deps.json
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\bin\Debug\netcoreapp3.0\WebServer.DAL.runtimeconfig.json
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\bin\Debug\netcoreapp3.0\WebServer.DAL.runtimeconfig.dev.json
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\bin\Debug\netcoreapp3.0\WebServer.DAL.dll
+D:\TechArt\FinishedProject\WebServer\WebServer.DAL\bin\Debug\netcoreapp3.0\WebServer.DAL.pdb

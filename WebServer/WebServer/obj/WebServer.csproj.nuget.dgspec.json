@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Kursach\\WebServer\\WebServer\\WebServer.csproj": {}
+    "D:\\TechArt\\FinishedProject\\WebServer\\WebServer\\WebServer.csproj": {}
   },
   "projects": {
-    "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
+    "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
+        "projectUniqueName": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
         "projectName": "WebServer.DAL",
-        "projectPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
-        "packagesPath": "C:\\Users\\Dzmitry.Yaniuk\\.nuget\\packages\\",
-        "outputPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\obj\\",
+        "projectPath": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
+        "packagesPath": "C:\\Users\\Fizzyy\\.nuget\\packages\\",
+        "outputPath": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Dzmitry.Yaniuk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Fizzyy\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -81,20 +81,20 @@
         }
       }
     },
-    "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj": {
+    "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
+        "projectUniqueName": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
         "projectName": "WebServer.Services",
-        "projectPath": "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
-        "packagesPath": "C:\\Users\\Dzmitry.Yaniuk\\.nuget\\packages\\",
-        "outputPath": "D:\\Kursach\\WebServer\\WebServer.Services\\obj\\",
+        "projectPath": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj",
+        "packagesPath": "C:\\Users\\Fizzyy\\.nuget\\packages\\",
+        "outputPath": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Dzmitry.Yaniuk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Fizzyy\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -107,8 +107,8 @@
         "frameworks": {
           "netcoreapp3.0": {
             "projectReferences": {
-              "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
-                "projectPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
+              "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
+                "projectPath": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
               }
             }
           }
@@ -156,20 +156,20 @@
         }
       }
     },
-    "D:\\Kursach\\WebServer\\WebServer\\WebServer.csproj": {
+    "D:\\TechArt\\FinishedProject\\WebServer\\WebServer\\WebServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Kursach\\WebServer\\WebServer\\WebServer.csproj",
+        "projectUniqueName": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer\\WebServer.csproj",
         "projectName": "WebServer",
-        "projectPath": "D:\\Kursach\\WebServer\\WebServer\\WebServer.csproj",
-        "packagesPath": "C:\\Users\\Dzmitry.Yaniuk\\.nuget\\packages\\",
-        "outputPath": "D:\\Kursach\\WebServer\\WebServer\\obj\\",
+        "projectPath": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer\\WebServer.csproj",
+        "packagesPath": "C:\\Users\\Fizzyy\\.nuget\\packages\\",
+        "outputPath": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Dzmitry.Yaniuk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Fizzyy\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -182,11 +182,11 @@
         "frameworks": {
           "netcoreapp3.0": {
             "projectReferences": {
-              "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
-                "projectPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
+              "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj": {
+                "projectPath": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj"
               },
-              "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj": {
-                "projectPath": "D:\\Kursach\\WebServer\\WebServer.Services\\WebServer.Services.csproj"
+              "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj": {
+                "projectPath": "D:\\TechArt\\FinishedProject\\WebServer\\WebServer.Services\\WebServer.Services.csproj"
               }
             }
           }

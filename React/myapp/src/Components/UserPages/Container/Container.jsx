@@ -17,6 +17,7 @@ import AdminMenuBar from '../../AdminPages/MenuBar/MenuBar';
 import Games from '../../AdminPages/Games/Games';
 import Users from '../../AdminPages/Users/Users';
 import Offers from '../../AdminPages/Offers/Offers';
+import Chat from '../Chat/Chat';
 
 class Container extends React.Component {
     constructor(props) {
@@ -44,6 +45,7 @@ class Container extends React.Component {
                         <Route path="/AccountSettings" render={props => <AccountSettings {...props} />} />
                         <Route path="/MyOrders" component={MyOrders} />
                         <Route path="/Offers" render={props => <Catalog {...props} isItOffer={true} />} />
+                        <Route path="/Chat" component={Chat} />
                         {/* <Redirect to="/" /> */}
                         <NotificationContainer />
                     </div>

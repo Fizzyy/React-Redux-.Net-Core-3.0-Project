@@ -22,6 +22,8 @@ namespace WebServer.Services.Interfaces
 
         Task<List<GameDescriptionBll>> GetGamesByRegex(string GamePlatform, string GameName);
 
+        Task<object> GetGamesForStartPage();
+
         Task AddGame(GameBll game);
 
         Task UpdateGame(GameBll game);

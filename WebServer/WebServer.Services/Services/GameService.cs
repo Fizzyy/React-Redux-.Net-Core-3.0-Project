@@ -195,5 +195,37 @@ namespace WebServer.Services.Services
         {
             await gameRepository.RemoveGame(GameID);
         }
+
+        public async Task<object> GetGamesForStartPage()
+        {
+            var TopOfferRatedGames = await offersRepository.GetTop3();
+            var TopVotedGames = await gameFinalScoreRepository.GetTopFinalScores3();
+
+            var RatedGames = new List<GameDescriptionBll>();
+            var VotedGames = new List<GameDescriptionBll>();
+
+            foreach (var game in TopOfferRatedGames)
+            {
+                var gamedesc = await gameRepository.GetChosenGame(game.GameID);
+                var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
+
+                RatedGames.Add(GameDescriptionMapper.GetGameDescription(gamedesc, game, gamescores, null, 0));
+            }
+
+
+            foreach (var game in TopVotedGames)
+            {
+                var gamedesc = await gameRepository.GetChosenGame(game.GameID);
+                var gameoffer = await offersRepository.GetOffer(game.GameID);
+
+                VotedGames.Add(GameDescriptionMapper.GetGameDescription(gamedesc, gameoffer, game, null, 0));
+            }
+
+            return new
+            {
+                Rated = RatedGames,
+                Offers = VotedGames
+            };
+        }
     }
 }

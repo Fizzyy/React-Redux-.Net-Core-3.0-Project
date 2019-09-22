@@ -18,14 +18,15 @@ class GameBlockInfo extends React.Component {
         return (
             <Link to={`/Catalog/${this.props.gamePlatform}/${this.props.gameID}`}>
                 <div id="divMainGameBlock">
-                    <Image cloudName="djlynoeio" publicId={this.props.gameImage} id="divMainGameBlock_Image" />
-                    {this.props.gameOfferAmount !== 0 ?
-                        <div className="divMainGameBlock_OfferDiv">
-                            <Icon size={24} icon={fire} />
-                            <label style={{ marginLeft: '5px', marginTop: '2px' }}>Скидка {this.props.gameOfferAmount}%</label>
-                        </div>
-                        : null
-                    }
+                    <div id="imageContainer">
+                        <Image cloudName="djlynoeio" publicId={this.props.gameImage} id="divMainGameBlock_Image" />
+                        {this.props.gameOfferAmount !== 0 ?
+                            <div className="divMainGameBlock_OfferDiv">
+                                <Icon size={24} icon={fire} />
+                                <label>Скидка {this.props.gameOfferAmount}%</label>
+                            </div>
+                            : null}
+                    </div>
                     <div id="divMainGameBlock_Info">
                         <label style={{ fontSize: 20, marginLeft: '5px', color: 'black' }}>{this.props.gameName}</label>
                         <div className="divMainGameBlock_Info_Ratings">

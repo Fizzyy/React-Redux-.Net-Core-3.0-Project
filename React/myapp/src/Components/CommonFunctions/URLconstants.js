@@ -19,6 +19,7 @@ const addgame = '/AddGame';
 const ordergames = '/OrderGames?';
 const getgamesbyregex = '/GetGamesByRegex?';
 const getsamejenregames = '/GetSameGenreGames?';
+const startpagegames = '/GetGameForStartPage';
 
 const baseURLorder = MainURL + 'api/Order';
 const addorder = '/AddOrder'
@@ -70,6 +71,7 @@ export const ADDGAME = baseURLcatalog + addgame;
 export const ORDERGAMES = baseURLcatalog + ordergames;
 export const GETGAMESBYREGEX = baseURLcatalog + getgamesbyregex;
 export const GETSAMEGENREGAMES = baseURLcatalog + getsamejenregames;
+export const GETSTARTPAGEGAMES = baseURLcatalog + startpagegames;
 
 export const ADDORDER = baseURLorder + addorder;
 export const GETUNPAIDORDERS = baseURLorder + getunpaidorders;
