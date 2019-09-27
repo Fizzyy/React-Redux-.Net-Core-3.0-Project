@@ -17,6 +17,8 @@ import AdminMenuBar from '../../AdminPages/MenuBar/MenuBar';
 import Games from '../../AdminPages/Games/Games';
 import Users from '../../AdminPages/Users/Users';
 import Offers from '../../AdminPages/Offers/Offers';
+import ChatWindow from '../ChatWindow/ChatWindow';
+import Chats from '../../AdminPages/Chats/Chats';
 
 class Container extends React.Component {
     constructor(props) {
@@ -35,8 +37,8 @@ class Container extends React.Component {
                     </div>
                     <div id='bodyy'>
                         <Route exact path="/" render={() => <StartPage />} />
-                        <Route path="/SignIn" render={props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="login" />} />
-                        <Route path="/SignUp" render={props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="registration" />} />
+                        {/* <Route path="/SignIn" render={props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="login" />} /> */}
+                        {/* <Route path="/SignUp" render={props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="registration" />} /> */}
                         <Route path="/Catalog">
                             <Route exact path="/Catalog/:gamePlatform" render={props => <Catalog {...props} />} />
                             <Route exact path="/Catalog/:gamePlatform/:gameID" render={props => <GameDescription2 {...props} />} />
@@ -46,6 +48,7 @@ class Container extends React.Component {
                         <Route path="/Offers" render={props => <Catalog {...props} isItOffer={true} />} />
                         {/* <Redirect to="/" /> */}
                         <NotificationContainer />
+                        <ChatWindow />
                     </div>
                     <div id='footer'>
                         <Footer />
@@ -58,10 +61,11 @@ class Container extends React.Component {
                             <AdminMenuBar />
                         </div>
                         <div className="components">
-                            <Route exact path="/Admin" component={AdminStartPage} />
+                            <Route exact path="/Admin" render={props => <AdminStartPage {...props} />} />
                             <Route exact path="/Admin/Games" component={Games} />
                             <Route exact path="/Admin/Users" render={() => <Users />} />
                             <Route exact path="/Admin/Offers" render={() => <Offers />} />
+                            <Route exact path="/Admin/Chats" render={() => <Chats />} />
                         </div>
                     </Route>
                 </div>

@@ -1,4 +1,4 @@
-.mainBlockOffers {
+.mainBlockOffer {
     width: inherit;
     height: inherit;
     display: flex;
@@ -6,6 +6,42 @@
 }
 
 .offerTable {
-    min-width: 50vw;
+    flex: 1;
     height: 100vh;
+}
+
+.offerDescription {
+    flex: 1;
+    height: 100vh;
+    padding-left: 30px;
+
+    .optionButtons {
+        display: flex;
+        flex-direction: row;
+
+        button[type="button"] {
+            margin-right: 20px;
+        }
+    }
+
+    div {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        margin-bottom: 50px;
+
+        .offerAmount {
+            display: flex;
+            flex-direction: row;
+        }
+
+        span {
+            font-size: 26px;
+            font-weight: bolder;
+            
+            .selectInfo {
+                font-weight: normal;
+            }
+        }
+    }
 }

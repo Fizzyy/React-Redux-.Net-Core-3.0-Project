@@ -15,6 +15,19 @@ import SignInAndRegistration from '../SIgnInAndRegistration/SignAndReg';
 class MenuBar extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showModal: false,
+            type: ''
+        }
+    }
+
+    getRegistrationOrLogin = (e) => {
+        this.setState({ showModal: true, type: e.currentTarget.dataset.id });
+        // debugger;
+        // switch (e.currentTarget.dataset.id) {
+        //     case "signin": return (props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="login" />);
+        //     case "signup": return (props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="registration" />)
+        // };
     }
 
     existingItems = () => {
@@ -61,12 +74,12 @@ class MenuBar extends React.Component {
                     {this.existingItems()}
                     <div className="divMainBar_divsInsideBar_UserData">
                         <div className="divForUnloggedUser">
-                            <Link to="/SignIn" className="linksUnloggedUser" style={{ marginBottom: '10px' }}>Войти</Link>
-                            <Link to="/SignUp" className="linksUnloggedUser">Регистрация</Link>
+                            <Link className="linksUnloggedUser" data-id="login" onClick={this.getRegistrationOrLogin}>Войти</Link>
+                            <Link className="linksUnloggedUser" data-id="registration" onClick={this.getRegistrationOrLogin}>Регистрация</Link>
                         </div>
                     </div>
+                    <SignInAndRegistration showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type={this.state.type} />
                 </div>
-
         );
     }
 }

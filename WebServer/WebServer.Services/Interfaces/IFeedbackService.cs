@@ -14,7 +14,7 @@ namespace WebServer.Services.Interfaces
 
         Task<List<UserFeedbackBll>> GetUserFeedback(string Username);
 
-        Task<List<Feedback>> AddFeedback(FeedbackBll feedback);
+        Task<List<FeedbackBll>> AddFeedback(FeedbackBll feedback);
 
         Task<List<UserFeedbackBll>> UpdateFeedback(FeedbackBll feedback);
 

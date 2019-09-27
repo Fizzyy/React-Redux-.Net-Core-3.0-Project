@@ -2,7 +2,7 @@ import React from 'react';
 import '../AccountSettings/AccountSettings.scss';
 import { axiosGet, axiosPost, axiosDelete, axiosPut } from '../../CommonFunctions/axioses';
 import { Image, Transformation } from 'cloudinary-react';
-import { GETFULLUSERINFO, UPDATEFEEDBACK, DELETEGAMEMARK, DELETEFEEDBACK, SIGNOUTUSER } from '../../CommonFunctions/URLconstants';
+import { GETFULLUSERINFO, UPDATEFEEDBACK, DELETEGAMEMARK, DELETEFEEDBACK, SIGNOUTUSER, UPDATEAVATAR } from '../../CommonFunctions/URLconstants';
 import { connect } from 'react-redux';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -123,9 +123,10 @@ class AccountSettings extends React.Component {
     selectFile = () => {
         this.setState({ inputFile: this.myRef.current.files[0] });
         let formdata = new FormData();
-        formdata.append('file', this.state.inputFile);
+        formdata.append('file', this.myRef.current.files[0]);
         formdata.append('upload_preset', 'iTechArt');
-        axios.post("https://api.cloudinary.com/v1_1/djlynoeio/image/upload", formdata).then(response => {
+        axios.post("https://api.cloudinary.com/v1_1/djlynoeio/image/upload", formdata).then(async (response) => {
+            await axiosPut(UPDATEAVATAR + `username=${this.props.user.username}&avatarlink=${response.data.public_id}`);
             this.setState({
                 userInfo: {
                     ...this.state.userInfo,
@@ -174,32 +175,32 @@ class AccountSettings extends React.Component {
                     <div className="div_UserAction">
                         <Tabs defaultActiveKey="orders" id="uncontrolled-tab-example">
                             <Tab eventKey="orders" title="Заказы">
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <th>Название</th>
-                                            <th>Платформа</th>
-                                            <th>Дата заказа</th>
-                                            <th>Количество</th>
-                                            <th>Цена</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.userInfo.orders && this.state.userInfo.orders.length ? this.state.userInfo.orders.map((x) => {
-                                            return (
-                                                <tr key={x.orderID}>
-                                                    <td>{x.gameName}</td>
-                                                    <td>{x.gamePlatform}</td>
-                                                    <td>{Moment(x.orderDate).format("DD-MM-YYYY")}</td>
-                                                    <td>{x.amount}</td>
-                                                    <td>{x.totalSum}</td>
-                                                </tr>
-                                            );
-                                        }) : <div className="spinnerAlign">
-                                                <LoadingSpinner color="black" width={60} height={60} visible={true} />
-                                            </div>}
-                                    </tbody>
-                                </Table>
+                                {this.state.userInfo.orders && this.state.userInfo.length ?
+                                    <Table>
+                                        <thead>
+                                            <tr>
+                                                <th>Название</th>
+                                                <th>Платформа</th>
+                                                <th>Дата заказа</th>
+                                                <th>Количество</th>
+                                                <th>Цена</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.userInfo.orders.map((x) => {
+                                                return (
+                                                    <tr key={x.orderID}>
+                                                        <td>{x.gameName}</td>
+                                                        <td>{x.gamePlatform}</td>
+                                                        <td>{Moment(x.orderDate).format("DD-MM-YYYY")}</td>
+                                                        <td>{x.amount}</td>
+                                                        <td>{x.totalSum}</td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </Table>
+                                    : <h2>Здесь пусто... пока что</h2>}
                             </Tab>
                             <Tab eventKey="feedback" title="Отзывы">
                                 <div className="comments">
@@ -215,9 +216,7 @@ class AccountSettings extends React.Component {
                                                 commentDate={Moment(x.commentDate).format("DD-MM-YYYY")}
                                             />
                                         );
-                                    }) : <div className="spinnerAlign">
-                                            <LoadingSpinner color="black" width={60} height={60} visible={true} />
-                                        </div>}
+                                    }) : <h2>Здесь пусто... пока что</h2>}
                                 </div>
                                 <div className="commentsOptions">
                                     <div className="fieldCommentArea">
@@ -233,33 +232,33 @@ class AccountSettings extends React.Component {
                                 </div>
                             </Tab>
                             <Tab eventKey="marks" title="Оценки">
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <th>Название</th>
-                                            <th>Платформа</th>
-                                            <th>Оценка</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.userInfo.gameMarks && this.state.userInfo.gameMarks.length ? this.state.userInfo.gameMarks.map((x) => {
-                                            return (
-                                                <tr key={x.scoreID}>
-                                                    <td>{x.gameName}</td>
-                                                    <td>{x.gamePlatform}</td>
-                                                    <td>
-                                                        <div className="starContainer">
-                                                            <RatingStars isItEditable={true} gameScore={x.score} size={26} starColor="orange" />
-                                                        </div>
-                                                    </td>
-                                                    <td><Button variant="outline-danger" size="sm" onClick={this.deleteMark} value={x.scoreID}>Удалить</Button></td>
-                                                </tr>
-                                            );
-                                        }) : <div className="spinnerAlign">
-                                                <LoadingSpinner color="black" width={60} height={60} visible={true} />
-                                            </div>}
-                                    </tbody>
-                                </Table>
+                                {this.state.userInfo.gameMarks && this.state.userInfo.gameMarks.length ?
+                                    <Table>
+                                        <thead>
+                                            <tr>
+                                                <th>Название</th>
+                                                <th>Платформа</th>
+                                                <th>Оценка</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.userInfo.gameMarks.map((x) => {
+                                                return (
+                                                    <tr key={x.scoreID}>
+                                                        <td>{x.gameName}</td>
+                                                        <td>{x.gamePlatform}</td>
+                                                        <td>
+                                                            <div className="starContainer">
+                                                                <RatingStars isItEditable={true} gameScore={x.score} size={26} starColor="orange" />
+                                                            </div>
+                                                        </td>
+                                                        <td><Button variant="outline-danger" size="sm" onClick={this.deleteMark} value={x.scoreID}>Удалить</Button></td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </Table>
+                                    : <h2>Здесь пусто... пока что</h2>}
                             </Tab>
                         </Tabs>
                     </div>

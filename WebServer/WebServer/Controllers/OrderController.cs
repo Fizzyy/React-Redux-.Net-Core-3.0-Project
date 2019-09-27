@@ -24,7 +24,7 @@ namespace WebServer.Controllers
 
         [HttpGet]
         [Route("GetCurrentOrders/{Username}")]
-        //[Authorize(Policy = "MyPolicy")]
+        [Authorize(Policy = "MyPolicy")]
         public async Task<IActionResult> GetCurrentOrders(string Username)
         {
             List<UserOrdersBll> userorders = await orderService.GetPaidOrUnpaidOrders(Username, false);

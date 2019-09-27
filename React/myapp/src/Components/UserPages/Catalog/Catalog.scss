@@ -33,7 +33,7 @@
 }
 
 #divMainCatalog_Games {
-    min-width: 40%;
+    width: 100%;
     max-width: 50%;
     display: flex;
     flex-direction: column;
@@ -73,7 +73,7 @@
 }
 
 .bootstrap_RowCatalog {
-    margin: 20px 0 0 0;
+    margin: 20px 0 10px 0;
 
     h4 {
         margin-left: 15px;
@@ -98,6 +98,8 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
 }
 
 #divMainGameBlock_Image {
@@ -155,7 +157,6 @@
 
 .divMainGameBlock_OfferDiv {
     position: absolute;
-    left: 8%;
     top: 40%;
     width: 8em;
     height: 30px;

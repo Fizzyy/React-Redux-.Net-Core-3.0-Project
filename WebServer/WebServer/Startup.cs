@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using WebServer.Controllers;
 using WebServer.DAL.Context;
 using WebServer.DAL.Repository;
 using WebServer.DAL.Repository.Classes;
@@ -76,14 +77,23 @@ namespace WebServer
             services.AddTransient<IMoneyKeysRepository, MoneyKeysRepository>();
             services.AddTransient<IMoneyKeysService, MoneyKeysService>();
 
+            services.AddTransient<IGameScreenshotsRepository, GameScreenshotsRepository>();
+            services.AddTransient<IGameScreenshotsService, GameScreenshotsService>();
+
+            services.AddTransient<IMessagesRepository, MessagesRepository>();
+            services.AddTransient<IMessagesService, MessagesService>();
+
+            services.AddTransient<IChatParticipantsRepository, ChatParticipantsRepository>();
+
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("MyPolicy", policy => policy.Requirements.Add(new AuthFilter()));
+                options.AddPolicy("MyPolicy", policy => policy.Requirements.Add(new AccountRequirement()));
             });
             services.AddScoped<IAuthorizationHandler, AuthFilter>();
             //services.AddHttpContextAccessor();
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddSignalR();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -124,11 +134,14 @@ namespace WebServer
 
             //app.UseCors("CorsPolicy");
             app.UseCors(opts => opts
-                .AllowAnyOrigin()
+                 .WithOrigins(
+                 "http://localhost:3000",
+                 "http://localhost:3001",
+                 "http://localhost:3002")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .WithExposedHeaders("AccessToken", "RefreshToken")
-                //.AllowCredentials()
+                .AllowCredentials()
                 );
 
             app.UseRouting();
@@ -144,6 +157,7 @@ namespace WebServer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatController>("/chat");
             });
         }
     }

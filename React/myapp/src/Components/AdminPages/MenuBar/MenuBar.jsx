@@ -11,6 +11,7 @@ import store from '../../_REDUX/Storage';
 import { connect } from 'react-redux';
 import { axiosDelete } from '../../CommonFunctions/axioses';
 import { SIGNOUTUSER } from '../../CommonFunctions/URLconstants';
+import { speech_bubbles } from 'react-icons-kit/ikons/speech_bubbles';
 
 class MenuBar extends React.Component {
 
@@ -18,7 +19,6 @@ class MenuBar extends React.Component {
         let res = await axiosDelete(SIGNOUTUSER + this.props.user.username);
         if (res.status === 200) {
             store.dispatch({ type: 'LOGGED_USER', username: 'Войти', userRole: 'User', isLogged: false });
-            localStorage.clear();
         }
     }
 
@@ -36,6 +36,9 @@ class MenuBar extends React.Component {
                 </Link>
                 <Link to="/Admin/Offers">
                     <div><Icon size={36} icon={fire} className="menuIcons" /></div>
+                </Link>
+                <Link to="/Admin/Chats">
+                    <div><Icon size={36} icon={speech_bubbles} className="menuIcons" /></div>
                 </Link>
                 <div id="logOut"><Icon size={36} icon={logOut} className="menuIcons" onClick={this.logOut} /></div>
             </div>

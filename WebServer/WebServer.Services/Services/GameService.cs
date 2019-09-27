@@ -20,8 +20,9 @@ namespace WebServer.Services.Services
         private readonly IFeedbackRepository feedbackRepository;
         private readonly IUserRepository userRepository;
         private readonly IOffersRepository offersRepository;
+        private readonly IGameScreenshotsRepository gameScreenshotsRepository;
 
-        public GameService(IGameRepository gameRepository, IGameFinalScoreRepository gameFinalScoreRepository, IFeedbackRepository feedbackRepository, IGameMarkRepository gameMarkRepository, IUserRepository userRepository, IOffersRepository offersRepository)
+        public GameService(IGameRepository gameRepository, IGameFinalScoreRepository gameFinalScoreRepository, IFeedbackRepository feedbackRepository, IGameMarkRepository gameMarkRepository, IUserRepository userRepository, IOffersRepository offersRepository, IGameScreenshotsRepository gameScreenshotsRepository)
         {
             this.gameRepository = gameRepository;
             this.gameFinalScoreRepository = gameFinalScoreRepository;
@@ -29,6 +30,7 @@ namespace WebServer.Services.Services
             this.gameMarkRepository = gameMarkRepository;
             this.userRepository = userRepository;
             this.offersRepository = offersRepository;
+            this.gameScreenshotsRepository = gameScreenshotsRepository;
         }
 
         public async Task<List<GameDescriptionBll>> GetAllGames()
@@ -57,7 +59,7 @@ namespace WebServer.Services.Services
                     });
                 }
                 
-                list.Add(GameDescriptionMapper.GetGameDescription(game, null, gamescores, TotalFeedback, 0));
+                list.Add(GameDescriptionMapper.GetGameDescription(game, null, gamescores, TotalFeedback, 0, null));
             }
             return list;
         }
@@ -73,7 +75,7 @@ namespace WebServer.Services.Services
                 var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
                 var offer = await offersRepository.GetOffer(game.GameID);
 
-                returnedgames.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0));
+                returnedgames.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0, null));
             }
             return returnedgames;
         }
@@ -90,7 +92,7 @@ namespace WebServer.Services.Services
                 var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
                 var offer = await offersRepository.GetOffer(game.GameID);
 
-                games.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0));
+                games.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0, null));
             }
 
             if (Genre != "All" && Age != "All+")
@@ -123,7 +125,7 @@ namespace WebServer.Services.Services
             {
                 var score = await gameFinalScoreRepository.GetGame(game.GameID);
 
-                list.Add(GameDescriptionMapper.GetGameDescription(game, null, score, null, 0));
+                list.Add(GameDescriptionMapper.GetGameDescription(game, null, score, null, 0, null));
             }
             return list;
         }
@@ -139,7 +141,7 @@ namespace WebServer.Services.Services
                 var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
                 var offer = await offersRepository.GetOffer(game.GameID);
 
-                returnedgames.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0));
+                returnedgames.Add(GameDescriptionMapper.GetGameDescription(game, offer, gamescores, null, 0, null));
             }
             return returnedgames;
         }
@@ -152,6 +154,7 @@ namespace WebServer.Services.Services
             var gamescores = await gameFinalScoreRepository.GetGame(GameID);
             var offer = await offersRepository.GetOffer(GameID);
             var userScore = await gameMarkRepository.GetCurrentUserScore(GameID, Username);
+            var gamescreens = await gameScreenshotsRepository.GetGameScreenShots(GameID);
 
             List<FeedbackBll> feedbacks = new List<FeedbackBll>();
             foreach (var feedback in await feedbackRepository.GetCurrentGameFeedback(foundgame.GameID))
@@ -160,7 +163,7 @@ namespace WebServer.Services.Services
                 feedbacks.Add(new FeedbackBll(feedback.Id, feedback.Username, feedback.GameID, feedback.Comment, feedback.CommentDate, user.UserImage));
             }
 
-            return GameDescriptionMapper.GetGameDescription(foundgame, offer, gamescores, feedbacks, userScore);
+            return GameDescriptionMapper.GetGameDescription(foundgame, offer, gamescores, feedbacks, userScore, gamescreens);
         }
 
         public async Task AddGame(GameBll game)
@@ -194,6 +197,38 @@ namespace WebServer.Services.Services
         public async Task RemoveGame(string GameID)
         {
             await gameRepository.RemoveGame(GameID);
+        }
+
+        public async Task<object> GetGamesForStartPage()
+        {
+            var TopOfferRatedGames = await offersRepository.GetTop3();
+            var TopVotedGames = await gameFinalScoreRepository.GetTopFinalScores3();
+
+            var RatedGames = new List<GameDescriptionBll>();
+            var VotedGames = new List<GameDescriptionBll>();
+
+            foreach (var game in TopOfferRatedGames)
+            {
+                var gamedesc = await gameRepository.GetChosenGame(game.GameID);
+                var gamescores = await gameFinalScoreRepository.GetGame(game.GameID);
+
+                RatedGames.Add(GameDescriptionMapper.GetGameDescription(gamedesc, game, gamescores, null, 0, null));
+            }
+
+
+            foreach (var game in TopVotedGames)
+            {
+                var gamedesc = await gameRepository.GetChosenGame(game.GameID);
+                var gameoffer = await offersRepository.GetOffer(game.GameID);
+
+                VotedGames.Add(GameDescriptionMapper.GetGameDescription(gamedesc, gameoffer, game, null, 0, null));
+            }
+
+            return new
+            {
+                Rated = RatedGames,
+                Offers = VotedGames
+            };
         }
     }
 }

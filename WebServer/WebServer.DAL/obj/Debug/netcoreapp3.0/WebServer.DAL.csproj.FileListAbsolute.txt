@@ -15,7 +15,6 @@ D:\Kursach\WebServer\WebServer.DAL\bin\Debug\netcoreapp3.0\WebServer.DAL.runtime
 D:\Kursach\WebServer\WebServer.DAL\bin\Debug\netcoreapp3.0\WebServer.DAL.dll
 D:\Kursach\WebServer\WebServer.DAL\bin\Debug\netcoreapp3.0\WebServer.DAL.pdb
 D:\Kursach\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.csprojAssemblyReference.cache
-D:\Kursach\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.csproj.CoreCompileInputs.cache
 D:\Kursach\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.AssemblyInfoInputs.cache
 D:\Kursach\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.AssemblyInfo.cs
 D:\Kursach\WebServer\WebServer.DAL\obj\Debug\netcoreapp3.0\WebServer.DAL.dll

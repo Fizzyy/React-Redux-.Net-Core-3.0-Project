@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import { Image } from 'cloudinary-react';
 import Carousel from 'react-bootstrap/Carousel';
 import PC1 from '../../../pc1.jpg';
-import PC2 from '../../../pc2.jpg';
 import LoadingSpinner from '../../CommonFunctions/LoadingSpinner';
 import UsersComments from '../GameDescription/UsersComments';
 import { NotificationManager } from 'react-notifications';
@@ -19,7 +18,6 @@ import OtherGames from '../GameDescription/OtherGames';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 
 class GameDesc2 extends React.Component {
     constructor(props) {
@@ -34,19 +32,17 @@ class GameDesc2 extends React.Component {
         }
     }
 
-    componentDidMount() {
-        (async () => {
-            let gameGenre = '';
-            let res = await axiosGet(GETCHOSENGAME + this.props.match.params.gameID + '/' + this.props.userData.username);
-            if (res.status === 200) {
-                gameGenre = res.data.gameJenre;
-                this.setState({ gameFullDescription: res.data, totalprice: res.data.gamePrice });
-            }
-            let sameGenreGames = await axiosGet(GETSAMEGENREGAMES + `GameGenre=${gameGenre}&GameID=${this.props.match.params.gameID}`);
-            if (sameGenreGames.status === 200) {
-                this.setState({ sameGenreGames: sameGenreGames.data });
-            }
-        })();
+    async componentDidMount() {
+        let gameGenre = '';
+        let res = await axiosGet(GETCHOSENGAME + this.props.match.params.gameID + '/' + this.props.userData.username);
+        if (res.status === 200) {
+            gameGenre = res.data.gameJenre;
+            this.setState({ gameFullDescription: res.data, totalprice: res.data.gamePrice });
+        }
+        let sameGenreGames = await axiosGet(GETSAMEGENREGAMES + `GameGenre=${gameGenre}&GameID=${this.props.match.params.gameID}`);
+        if (sameGenreGames.status === 200) {
+            this.setState({ sameGenreGames: sameGenreGames.data });
+        }
     }
 
     componentDidUpdate(preProps) {
@@ -109,7 +105,9 @@ class GameDesc2 extends React.Component {
             comment: this.state.userComment
         });
         if (res.status === 200) {
-            alert('added');
+            console.log(res.data);
+            debugger;
+            NotificationManager.success('Успешно!', 'Комментарий добавлен', 3000);
             this.setState({
                 gameFullDescription: {
                     ...this.state.gameFullDescription,
@@ -125,7 +123,7 @@ class GameDesc2 extends React.Component {
 
     render() {
         return (
-            <div className="mainBlockGameDesc">
+            <div className="mainBlockGameDesc" style={{ backgroundImage: `url('${this.state.gameFullDescription.gameBackgroundImage}')` }}>
                 <div className="mainGrid">
                     <div id="gameImage">
                         <Image cloudName="djlynoeio" publicId={this.state.gameFullDescription.gameImage} width="240" height="320" />
@@ -205,12 +203,15 @@ class GameDesc2 extends React.Component {
                     <div id="carousel">
                         <h2>Скриншоты: </h2>
                         <Carousel>
-                            <Carousel.Item>
-                                <img className="d-block w-100" src={PC1} />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img className="d-block w-100" src={PC2} />
-                            </Carousel.Item>
+                            {this.state.gameFullDescription.gameScreenshots && this.state.gameFullDescription.gameScreenshots.length !== 0 ? this.state.gameFullDescription.gameScreenshots.map((x, index) => {
+                                return (
+                                    <Carousel.Item key={index}>
+                                        <img className="d-block w-100" src={x} />
+                                    </Carousel.Item>
+                                );
+                            }) : <Carousel.Item>
+                                    <img className="d-block w-100" src={PC1} />
+                                </Carousel.Item>}
                         </Carousel>
                     </div>
                     <div id="others">
@@ -219,6 +220,7 @@ class GameDesc2 extends React.Component {
                             {this.state.sameGenreGames.map(x => {
                                 return (
                                     <OtherGames
+                                        key={x.gameID}
                                         gameImage={x.gameImage}
                                         gameName={x.gameName}
                                         gameID={x.gameID}
@@ -232,9 +234,10 @@ class GameDesc2 extends React.Component {
                     <div id="comments">
                         <h4>Комментарии</h4>
                         <div>
-                            {this.state.gameFullDescription && this.state.gameFullDescription.feedbacks ? this.state.gameFullDescription.feedbacks.map(x => {
+                            {this.state.gameFullDescription && this.state.gameFullDescription.feedbacks ? this.state.gameFullDescription.feedbacks.map((x, index) => {
                                 return (
                                     <UsersComments
+                                        key={index}
                                         username={x.username}
                                         userImage={x.userAvatar}
                                         commentDate={x.commentDate}

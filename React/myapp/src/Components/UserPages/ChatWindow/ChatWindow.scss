@@ -1,0 +1,133 @@
+.chatContainer {
+    position: fixed;
+    right: 5%;
+    top: 95%;
+    min-width: 300px;
+    height: 450px;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.5);
+    display: block;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 30px;
+
+    &:focus {
+        outline: none;
+    }
+
+    // &:focus {
+    //     transition-duration: .5s;
+    //     transform: translateY(-400px);
+    //     background-color: green;
+    //     outline: none;
+    // }
+
+    .chatHeader {
+        min-width: 320px;
+        min-height: 80px;
+        background: linear-gradient(to right, black, grey);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+
+        .closeButton {
+            position: absolute;
+            right: 3%;
+            top: 10%;
+        }
+
+        span {
+            &:first-child {
+                padding: 15px 0 0 10px;
+                font-size: 18px;
+                color: white;
+            }
+
+            &:last-child {
+                padding: 5px 0 0 10px;
+                font-size: 14px;
+                color: #f2f2f2;
+            }
+        }
+    }
+
+    .chatBody {
+        min-width: 300px;
+        height: 290px;
+        background-color: whitesmoke;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+
+        .PartnerMessage {
+            background-color: skyblue;
+            border-radius: 5px;
+            align-self: flex-start;
+            margin: 0px 0px 3px 5px;
+            max-width: 150px;
+
+            span {
+                padding: 7px;
+                font-size: 16px;
+            }
+        }
+            
+        .MyMessage {
+            background-color: #b7e3a1;
+            border-radius: 5px;
+            align-self: flex-end;
+            margin: 0px 5px 3px 0px;
+            max-width: 150px;
+            position: relative;
+            word-wrap: break-word;
+            text-align: left;
+            
+            // &::after {
+            //     content: '\25B6';
+            //     position: absolute;
+            //     bottom: -10%;
+            //     right: -30%;
+            //     color: #b7e3a1;
+            // }
+
+            &:first-child {
+                margin-top: 5px;
+            }
+
+            span {
+               padding: 0 7px 0 10px;
+               font-size: 16px;
+            }
+        }
+    }
+
+    .chatFooter {
+        min-width: 300px;
+        height: 80px;
+        display: flex;
+        flex-direction: row;
+
+        div {
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+
+            .sendButton {
+                margin: 5px 5px 0 5px;
+                color: limegreen;
+                cursor: pointer;
+            }
+        }
+
+        .userMessage {
+            flex: 2;
+            resize: none;
+            border: none;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}

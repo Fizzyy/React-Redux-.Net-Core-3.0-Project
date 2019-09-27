@@ -54,13 +54,6 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[2.2.6, )"
-            },
-            "Microsoft.NETCore.App": {
-              "include": "None",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[3.0.0-preview7-27912-14, )",
-              "autoReferenced": true
             }
           },
           "imports": [
@@ -77,7 +70,8 @@
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
-          }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

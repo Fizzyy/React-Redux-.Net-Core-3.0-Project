@@ -135,6 +135,27 @@ namespace WebServer.DAL.Migrations
                     b.ToTable("GamesScreenshots");
                 });
 
+            modelBuilder.Entity("WebServer.DAL.Models.Messages", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("MessageText");
+
+                    b.Property<string>("RoomID");
+
+                    b.Property<string>("Username");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("RoomID");
+
+                    b.HasIndex("Username");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("WebServer.DAL.Models.MoneyKeys", b =>
                 {
                     b.Property<string>("KeyCode")
@@ -152,8 +173,6 @@ namespace WebServer.DAL.Migrations
             modelBuilder.Entity("WebServer.DAL.Models.Offers", b =>
                 {
                     b.Property<string>("GameID");
-
-                    b.Property<DateTime>("EndOfOffer");
 
                     b.Property<decimal>("GameNewPrice");
 
@@ -193,6 +212,25 @@ namespace WebServer.DAL.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("WebServer.DAL.Models.Participants", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("RoomName");
+
+                    b.Property<string>("Username");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("RoomName");
+
+                    b.HasIndex("Username");
+
+                    b.ToTable("Participants");
+                });
+
             modelBuilder.Entity("WebServer.DAL.Models.RefreshTokens", b =>
                 {
                     b.Property<string>("Username");
@@ -202,6 +240,16 @@ namespace WebServer.DAL.Migrations
                     b.HasKey("Username");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("WebServer.DAL.Models.Rooms", b =>
+                {
+                    b.Property<string>("RoomName")
+                        .ValueGeneratedOnAdd();
+
+                    b.HasKey("RoomName");
+
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("WebServer.DAL.Models.User", b =>
@@ -270,6 +318,17 @@ namespace WebServer.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("WebServer.DAL.Models.Messages", b =>
+                {
+                    b.HasOne("WebServer.DAL.Models.Rooms", "Room")
+                        .WithMany("Messages")
+                        .HasForeignKey("RoomID");
+
+                    b.HasOne("WebServer.DAL.Models.User", "User")
+                        .WithMany("Messages")
+                        .HasForeignKey("Username");
+                });
+
             modelBuilder.Entity("WebServer.DAL.Models.Offers", b =>
                 {
                     b.HasOne("WebServer.DAL.Models.Game", "Game")
@@ -286,6 +345,17 @@ namespace WebServer.DAL.Migrations
 
                     b.HasOne("WebServer.DAL.Models.User", "User")
                         .WithMany("Orders")
+                        .HasForeignKey("Username");
+                });
+
+            modelBuilder.Entity("WebServer.DAL.Models.Participants", b =>
+                {
+                    b.HasOne("WebServer.DAL.Models.Rooms", "Room")
+                        .WithMany("ChatParticipants")
+                        .HasForeignKey("RoomName");
+
+                    b.HasOne("WebServer.DAL.Models.User", "User")
+                        .WithMany("ChatParticipants")
                         .HasForeignKey("Username");
                 });
 

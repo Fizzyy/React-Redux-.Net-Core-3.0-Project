@@ -1,0 +1,50 @@
+.startPageContainer {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    justify-content: center;
+}
+
+.startPageOptionsContainer {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .OptionsContainer {
+        width: 60%;
+        max-height: 50%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        margin-top: 50px;
+
+        .rowDirection {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+
+            .optContainer {
+                flex: 1;
+                margin: 10px 10px 10px 10px;
+                border: 5px solid black;
+                border-radius: 15px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                span {
+                    font-size: 26px;
+                }
+
+                &:hover {
+                    transition-duration: 1.5s;
+                    background-color: black;
+                    color: whitesmoke;
+                }
+            }
+        }
+    }
+}

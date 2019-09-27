@@ -42,5 +42,10 @@ namespace WebServer.DAL.Repository.Classes
             await commonContext.SaveChangesAsync();
             return foundgame;
         }
+
+        public async Task<IEnumerable<GameFinalScores>> GetTopFinalScores3()
+        {
+            return await Task.FromResult(commonContext.GameFinalScores.OrderByDescending(x => x.AmountOfVotes).Take(3));
+        }
     }
 }

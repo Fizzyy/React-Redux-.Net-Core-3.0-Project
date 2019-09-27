@@ -10,6 +10,7 @@ import { AUTHORIZATION, REGISTRATION, ACTIVATEKEY, RESETPASSWORD } from '../../C
 import store from '../../_REDUX/Storage';
 import jwt_decode from 'jwt-decode';
 import { axiosPost } from '../../CommonFunctions/axioses';
+import { NotificationManager } from 'react-notifications';
 
 class SignInAndRegistration extends React.Component {
     constructor(props) {
@@ -51,24 +52,27 @@ class SignInAndRegistration extends React.Component {
 
     sendDataToServer = async () => {
         let response = undefined;
-        this.props.registration ?
+        this.props.type === "registration" ?
             await axios.post(REGISTRATION, { username: this.state.username, password: this.state.password1 }).then(responsee => { response = responsee })
             :
             await axios.post(AUTHORIZATION, { username: this.state.username, password: this.state.password1 }).then(responsee => { response = responsee });
         if (response.status === 200) {
-            localStorage.setItem('Token', response.data.token.access_token);
-            localStorage.setItem('RefreshToken', response.data.refreshToken);
+            if (this.props.type !== "registration") {
+                localStorage.setItem('Token', response.data.token.access_token);
+                localStorage.setItem('RefreshToken', response.data.refreshToken);
 
-            let tokendata = jwt_decode(response.data.token.access_token);
-            if (tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] == "Admin") this.props.history.push('/Admin');
+                let tokendata = jwt_decode(response.data.token.access_token);
+                //if (tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] == "Admin") this.props.history.push('/Admin');
 
-            store.dispatch({
-                type: 'LOGGED_USER',
-                username: tokendata["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
-                userRole: tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
-                userBalance: +tokendata.UserBalance,
-                isUserLogged: true
-            });
+                store.dispatch({
+                    type: 'LOGGED_USER',
+                    username: tokendata["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+                    userRole: tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+                    userBalance: +tokendata.UserBalance,
+                    isUserLogged: true
+                });
+            }
+            else NotificationManager.success('Успешно!', 'Ваша учетная запись создана', 5000);
         };
         this.handleClose();
     }
@@ -100,33 +104,45 @@ class SignInAndRegistration extends React.Component {
         }
     }
 
-    login = () => {
+    loginAndRegistration = () => {
         return (
-            <>
-                <div className="modal-body-divs">
-                    <Icon icon={user_circle} size={26} />
-                    <label className="modal-body-labels">Логин:</label>
-                    <input type="text" className="modal-body-inputs" name="username" onChange={this.setData} />
+            <div className="loginContainer">
+                <div className="loginSpans">
+                    <div>
+                        <Icon icon={user_circle} size={26} />
+                        <label className="modal-body-labels">Логин:</label>
+                    </div>
+                    <div>
+                        <Icon icon={key} size={26} />
+                        <label className="modal-body-labels">Пароль:</label>
+                    </div>
+                    {this.props.type === "registration" ?
+                        <div>
+                            <Icon icon={key} size={26} />
+                            <label className="modal-body-labels">Пароль:</label>
+                        </div>
+                        : null}
                 </div>
-                <div className="modal-body-divs">
-                    <Icon icon={key} size={26} />
-                    <label className="modal-body-labels">Пароль:</label>
-                    <input type="password" name="password1" onChange={this.setData} />
+                <div className="loginInputs">
+                    <div>
+                        <input type="text" name="username" onChange={this.setData} />
+                    </div>
+                    <div>
+                        <input type="password" name="password1" onChange={this.setData} />
+                        {!this.state.arePasswordsSame && this.props.type === "registration" ?
+                            <label>Пароли не совпадают</label>
+                            : null}
+                    </div>
+                    {this.props.type === "registration" ?
+                        <div>
+                            <input type="password" name="password2" onChange={this.setData} />
+                            {!this.state.arePasswordsSame && this.props.type === "registration" ?
+                                <label>Пароли не совпадают</label>
+                                : null}
+                        </div>
+                        : null}
                 </div>
-            </>
-        );
-    }
-
-    registration = () => {
-        return (
-            <>
-                {this.login()}
-                <div className="modal-body-divs">
-                    <Icon icon={key} size={26} />
-                    <label className="modal-body-labels">Повторите пароль:</label>
-                    <input type="password" name="password2" onChange={this.setData} />
-                </div>
-            </>
+            </div>
         );
     }
 
@@ -209,8 +225,8 @@ class SignInAndRegistration extends React.Component {
                 <Modal.Body>
                     {(() => {
                         switch (this.props.type) {
-                            case 'login': return (this.login());
-                            case 'registration': return (this.registration());
+                            case 'login': return (this.loginAndRegistration());
+                            case 'registration': return (this.loginAndRegistration());
                             case 'balance': return (this.updateBalance());
                             case 'password': return (this.updatePassword());
                             case 'ban': return this.banUser();

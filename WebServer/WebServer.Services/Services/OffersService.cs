@@ -82,8 +82,7 @@ namespace WebServer.Services.Services
             await offersRepository.AddGameOffer(new Offers
             {
                 GameID = offer.GameID,
-                GameOfferAmount = offer.GameOfferAmount,
-                EndOfOffer = offer.EndOfOffer
+                GameOfferAmount = offer.GameOfferAmount
             });
         }
 

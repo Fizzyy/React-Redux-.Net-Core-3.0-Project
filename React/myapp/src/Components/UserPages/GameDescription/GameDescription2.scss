@@ -3,13 +3,15 @@
     min-height: 115em;
     display: flex;
     justify-content: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
 .mainGrid {
     margin: 5em 0 5em 0;
     max-width: 60vw;
     min-width: 60vw;
-    background-color: #121214;
+    background-color: rgba(18, 18, 20, 0.8);
     display: grid;
     grid-template-columns: 0.95fr 1.15fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1.5fr 2.3fr 0.7fr;

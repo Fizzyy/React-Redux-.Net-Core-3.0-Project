@@ -32,6 +32,10 @@ namespace WebServer.Services.ModelsBll.Joins
 
         public double GameOfferAmount { get; set; }
 
+        public string GameBackgroundImage { get; set; }
+
+        public List<string> GameScreenshots { get; set; }
+
         public List<FeedbackBll> Feedbacks { get; set; }
 
         public GameDescriptionBll() { }

@@ -24,33 +24,21 @@ class Catalog extends React.Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (this.props.isItOffer) {
-            (async () => {
-                let res = await axiosGet(GETOFFERGAMES);
-                if (res.status === 200) {
-                    this.setState({ games: res.data });
-                }
-            })();
+            let res = await axiosGet(GETOFFERGAMES);
+            if (res.status === 200) { this.setState({ games: res.data }); }
         }
         else {
-            (async () => {
-                let res = await axiosGet(GETCURRENTPLATFORMGAMES + this.props.match.params.gamePlatform);
-                if (res.status === 200) {
-                    this.setState({ games: res.data });
-                }
-            })();
+            let res = await axiosGet(GETCURRENTPLATFORMGAMES + this.props.match.params.gamePlatform);
+            if (res.status === 200) { this.setState({ games: res.data }); }
         }
     }
 
-    componentDidUpdate(preProps, preState) {
+    async componentDidUpdate(preProps, preState) {
         if (this.props.match.params.gamePlatform !== preProps.match.params.gamePlatform) {
-            (async () => {
-                let res = await axiosGet(GETCURRENTPLATFORMGAMES + this.props.match.params.gamePlatform);
-                if (res.status === 200) {
-                    this.setState({ games: res.data });
-                }
-            })();
+            let res = await axiosGet(GETCURRENTPLATFORMGAMES + this.props.match.params.gamePlatform);
+            if (res.status === 200) { this.setState({ games: res.data }); }
         }
         if (this.state.orderingType1 !== preState.orderingType1 || this.state.orderingType2 !== preState.orderingType2) {
             (async () => {
@@ -162,7 +150,7 @@ class Catalog extends React.Component {
                         <h4>Жанры:</h4>
                         <ul>
                             <li className="liStyles" >
-                                <input type="radio" name="jenres" value="All" defaultChecked onChange={this.getGamesByGenres} />Все
+                                <input type="radio" name="jenres" className="inputsStyle" value="All" defaultChecked onChange={this.getGamesByGenres} />Все
                             </li>
                             <li className="liStyles" >
                                 <input type="radio" name="jenres" value="Shooter" onChange={this.getGamesByGenres} />Shooter

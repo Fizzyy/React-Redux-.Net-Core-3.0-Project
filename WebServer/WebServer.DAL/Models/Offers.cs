@@ -16,8 +16,6 @@ namespace WebServer.DAL.Models
 
         public decimal GameNewPrice { get; set; }
 
-        public DateTime EndOfOffer { get; set; }
-
         public Game Game { get; set; }
     }
 }

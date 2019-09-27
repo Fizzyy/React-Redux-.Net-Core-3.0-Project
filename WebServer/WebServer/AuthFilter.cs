@@ -18,7 +18,7 @@ namespace WebServer
 {
     public class AccountRequirement : IAuthorizationRequirement { }
 
-    public class AuthFilter : AuthorizationHandler<AuthFilter>, IAuthorizationRequirement
+    public class AuthFilter : AuthorizationHandler<AccountRequirement>
     {
         private readonly IRefreshTokensService refreshTokensService;
         private readonly IHttpContextAccessor httpContextAccessor;
@@ -32,7 +32,7 @@ namespace WebServer
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthFilter requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AccountRequirement requirement)
         {
             try
             { 
@@ -45,7 +45,7 @@ namespace WebServer
                 HttpContext httpContext = httpContextAccessor.HttpContext;
                 jwtToken = httpContext.Request.Headers["AccessToken"];
                 refreshtoken = httpContext.Request.Headers["RefreshToken"];
-
+                
                 var actionContext = context.Resource;
                 //jwtToken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "AccessToken").Value.FirstOrDefault();
                 //refreshtoken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "RefreshToken").Value.FirstOrDefault();

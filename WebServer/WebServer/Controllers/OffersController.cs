@@ -55,7 +55,7 @@ namespace WebServer.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpdateOffer")]
         public async Task<IActionResult> UpdateOffer([FromBody]OffersBll model)
         {

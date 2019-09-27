@@ -10,24 +10,45 @@ namespace WebServer.Services.Mapper
 {
     public class GameDescriptionMapper
     {
-        public static GameDescriptionBll GetGameDescription(Game game, Offers offer, GameFinalScores scores, List<FeedbackBll> feedbacks, double UserScore)
+        public static GameDescriptionBll GetGameDescription(Game game, Offers offer, GameFinalScores scores, List<FeedbackBll> feedbacks, double UserScore, GamesScreenshots gamesScreenshots)
         {
-            return new GameDescriptionBll
+            try
             {
-                GameID = game.GameID,
-                GameName = game.GameName,
-                GamePrice = offer != null ? offer.GameNewPrice : game.GamePrice,
-                OldGamePrice = game.GamePrice,
-                AmountOfVotes = scores.AmountOfVotes,
-                GameScore = scores.GameScore,
-                GameImage = game.GameImage,
-                GameOfferAmount = offer != null ? offer.GameOfferAmount : 0,
-                GameJenre = game.GameJenre,
-                GamePlatform = game.GamePlatform,
-                GameRating = game.GameRating,
-                Feedbacks = feedbacks,
-                UserScore = UserScore
-            };
+                List<string> gamescreenshots = new List<string>(); 
+
+                if (gamesScreenshots != null)
+                {
+                    if (gamesScreenshots.GameScreenshotReference1 != null && gamesScreenshots.GameScreenshotReference2 != null && gamesScreenshots.GameScreenshotReference3 != null)
+                    {
+                        gamescreenshots.Add(gamesScreenshots.GameScreenshotReference1);
+                        gamescreenshots.Add(gamesScreenshots.GameScreenshotReference2);
+                        gamescreenshots.Add(gamesScreenshots.GameScreenshotReference3);
+                    }
+                }
+
+                return new GameDescriptionBll
+                {
+                    GameID = game.GameID,
+                    GameName = game.GameName,
+                    GamePrice = offer != null ? offer.GameNewPrice : game.GamePrice,
+                    OldGamePrice = game.GamePrice,
+                    AmountOfVotes = scores.AmountOfVotes,
+                    GameScore = scores.GameScore,
+                    GameImage = game.GameImage,
+                    GameOfferAmount = offer != null ? offer.GameOfferAmount : 0,
+                    GameJenre = game.GameJenre,
+                    GamePlatform = game.GamePlatform,
+                    GameRating = game.GameRating,
+                    Feedbacks = feedbacks,
+                    UserScore = UserScore,
+                    GameScreenshots = gamescreenshots,
+                    GameBackgroundImage = gamesScreenshots != null ? gamesScreenshots.GameDescriptionBackground : "-"
+                };
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public static List<GameDescriptionBll> OrderGamesBy(string Type, List<GameDescriptionBll> games)

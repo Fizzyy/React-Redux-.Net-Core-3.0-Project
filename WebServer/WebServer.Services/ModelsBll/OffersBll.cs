@@ -11,7 +11,5 @@ namespace WebServer.Services.ModelsBll
         public double GameOfferAmount { get; set; }
 
         public decimal GameNewPrice { get; set; }
-
-        public DateTime EndOfOffer { get; set; }
     }
 }

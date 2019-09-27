@@ -41,6 +41,14 @@ namespace WebServer.Controllers
         }
 
         [HttpGet]
+        [Route("GetGameForStartPage")]
+        public async Task<IActionResult> GetGameForStartPage()
+        {
+            var games = await gameService.GetGamesForStartPage();
+            return Ok(games);
+        }
+
+        [HttpGet]
         [Route("OrderGames")]
         public async Task<IActionResult> OrderGames([FromQuery]string GamePlatform, [FromQuery]string Type, [FromQuery]string Age, [FromQuery]string Genre)
         {

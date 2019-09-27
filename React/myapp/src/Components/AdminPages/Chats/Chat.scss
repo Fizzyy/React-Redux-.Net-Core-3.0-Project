@@ -1,0 +1,115 @@
+.chatsContainer {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: row;
+}
+
+.allChatRooms {
+    display: flex;
+    flex-direction: column;
+    max-width: 15%;
+    width: 100%;
+    height: 100%;
+    background-color: whitesmoke;
+
+    .roomsContainer {
+        width: 100%;
+        max-height: 70px;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 5px;
+
+        span {
+            margin-left: 10px;
+            font-size: 18px;
+            
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: grey;
+            transition-duration: .2s;
+
+            span {
+                color: whitesmoke;
+                transition-duration: .2s;
+            }
+        }
+    }
+}
+
+.userChatContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 85%;
+
+    .messagesContainer {
+        flex: 4;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+
+        .adminMessages {
+            align-self: flex-end;
+            background-color: #b7e3a1;
+            border-radius: 5px;
+            margin: 5px 5px 0 0;
+            max-width: 700px;
+
+            span {
+                padding: 5px;
+                font-size: 18px;
+            }
+        }
+
+        .clientMessages {
+            align-self: flex-start;
+            background-color: skyblue;
+            border-radius: 5px;
+            margin: 5px 0 0 5px;
+            max-width: 700px;
+
+            span {
+                padding: 5px;
+            }
+        }
+    }
+
+    .adminCommentContainer {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        border-top: 1px solid grey;
+        background-color: whitesmoke;
+
+        .adminCommentArea {
+            width: 80%;
+            height: 100%;
+            resize: none;
+            border: none;
+            
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .sendMessageButton {
+            max-width: 150px;
+            max-height: 40px;
+            width: 100%;
+            margin-left: 20px;
+        }
+    }
+}
+
+#chooseChat {
+    position: absolute;
+    left: 0;
+    right: 0;
+}

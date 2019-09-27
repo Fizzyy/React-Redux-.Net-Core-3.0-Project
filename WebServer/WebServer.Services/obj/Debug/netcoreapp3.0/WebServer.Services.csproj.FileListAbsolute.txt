@@ -16,7 +16,6 @@ D:\Kursach\WebServer\WebServer.Services\bin\Debug\netcoreapp3.0\WebServer.Servic
 D:\Kursach\WebServer\WebServer.Services\bin\Debug\netcoreapp3.0\WebServer.DAL.dll
 D:\Kursach\WebServer\WebServer.Services\bin\Debug\netcoreapp3.0\WebServer.DAL.pdb
 D:\Kursach\WebServer\WebServer.Services\obj\Debug\netcoreapp3.0\WebServer.Services.csprojAssemblyReference.cache
-D:\Kursach\WebServer\WebServer.Services\obj\Debug\netcoreapp3.0\WebServer.Services.csproj.CoreCompileInputs.cache
 D:\Kursach\WebServer\WebServer.Services\obj\Debug\netcoreapp3.0\WebServer.Services.AssemblyInfoInputs.cache
 D:\Kursach\WebServer\WebServer.Services\obj\Debug\netcoreapp3.0\WebServer.Services.AssemblyInfo.cs
 D:\Kursach\WebServer\WebServer.Services\obj\Debug\netcoreapp3.0\WebServer.Services.csproj.CopyComplete

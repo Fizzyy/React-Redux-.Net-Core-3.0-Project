@@ -8,6 +8,7 @@ const signoutuser = '/SignOut/';
 const getallusers1 = '/GetAllUsers';
 const getfulluserinfo = '/GetUserFullInfo/';
 const resetpassword = '/ResetPassword?';
+const updateavatar = '/UpdateAvatar?';
 
 const baseURLcatalog = MainURL + 'api/Game';
 const getallgames1 = '/GetAllGames'
@@ -19,6 +20,7 @@ const addgame = '/AddGame';
 const ordergames = '/OrderGames?';
 const getgamesbyregex = '/GetGamesByRegex?';
 const getsamejenregames = '/GetSameGenreGames?';
+const startpagegames = '/GetGameForStartPage';
 
 const baseURLorder = MainURL + 'api/Order';
 const addorder = '/AddOrder'
@@ -44,6 +46,9 @@ const baseURLoffers = MainURL + 'api/Offers';
 const getalloffers = '/GetOfferGames';
 const getoffersbyregex = '/GetOffersByRegex?';
 const getoffersfromplatform = '/GetOffersFromPlatform/';
+const addoffer = '/AddOffer';
+const updateoffer = '/UpdateOffer';
+const deleteoffer = '/DeleteOffer/';
 
 const baseURLbannedusers = MainURL + 'api/BannedUsers';
 const banuser = '/GrantBan';
@@ -53,6 +58,10 @@ const baseURLbalance = MainURL + 'api/MoneyKeys';
 const activatekey = '/ActivateKey?';
 const addkey = '/AddKey';
 
+const baseURLmessages = MainURL + 'api/Messages';
+const getmessagesfromroom = '/GetMessagesFromRoom/';
+const getallrooms = '/GetRooms';
+
 export const REGISTRATION = baseURLuser + register;
 export const AUTHORIZATION = baseURLuser + login;
 export const USERBALANCE = baseURLuser + returnuserbalance;
@@ -60,6 +69,7 @@ export const SIGNOUTUSER = baseURLuser + signoutuser;
 export const GETALLUSERS = baseURLuser + getallusers1;
 export const GETFULLUSERINFO = baseURLuser + getfulluserinfo;
 export const RESETPASSWORD = baseURLuser + resetpassword;
+export const UPDATEAVATAR = baseURLuser + updateavatar;
 
 export const GETALLGAMES = baseURLcatalog + getallgames1;
 export const GETCURRENTPLATFORMGAMES = baseURLcatalog + GetCurrentPlatformGames1;
@@ -70,6 +80,7 @@ export const ADDGAME = baseURLcatalog + addgame;
 export const ORDERGAMES = baseURLcatalog + ordergames;
 export const GETGAMESBYREGEX = baseURLcatalog + getgamesbyregex;
 export const GETSAMEGENREGAMES = baseURLcatalog + getsamejenregames;
+export const GETSTARTPAGEGAMES = baseURLcatalog + startpagegames;
 
 export const ADDORDER = baseURLorder + addorder;
 export const GETUNPAIDORDERS = baseURLorder + getunpaidorders;
@@ -91,9 +102,15 @@ export const DELETEGAMEMARK = baseURLgamemark + deletescore;
 export const GETOFFERGAMES = baseURLoffers + getalloffers;
 export const GETOFFERSBYREGEX = baseURLoffers + getoffersbyregex;
 export const GETOFFERSFROMPLATFORM = baseURLoffers + getoffersfromplatform;
+export const ADDOFFER = baseURLoffers + addoffer;
+export const UPDATEOFFER = baseURLoffers + updateoffer;
+export const DELETEOFFER = baseURLoffers + deleteoffer;
 
 export const BANUSER = baseURLbannedusers + banuser;
 export const REVOKEBAN = baseURLbannedusers + revokeban;
 
 export const ACTIVATEKEY = baseURLbalance + activatekey;
 export const ADDKEY = baseURLbalance + addkey;
+
+export const GETMESSAGESFROMROOM = baseURLmessages + getmessagesfromroom;
+export const GETROOMS = baseURLmessages + getallrooms;

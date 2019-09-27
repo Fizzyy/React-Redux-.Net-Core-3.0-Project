@@ -42,7 +42,7 @@ namespace WebServer.Controllers
         {
             try
             {
-                List<Feedback> feedbacks = await feedbackService.AddFeedback(feedback);
+                List<FeedbackBll> feedbacks = await feedbackService.AddFeedback(feedback);
                 return Ok(feedbacks);
             }
             catch(Exception ex)

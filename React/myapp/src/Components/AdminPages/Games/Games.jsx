@@ -5,6 +5,7 @@ import { GETALLGAMES, ADDGAME, UPDATEGAME, DELETEGAME, DELETEFEEDBACK } from '..
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { Image, CloudinaryContext } from 'cloudinary-react';
+import axios from 'axios';
 
 class Games extends React.Component {
     constructor(props) {
@@ -22,7 +23,8 @@ class Games extends React.Component {
                 gamePlatform: 'PS4',
                 gameImage: 'iTechArt/ylslnjnevinqrik0eql0'
             }
-        }
+        };
+        //ImageRef = React.createRef();
     }
 
     componentDidMount() {
@@ -106,14 +108,27 @@ class Games extends React.Component {
         }
     }
 
+    uploadGameImage = async () => {
+        const formdata = new FormData();
+        formdata.append('file', this.state.fileName);
+        formdata.append('upload_preset', 'iTechArt');
+        let response = await axios.post("https://api.cloudinary.com/v1_1/djlynoeio/image/upload", formdata);
+    }
+
+    selectImage = () => {
+        //this.ImageRef 
+    }
+
     render() {
         return (
             <div className="gameContainer">
                 <div className="gameList">
                     <Table bordered hover>
                         <thead>
-                            <th>ID</th>
-                            <th>Название</th>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {this.state.games.map((x) => {
@@ -133,7 +148,9 @@ class Games extends React.Component {
                             <CloudinaryContext cloudName="djlynoeio">
                                 <Image publicId={this.state.selectedGame.gameImage} height="350" width="260" />
                             </CloudinaryContext>
-                            <Button variant="outline-primary" className="addButton">Добавить</Button>
+                            <Button variant="outline-primary" className="addButton" onClick={this.uploadGameImage}>
+                                <input type="file" ref={this.ImageRef} hidden onClick={this.selectImage} />
+                                Добавить</Button>
                         </div>
                         <div className="gameDesc">
                             <div className="optButtons">
@@ -180,22 +197,31 @@ class Games extends React.Component {
                         </div>
                     </div>
                     <div className="gamescreens">
-                        <div>
+                        <div className="rowScreens">
+                            <div>
 
+                            </div>
+                            <div>
+
+                            </div>
                         </div>
-                        <div>
+                        <div className="rowScreens">
+                            <div>
 
-                        </div>
-                        <div>
+                            </div>
+                            <div>
 
+                            </div>
                         </div>
                     </div>
                     <div className="gametables">
                         <Table bordered>
                             <thead>
-                                <th>Логин</th>
-                                <th>Комментарий</th>
-                                <th><Button variant="outline-danger" size="sm" onClick={this.deleteComments}>Удалить</Button></th>
+                                <tr>
+                                    <th>Логин</th>
+                                    <th>Комментарий</th>
+                                    <th><Button variant="outline-danger" size="sm" onClick={this.deleteComments}>Удалить</Button></th>
+                                </tr>
                             </thead>
                             <tbody>
                                 {this.state.selectedGame && this.state.selectedGame.feedbacks ? this.state.selectedGame.feedbacks.map((x) => {

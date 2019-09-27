@@ -12,6 +12,8 @@ namespace WebServer.DAL.Models
             Orders = new List<Orders>();
             Feedbacks = new List<Feedback>();
             GameMarks = new List<GameMark>();
+            Messages = new List<Messages>();
+            ChatParticipants = new List<Participants>();
         }
 
         [Key]
@@ -31,5 +33,7 @@ namespace WebServer.DAL.Models
         public List<Orders> Orders { get; set; }
         public List<Feedback> Feedbacks { get; set; }
         public List<GameMark> GameMarks { get; set; }
+        public List<Messages> Messages { get; set; }
+        public List<Participants> ChatParticipants { get; set; }
     }
 }

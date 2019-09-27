@@ -65,7 +65,6 @@ D:\Kursach\WebServer\WebServer\bin\Debug\netcoreapp3.0\WebServer.Services.pdb
 D:\Kursach\WebServer\WebServer\obj\Debug\netcoreapp3.0\WebServer.csprojAssemblyReference.cache
 D:\Kursach\WebServer\WebServer\obj\Debug\netcoreapp3.0\staticwebassets\WebServer.StaticWebAssets.Manifest.cache
 D:\Kursach\WebServer\WebServer\obj\Debug\netcoreapp3.0\staticwebassets\WebServer.StaticWebAssets.xml
-D:\Kursach\WebServer\WebServer\obj\Debug\netcoreapp3.0\WebServer.csproj.CoreCompileInputs.cache
 D:\Kursach\WebServer\WebServer\obj\Debug\netcoreapp3.0\WebServer.AssemblyInfoInputs.cache
 D:\Kursach\WebServer\WebServer\obj\Debug\netcoreapp3.0\WebServer.AssemblyInfo.cs
 D:\Kursach\WebServer\WebServer\obj\Debug\netcoreapp3.0\WebServer.RazorTargetAssemblyInfo.cache
@@ -86,5 +85,4 @@ D:\Kursach\WebServer\WebServer\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Depe
 D:\Kursach\WebServer\WebServer\bin\Debug\netcoreapp3.0\System.Net.Http.Formatting.dll
 D:\Kursach\WebServer\WebServer\bin\Debug\netcoreapp3.0\System.Web.Http.dll
 D:\Kursach\WebServer\WebServer\bin\Debug\netcoreapp3.0\Newtonsoft.Json.Bson.dll
-D:\Kursach\WebServer\WebServer\obj\Debug\netcoreapp3.0\WebServer.MvcApplicationPartsAssemblyInfo.cs
 D:\Kursach\WebServer\WebServer\obj\Debug\netcoreapp3.0\WebServer.MvcApplicationPartsAssemblyInfo.cache

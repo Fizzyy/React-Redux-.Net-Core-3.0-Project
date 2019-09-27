@@ -104,6 +104,18 @@ namespace WebServer.Controllers
             return BadRequest();
         }
 
+        [HttpPut]
+        [Route("UpdateAvatar")]
+        public async Task<IActionResult> UpdateAvatar([FromQuery]string Username, string AvatarLink)
+        {
+            if (Username != null && AvatarLink != null)
+            {
+                await userService.UpdateAvatar(Username, AvatarLink);
+                return Ok();
+            }
+            return NotFound();
+        }
+
         [HttpPost]
         [Route("RefreshToken")]
         public async Task<IActionResult> RefreshToken()

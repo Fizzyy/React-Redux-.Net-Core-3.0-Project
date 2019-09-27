@@ -14,11 +14,13 @@ namespace WebServer.Services.Services
     {
         private readonly IFeedbackRepository feedbackRepository;
         private readonly IGameRepository gameRepository;
+        private readonly IUserRepository userRepository;
 
-        public FeedbackService(IFeedbackRepository feedbackRepository, IGameRepository gameRepository)
+        public FeedbackService(IFeedbackRepository feedbackRepository, IGameRepository gameRepository, IUserRepository userRepository)
         {
             this.feedbackRepository = feedbackRepository;
             this.gameRepository = gameRepository;
+            this.userRepository = userRepository;
         }
 
         public Task<List<Feedback>> GetCurrentGameFeedback(string GameID)
@@ -48,11 +50,28 @@ namespace WebServer.Services.Services
             return list;
         }
 
-        public async Task<List<Feedback>> AddFeedback(FeedbackBll feedback)
+        public async Task<List<FeedbackBll>> AddFeedback(FeedbackBll feedbackBll)
         {
             var date = DateTime.Now;
-            await feedbackRepository.AddFeedback(new Feedback { Username = feedback.Username, GameID = feedback.GameID, Comment = feedback.Comment, CommentDate = date.Date });
-            return await feedbackRepository.GetCurrentGameFeedback(feedback.GameID);
+            await feedbackRepository.AddFeedback(new Feedback { Username = feedbackBll.Username, GameID = feedbackBll.GameID, Comment = feedbackBll.Comment, CommentDate = date.Date });
+
+            var NewFeedbacks = new List<FeedbackBll>();
+
+            var feedbacks = await feedbackRepository.GetCurrentGameFeedback(feedbackBll.GameID);
+            foreach (var feedback in feedbacks)
+            {
+                var user = await userRepository.GetCurrentUser(feedback.Username);
+                NewFeedbacks.Add(new FeedbackBll
+                {
+                    Id = feedback.Id,
+                    Comment = feedback.Comment,
+                    CommentDate = feedback.CommentDate,
+                    UserAvatar = user.UserImage,
+                    GameID = feedback.GameID,
+                    Username = user.Username
+                });
+            }
+            return NewFeedbacks;
         }
 
         public async Task<List<UserFeedbackBll>> UpdateFeedback(FeedbackBll feedback)

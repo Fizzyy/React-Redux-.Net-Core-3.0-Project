@@ -18,6 +18,8 @@ namespace WebServer.Services.Interfaces
 
         Task<string> ResetPassword(string Username, string OldPassword, string NewPassword);
 
+        Task UpdateAvatar(string Username, string AvatarLink);
+
         Task<object> CheckUser(UserBll user);
 
         Task<decimal> ReturnUserBalance(string Username);

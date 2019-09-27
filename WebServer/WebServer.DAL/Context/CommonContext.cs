@@ -22,6 +22,9 @@ namespace WebServer.DAL.Context
         public DbSet<MoneyKeys> MoneyKeys { get; set; }
         public DbSet<GameFinalScores> GameFinalScores { get; set; }
         public DbSet<RefreshTokens> RefreshTokens { get; set; }
+        public DbSet<Rooms> Rooms { get; set; }
+        public DbSet<Messages> Messages { get; set; }
+        public DbSet<Participants> Participants { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder model)
         {
@@ -36,7 +39,7 @@ namespace WebServer.DAL.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Kursach;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=FinishedProject;Trusted_Connection=True;");
         }
     }
 }

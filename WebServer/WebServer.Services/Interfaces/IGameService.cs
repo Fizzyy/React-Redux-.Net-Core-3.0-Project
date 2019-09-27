@@ -12,6 +12,8 @@ namespace WebServer.Services.Interfaces
     {
         Task<List<GameDescriptionBll>> GetAllGames();
 
+        Task<object> GetGamesForStartPage();
+
         Task<List<GameDescriptionBll>> GetCurrentPlatformGames(string GamePlatform);
 
         Task<GameDescriptionBll> GetChosenGame(string GameID, string Username);

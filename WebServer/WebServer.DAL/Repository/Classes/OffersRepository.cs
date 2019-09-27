@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WebServer.DAL.Context;
 using WebServer.DAL.Models;
 using WebServer.DAL.Repository.Interfaces;
+using System.Linq;
 
 namespace WebServer.DAL.Repository.Classes
 {
@@ -60,6 +61,11 @@ namespace WebServer.DAL.Repository.Classes
                 FoundOffer.GameNewPrice = tempCost;
             }
             await commonContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Offers>> GetTop3()
+        {
+            return await Task.FromResult(commonContext.Offers.OrderBy(x => x.GameNewPrice).Take(3));
         }
     }
 }

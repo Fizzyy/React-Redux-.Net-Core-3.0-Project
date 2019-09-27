@@ -31,6 +31,13 @@ namespace WebServer.DAL.Repository.Classes
             return null;
         }
 
+        public async Task UpdateAvatar(string Username, string AvatartLink)
+        {
+            var user = await commonContext.Users.FindAsync(Username);
+            if (user != null) user.UserImage = AvatartLink;
+            await commonContext.SaveChangesAsync();
+        }
+
         public async Task<string> ResetPassword(string Username, string OldPassword, string NewPassword)
         {
             var user = await commonContext.Users.FirstOrDefaultAsync(x => x.Username == Username && x.Password == OldPassword);
@@ -45,13 +52,25 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task AddUser(User user)
         {
+            bool flag = false;
+
             foreach (var person in commonContext.Users)
             {
-                if (person.Username.ToLower() != user.Username.ToLower())
+                if (person.Username.ToLower() == user.Username.ToLower())
                 {
-                    commonContext.Users.Add(user);
+                    flag = true;
+                    break;
                 }
             }
+
+            if (!flag)
+            {
+                commonContext.Rooms.Add(new Rooms { RoomName = $"{user.Username}Admin" });
+                commonContext.Participants.Add(new Participants { RoomName = $"{user.Username}Admin", Username = "Admin" });
+                commonContext.Participants.Add(new Participants { RoomName = $"{user.Username}Admin", Username = user.Username });
+                commonContext.Users.Add(user);
+            }
+
             await commonContext.SaveChangesAsync();
         }
 
