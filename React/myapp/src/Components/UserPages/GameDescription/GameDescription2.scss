@@ -209,13 +209,17 @@
         select {
             width: 50px;
             height: 36px;
-            background-color: #121214;
+            background-color: rgba(18, 18, 20, 0);
             border-color: #17a2b8;
             color: #17a2b8;
             border-radius: 5px;
 
             &:focus {
                 outline: none;
+            }
+
+            option {
+                background-color: rgba(18, 18, 20, 1);
             }
         }
 

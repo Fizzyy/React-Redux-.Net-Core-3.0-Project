@@ -13,7 +13,6 @@ import UserComments from '../AccountSettings/UserComments';
 import Button from 'react-bootstrap/Button';
 import RatingStars from '../RatingStars/RatingStars';
 import store from '../../_REDUX/Storage';
-import Modal from '../SIgnInAndRegistration/SignAndReg';
 import axios from 'axios';
 
 class AccountSettings extends React.Component {
@@ -31,13 +30,9 @@ class AccountSettings extends React.Component {
         this.myRef = React.createRef();
     }
 
-    componentDidMount() {
-        (async () => {
-            let res = await axiosGet(GETFULLUSERINFO + this.props.user.username);
-            if (res.status === 200) {
-                this.setState({ userInfo: res.data });
-            }
-        })();
+    async componentDidMount() {
+        let res = await axiosGet(GETFULLUSERINFO + this.props.user.username);
+        if (res.status === 200) this.setState({ userInfo: res.data });
     }
 
     setNewComment = (e) => {
@@ -101,21 +96,18 @@ class AccountSettings extends React.Component {
     changeSettings = async (e) => {
         switch (e.target.name) {
             case 'password': {
-                this.setState({ showModal: true, modalType: 'password' });
-                break;
+                return (store.dispatch({ type: 'SHOW_MODAL', showModal: true, modalType: 'password' }));
             }
             case 'balance': {
-                this.setState({ showModal: true, modalType: 'balance' });
-                break;
+                return (store.dispatch({ type: 'SHOW_MODAL', showModal: true, modalType: 'balance' }));
             }
             case 'leave': {
                 let res = await axiosDelete(SIGNOUTUSER + this.props.user.username);
                 if (res.status === 200) {
-                    store.dispatch({ type: 'LOGGED_USER', username: 'Войти', userRole: 'User', isLogged: false });
                     localStorage.clear();
+                    store.dispatch({ type: 'LOGGED_USER', username: 'Войти', userRole: 'User', isLogged: false });
                     this.props.history.push("/");
                 }
-                break;
             }
         }
     }
@@ -263,7 +255,6 @@ class AccountSettings extends React.Component {
                         </Tabs>
                     </div>
                 </div>
-                <Modal showModal={this.state.showModal} username={this.props.user.username} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type={this.state.modalType} />
                 <div id="emptyDiv" />
             </div>
         );
@@ -272,7 +263,7 @@ class AccountSettings extends React.Component {
 
 const mapStateToProps = function (store) {
     return {
-        user: store
+        user: store.user
     };
 }
 

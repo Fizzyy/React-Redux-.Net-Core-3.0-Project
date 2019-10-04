@@ -20,7 +20,7 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task<IEnumerable<Orders>> GetPaidOrUnpaidOrders(string Username, bool type)
         {
-            var res = await Task.FromResult(commonContext.Orders.Where(x => x.Username == Username && x.isOrderPaid == type));        
+            var res = await Task.FromResult(commonContext.Orders.Where(x => x.Username == Username && x.isOrderPaid == type));
             return res;
         }
 

@@ -22,6 +22,17 @@ namespace WebServer.Services.Services
             return claimsIdentity;
         }
 
+        public static List<Claim> GetClaims(UserBll user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim("UserBalance", Convert.ToDouble(user.UserBalance).ToString())
+            };
+            return claims;
+        }
+
         public static ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
             var tokenValidationParameters = new TokenValidationParameters

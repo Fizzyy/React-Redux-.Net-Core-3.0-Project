@@ -1,9 +1,10 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import userDataReducer from '../_REDUX/Reducer';
+import ModalReducer from '../_REDUX/ModalReducer';
 
 function saveToStorage(state) {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem('state', serializedState);
+    const serializedUserState = JSON.stringify(state.user);
+    localStorage.setItem('state', serializedUserState);
 }
 
 function getDataFromStorage() {
@@ -12,8 +13,19 @@ function getDataFromStorage() {
     return JSON.parse(getStates);
 }
 
+const combiner = combineReducers({
+    user: userDataReducer,
+    modal: ModalReducer
+});
+
 const receivedStore = getDataFromStorage();
-const store = createStore(userDataReducer, receivedStore, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+const preCombiner = {
+    user: receivedStore,
+    modal: ModalReducer
+};
+
+const store = createStore(combiner, preCombiner, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 store.subscribe(() => saveToStorage(store.getState()));
 

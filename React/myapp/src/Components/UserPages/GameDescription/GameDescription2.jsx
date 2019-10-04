@@ -15,9 +15,7 @@ import { fire } from 'react-icons-kit/metrize/fire';
 import { Icon } from 'react-icons-kit';
 import { androidCart } from 'react-icons-kit/ionicons/androidCart';
 import OtherGames from '../GameDescription/OtherGames';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import store from '../../_REDUX/Storage';
 
 class GameDesc2 extends React.Component {
     constructor(props) {
@@ -45,20 +43,19 @@ class GameDesc2 extends React.Component {
         }
     }
 
-    componentDidUpdate(preProps) {
+    async componentDidUpdate(preProps) {
         if (this.props.match.params.gameID !== preProps.match.params.gameID) {
-            (async () => {
-                let gameGenre = '';
-                let res = await axiosGet(GETCHOSENGAME + this.props.match.params.gameID + '/' + this.props.userData.username);
-                if (res.status === 200) {
-                    gameGenre = res.data.gameJenre;
-                    this.setState({ gameFullDescription: res.data, totalprice: res.data.gamePrice });
-                }
-                let sameGenreGames = await axiosGet(GETSAMEGENREGAMES + `GameGenre=${gameGenre}&GameID=${this.props.match.params.gameID}`);
-                if (sameGenreGames.status === 200) {
-                    this.setState({ sameGenreGames: sameGenreGames.data });
-                }
-            })();
+            let gameGenre = '';
+            let res = await axiosGet(GETCHOSENGAME + this.props.match.params.gameID + '/' + this.props.userData.username);
+            if (res.status === 200) {
+                gameGenre = res.data.gameJenre;
+                this.setState({ gameFullDescription: res.data, totalprice: res.data.gamePrice });
+            }
+
+            let sameGenreGames = await axiosGet(GETSAMEGENREGAMES + `GameGenre=${gameGenre}&GameID=${this.props.match.params.gameID}`);
+            if (sameGenreGames.status === 200) {
+                this.setState({ sameGenreGames: sameGenreGames.data });
+            }
         }
     }
 
@@ -71,15 +68,16 @@ class GameDesc2 extends React.Component {
     }
 
     addOrder = async () => {
-        let response = await axiosPost(ADDORDER, {
+        let res = await axiosPost(ADDORDER, {
             username: this.props.userData.username,
             gameid: this.state.gameFullDescription.gameID,
             amount: +this.state.amount,
             totalsum: this.state.totalprice
         });
-        if (response.status === 200) NotificationManager.success('Заказ добавлен!', 'Успешно', 5000);
-        if (response.status === 400) NotificationManager.error('Войдите в аккаунт чтобы продолжить!', 'Ошибка', 5000);
-        if (response.status === 401) return this.props.history.push('/SignIn');
+        if (res.status === 200) NotificationManager.success('Заказ добавлен!', 'Успешно', 5000)
+        else if (res.response.status === 401) {
+            store.dispatch({ type: 'SHOW_MODAL', showModal: true, modalType: 'login' });
+        }
     }
 
     ratingChanged = async (newRating) => {
@@ -96,6 +94,7 @@ class GameDesc2 extends React.Component {
                 }
             });
         }
+        else if (res.response.status === 401) store.dispatch({ type: 'SHOW_MODAL', showModal: true, modalType: 'login' });
     }
 
     addFeedback = async () => {
@@ -105,8 +104,6 @@ class GameDesc2 extends React.Component {
             comment: this.state.userComment
         });
         if (res.status === 200) {
-            console.log(res.data);
-            debugger;
             NotificationManager.success('Успешно!', 'Комментарий добавлен', 3000);
             this.setState({
                 gameFullDescription: {
@@ -115,6 +112,7 @@ class GameDesc2 extends React.Component {
                 }
             });
         }
+        else if (res.response.status === 401) store.dispatch({ type: 'SHOW_MODAL', showModal: true, modalType: 'login' });
     }
 
     setUserComment = (e) => {
@@ -262,7 +260,8 @@ class GameDesc2 extends React.Component {
 
 const mapStateToProps = function (store) {
     return {
-        userData: store
+        userData: store.user,
+        modal: store.modal
     };
 }
 

@@ -101,7 +101,7 @@ class Chats extends React.Component {
 
 const mapStateToProps = function (store) {
     return {
-        user: store
+        user: store.user
     };
 }
 

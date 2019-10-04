@@ -1,10 +1,17 @@
 import axios from 'axios';
 
+function getToken(token) {
+    let foundtoken = localStorage.getItem(token);
+    if (foundtoken === null) return JSON.stringify(foundtoken);
+    return foundtoken;
+}
+
 function createAxios() {
     return axios.create({
         headers: {
-            'AccessToken': localStorage.getItem('Token'),
-            'RefreshToken': localStorage.getItem('RefreshToken')
+            AccessToken: getToken('Token'),
+            RefreshToken: getToken('RefreshToken'),
+            Authorization: 'Bearer ' + localStorage.getItem('Token')
         },
         responseType: 'json'
     })

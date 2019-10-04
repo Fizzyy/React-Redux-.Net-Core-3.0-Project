@@ -52,18 +52,9 @@ namespace WebServer.DAL.Repository.Classes
 
         public async Task AddUser(User user)
         {
-            bool flag = false;
+            var existinguser = await commonContext.Users.FirstOrDefaultAsync(x => x.Username == user.Username);
 
-            foreach (var person in commonContext.Users)
-            {
-                if (person.Username.ToLower() == user.Username.ToLower())
-                {
-                    flag = true;
-                    break;
-                }
-            }
-
-            if (!flag)
+            if (existinguser == null)
             {
                 commonContext.Rooms.Add(new Rooms { RoomName = $"{user.Username}Admin" });
                 commonContext.Participants.Add(new Participants { RoomName = $"{user.Username}Admin", Username = "Admin" });

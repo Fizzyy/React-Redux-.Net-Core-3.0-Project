@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServer.DAL.Models;
@@ -24,7 +25,7 @@ namespace WebServer.Controllers
 
         [HttpGet]
         [Route("GetCurrentOrders/{Username}")]
-        [Authorize(Policy = "MyPolicy")]
+        [Authorize(Policy = "MyPolicy", Roles = "User")]
         public async Task<IActionResult> GetCurrentOrders(string Username)
         {
             List<UserOrdersBll> userorders = await orderService.GetPaidOrUnpaidOrders(Username, false);
@@ -41,7 +42,7 @@ namespace WebServer.Controllers
 
         [HttpPost]
         [Route("AddOrder")]
-        //[Authorize(Policy = "MyPolicy")]
+        [Authorize(Policy = "MyPolicy")]
         public async Task<IActionResult> AddOrder([FromBody] OrdersBll model)
         {
             try

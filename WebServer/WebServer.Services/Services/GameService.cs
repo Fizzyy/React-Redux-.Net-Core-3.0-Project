@@ -49,13 +49,11 @@ namespace WebServer.Services.Services
                 {
                     TotalFeedback.Add(new FeedbackBll
                     {
-
                         Id = feedback.Id,
                         Comment = feedback.Comment,
                         CommentDate = feedback.CommentDate,
                         Username = feedback.Username,
                         GameID = game.GameID
-
                     });
                 }
                 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -146,6 +147,15 @@ namespace WebServer.Controllers
             };
 
             return Ok(kek);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User"/*, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme*/)]
+        [Route("test")]
+        public IActionResult Test()
+        {
+            var k = User.Identity.Name;
+            return Ok("Smelov");
         }
     }
 }

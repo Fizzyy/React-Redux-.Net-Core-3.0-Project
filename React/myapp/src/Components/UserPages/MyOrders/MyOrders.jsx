@@ -7,6 +7,7 @@ import Moment from 'moment';
 import jwt_decode from 'jwt-decode';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import { NotificationManager } from 'react-notifications';
 
 class MyOrders extends React.Component {
     constructor(props) {
@@ -20,22 +21,20 @@ class MyOrders extends React.Component {
         }
     }
 
-    componentDidMount() {
-        (async () => {
-            const token = localStorage.getItem('Token');
-            const decoding = jwt_decode(token);
-            let res = await axiosGet(GETUNPAIDORDERS + this.props.userData.username);
-            if (res.status === 200) {
-                for (let i = 0; i < res.data.length; i++) {
-                    this.state.totalSumToPay += res.data[i].totalSum;
-                }
-                this.setState({
-                    orders: res.data,
-                    userBalance: decoding.UserBalance,
-                    totalSumToPay: this.state.totalSumToPay
-                });
+    async componentDidMount() {
+        const token = localStorage.getItem('Token');
+        const decoding = jwt_decode(token);
+        let res = await axiosGet(GETUNPAIDORDERS + this.props.userData.username);
+        if (res.status === 200) {
+            for (let i = 0; i < res.data.length; i++) {
+                this.state.totalSumToPay += res.data[i].totalSum;
             }
-        })();
+            this.setState({
+                orders: res.data,
+                userBalance: decoding.UserBalance,
+                totalSumToPay: this.state.totalSumToPay
+            });
+        }
     }
 
     selectOrder = (e) => {
@@ -66,7 +65,7 @@ class MyOrders extends React.Component {
     }
 
     payForOrders = async () => {
-        if (this.state.userBalance < this.state.totalSumToPay) alert('Not enough money');
+        if (this.state.userBalance < this.state.totalSumToPay) NotificationManager.error('На вашем балансе не хватает средств', 'Ошибка', 3000);
         else {
             let res = await axiosPost(PAYFORORDERS, { Username: this.props.userData.username, orders: this.state.selectedOrders });
             if (res.status === 200) {
@@ -77,6 +76,7 @@ class MyOrders extends React.Component {
                     orders: res.data,
                     totalSumToPay: this.state.totalSumToPay
                 });
+                NotificationManager.success('Ваш заказ был оплачен', 'Успешно!', 5000);
             }
         }
     }
@@ -129,9 +129,6 @@ class MyOrders extends React.Component {
                             </tr>
                         </tbody>
                     </Table>
-                    <div>
-
-                    </div>
                 </div>
             </div>
         );
@@ -140,7 +137,7 @@ class MyOrders extends React.Component {
 
 const mapStateToProps = function (store) {
     return {
-        userData: store
+        userData: store.user
     };
 }
 

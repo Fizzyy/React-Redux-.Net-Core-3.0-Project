@@ -2994,11 +2994,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
+      "projectUniqueName": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
       "projectName": "WebServer.DAL",
-      "projectPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
+      "projectPath": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\WebServer.DAL.csproj",
       "packagesPath": "C:\\Users\\Dzmitry.Yaniuk\\.nuget\\packages\\",
-      "outputPath": "D:\\Kursach\\WebServer\\WebServer.DAL\\obj\\",
+      "outputPath": "D:\\gitFinishedProject\\WebServer\\WebServer.DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -24,8 +24,13 @@ class Container extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showModal: true
+            showModal: false,
+            modalType: ''
         }
+    }
+
+    componentDidUpdate(preProps, preState) {
+        if (this.props.modalData.showModal !== preProps.modalData.showModal) this.setState({ showModal: this.props.modalData.showModal, modalType: this.props.modalData.modalType });
     }
 
     render() {
@@ -37,8 +42,6 @@ class Container extends React.Component {
                     </div>
                     <div id='bodyy'>
                         <Route exact path="/" render={() => <StartPage />} />
-                        {/* <Route path="/SignIn" render={props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="login" />} /> */}
-                        {/* <Route path="/SignUp" render={props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="registration" />} /> */}
                         <Route path="/Catalog">
                             <Route exact path="/Catalog/:gamePlatform" render={props => <Catalog {...props} />} />
                             <Route exact path="/Catalog/:gamePlatform/:gameID" render={props => <GameDescription2 {...props} />} />
@@ -49,6 +52,8 @@ class Container extends React.Component {
                         {/* <Redirect to="/" /> */}
                         <NotificationContainer />
                         <ChatWindow />
+                        {this.state.showModal ?
+                            <SignInAndRegistration showModal={this.state.showModal} type={this.state.modalType} /> : null}
                     </div>
                     <div id='footer'>
                         <Footer />
@@ -75,7 +80,8 @@ class Container extends React.Component {
 
 const mapStateToProps = function (store) {
     return {
-        userData: store
+        userData: store.user,
+        modalData: store.modal
     };
 }
 

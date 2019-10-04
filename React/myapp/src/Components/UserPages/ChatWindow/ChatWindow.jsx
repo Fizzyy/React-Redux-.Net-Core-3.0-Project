@@ -42,18 +42,18 @@ class ChatWindow extends React.Component {
 
     }
 
-    moveChat = (e) => {
-        if (!this.state.isChatOpened) {
-            e.currentTarget.style.transform = "translateY(-400px)";
-            e.currentTarget.style.transitionDuration = ".5s";
-            this.setState({ isChatOpened: true });
-        }
-        else {
-            e.currentTarget.style.transform = "translateX(0px)";
-            e.currentTarget.style.transitionDuration = ".5s";
-            this.setState({ isChatOpened: false });
-        }
-    }
+    // moveChat = (e) => {
+    //     if (!this.state.isChatOpened) {
+    //         e.currentTarget.style.transform = "translateY(-400px)";
+    //         e.currentTarget.style.transitionDuration = ".5s";
+    //         this.setState({ isChatOpened: true });
+    //     }
+    //     else {
+    //         e.currentTarget.style.transform = "translateX(0px)";
+    //         e.currentTarget.style.transitionDuration = ".5s";
+    //         this.setState({ isChatOpened: false });
+    //     }
+    // }
 
     changeUserMessage = (e) => {
         this.setState({ userMessage: e.target.value });
@@ -72,14 +72,14 @@ class ChatWindow extends React.Component {
                     <span>С вами скоро свяжутся</span>
                 </div>
                 <div className="chatBody">
-                    {this.state.messages ? this.state.messages.map(x => {
+                    {this.state.messages ? this.state.messages.map((x, index) => {
                         return (
                             x.username === this.state.nick ?
-                                <div className="MyMessage">
+                                <div className="MyMessage" key={index}>
                                     <span>{x.messageText}</span>
                                 </div>
                                 :
-                                <div className="PartnerMessage">
+                                <div className="PartnerMessage" key={index}>
                                     <span>{x.messageText}</span>
                                 </div>
                         );
@@ -98,7 +98,7 @@ class ChatWindow extends React.Component {
 
 const mapStateToProps = function (store) {
     return {
-        user: store
+        user: store.user
     };
 }
 

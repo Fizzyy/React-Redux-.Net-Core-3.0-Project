@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServer.DAL.Models;
 using WebServer.Services.Interfaces;
@@ -30,6 +31,7 @@ namespace WebServer.Controllers
 
         [HttpGet]
         [Route("GetUserFeedback/{Username}")]
+        [Authorize(Policy = "MyPolicy", Roles = "User")]
         public async Task<IActionResult> GetUserFeedback(string Username)
         {
             IEnumerable<object> UserFeedback = await feedbackService.GetUserFeedback(Username);
@@ -38,6 +40,7 @@ namespace WebServer.Controllers
 
         [HttpPost]
         [Route("AddFeedback")]
+        [Authorize(Policy = "MyPolicy", Roles = "User")]
         public async Task<IActionResult> AddFeedback([FromBody]FeedbackBll feedback)
         {
             try

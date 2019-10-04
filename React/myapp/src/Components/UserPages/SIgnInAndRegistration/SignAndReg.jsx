@@ -11,6 +11,9 @@ import store from '../../_REDUX/Storage';
 import jwt_decode from 'jwt-decode';
 import { axiosPost } from '../../CommonFunctions/axioses';
 import { NotificationManager } from 'react-notifications';
+import { connect } from 'react-redux';
+import banImage from '../../../ban.jpg';
+import Moment from 'moment';
 
 class SignInAndRegistration extends React.Component {
     constructor(props) {
@@ -32,7 +35,7 @@ class SignInAndRegistration extends React.Component {
 
     componentDidUpdate(preProps, preState) {
         if (this.props.showModal !== preProps.showModal) {
-            this.setState({ show: this.props.showModal });
+            this.setState({ show: this.props.user.showModal });
         }
 
         if (this.state.password2 !== preState.password2 || this.state.password1 !== preState.password1) {
@@ -42,8 +45,7 @@ class SignInAndRegistration extends React.Component {
     }
 
     handleClose = () => {
-        this.setState({ show: false });
-        this.props.showOrHideModal(false);
+        store.dispatch({ type: 'CLOSE_MODAL', showModal: false });
     }
 
     setData = (e) => {
@@ -58,27 +60,37 @@ class SignInAndRegistration extends React.Component {
             await axios.post(AUTHORIZATION, { username: this.state.username, password: this.state.password1 }).then(responsee => { response = responsee });
         if (response.status === 200) {
             if (this.props.type !== "registration") {
-                localStorage.setItem('Token', response.data.token.access_token);
-                localStorage.setItem('RefreshToken', response.data.refreshToken);
+                debugger;
+                if (!response.data.banReason) {
+                    localStorage.setItem('Token', response.data.token.access_token);
+                    localStorage.setItem('RefreshToken', response.data.refreshToken);
 
-                let tokendata = jwt_decode(response.data.token.access_token);
-                //if (tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] == "Admin") this.props.history.push('/Admin');
+                    let tokendata = jwt_decode(response.data.token.access_token);
+                    //if (tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] == "Admin") this.props.history.push('/Admin');
 
-                store.dispatch({
-                    type: 'LOGGED_USER',
-                    username: tokendata["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
-                    userRole: tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
-                    userBalance: +tokendata.UserBalance,
-                    isUserLogged: true
-                });
+                    store.dispatch({
+                        type: 'LOGGED_USER',
+                        username: tokendata["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+                        userRole: tokendata["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+                        userBalance: +tokendata.UserBalance,
+                        isUserLogged: true
+                    });
+                    this.handleClose();
+                }
+                else {
+                    this.handleClose();
+                    store.dispatch({ type: 'OPEN_BAN_WINDOW', showModal: true, modalType: 'ban', banUserDate: response.data.banDate, banUserInfo: response.data.banReason });
+                }
             }
-            else NotificationManager.success('Успешно!', 'Ваша учетная запись создана', 5000);
+            else {
+                this.handleClose();
+                NotificationManager.success('Успешно!', 'Ваша учетная запись создана', 5000);
+            }
         };
-        this.handleClose();
     }
 
     updateUserBalance = async () => {
-        let res = await axiosPost(ACTIVATEKEY + `username=${this.props.username}&keycode=${this.state.password1}`);
+        let res = await axiosPost(ACTIVATEKEY + `username=${this.props.user.username}&keycode=${this.state.password1}`);
         if (res.status === 200) {
             if (Number(res.data) === 0) this.setState({ isOldPassCorrect: false });
             else {
@@ -89,7 +101,7 @@ class SignInAndRegistration extends React.Component {
     }
 
     resetPassword = async () => {
-        let res = await axiosPost(RESETPASSWORD + `username=${this.props.username}&oldpassword=${this.state.oldPassword}&newpassword=${this.state.password1}`);
+        let res = await axiosPost(RESETPASSWORD + `username=${this.props.user.username}&oldpassword=${this.state.oldPassword}&newpassword=${this.state.password1}`);
         if (res.status === 200) this.setState({ show: false });
         if (res.status === 204) this.setState({ isOldPassCorrect: false });
     }
@@ -100,7 +112,7 @@ class SignInAndRegistration extends React.Component {
             case 'registration': return <Button variant="outline-success" onClick={this.sendDataToServer} id="SignInButton">Регистрация</Button>;
             case 'balance': return <Button variant="outline-info" id="SignInButton" onClick={this.updateUserBalance}>Пополнить</Button>;
             case 'password': return <Button variant="outline-primary" id="SignInButton" onClick={this.resetPassword}>Обновить</Button>;
-            case 'ban': return <Button variant="outline-danger" id="SignInButton">Забанить</Button>;
+            case 'ban': return <Button variant="outline-info" id="SignInButton" onClick={this.handleClose}>Ок</Button>;
         }
     }
 
@@ -203,7 +215,12 @@ class SignInAndRegistration extends React.Component {
     }
 
     banUser = () => {
-        return (<h1>ban</h1>);
+        return (
+            <div className="banInfo-Container">
+                <img src={banImage} />
+                <label><span>Причина:</span> {this.props.modal.banUserInfo} ({Moment(this.props.modal.banUserDate).format("DD-MM-YYYY")})</label>
+                <label>Свяжитесь с администратором для снятия бана</label>
+            </div>);
     }
 
     render() {
@@ -217,7 +234,7 @@ class SignInAndRegistration extends React.Component {
                                 case 'registration': return ("Регистрация");
                                 case 'balance': return ("Пополнение баланса");
                                 case 'password': return ("Смена пароля");
-                                case 'ban': return "Бан пользователя";
+                                case 'ban': return "Бан";
                             }
                         })()}
                     </Modal.Title>
@@ -241,4 +258,11 @@ class SignInAndRegistration extends React.Component {
     }
 }
 
-export default SignInAndRegistration;
+const mapStateToProps = function (store) {
+    return {
+        user: store.user,
+        modal: store.modal
+    }
+}
+
+export default connect(mapStateToProps)(SignInAndRegistration);

@@ -38,19 +38,18 @@ namespace WebServer
             { 
                 string jwtToken, refreshtoken;
 
-                //var abc = context.Requirements.ToArray()[1];
-                //var type = abc.GetType().GetProperty("AllowedRoles").GetValue(abc, null);
-                //var value = type.GetType();
-
                 HttpContext httpContext = httpContextAccessor.HttpContext;
                 jwtToken = httpContext.Request.Headers["AccessToken"];
                 refreshtoken = httpContext.Request.Headers["RefreshToken"];
-                
-                var actionContext = context.Resource;
-                //jwtToken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "AccessToken").Value.FirstOrDefault();
-                //refreshtoken = actionContext.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "RefreshToken").Value.FirstOrDefault();
 
-                if (jwtToken == null || refreshtoken == null)
+                //if (httpContext.Request.Headers["Authorize"] == null)
+                //{
+                //    context.Fail();
+                //    httpContext.Response.StatusCode = 401;
+                //    return;
+                //}
+
+                if (jwtToken == "null" || refreshtoken == "null")
                 {
                     context.Fail();
                     httpContext.Response.StatusCode = 401;
@@ -91,6 +90,7 @@ namespace WebServer
                     string temp = (string)propertyInfo.GetValue(token, null);
 
                     httpContext.Response.Headers["AccessToken"] = temp;
+                    httpContext.Request.Headers["Authorization"] = "Bearer " + temp;
                     httpContext.Response.Headers["RefreshToken"] = newRefreshToken;
                 }
             }
@@ -99,6 +99,7 @@ namespace WebServer
                 throw e;
             }
             context.Succeed(requirement);
+            await Task.Yield();
         }
     }
 }

@@ -11,23 +11,18 @@ import { user_circle } from 'react-icons-kit/ikons/user_circle';
 import { ic_account_balance_wallet } from 'react-icons-kit/md/ic_account_balance_wallet';
 import { connect } from 'react-redux';
 import SignInAndRegistration from '../SIgnInAndRegistration/SignAndReg';
+import store from '../../_REDUX/Storage';
 
 class MenuBar extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            showModal: false,
-            type: ''
-        }
     }
 
     getRegistrationOrLogin = (e) => {
-        this.setState({ showModal: true, type: e.currentTarget.dataset.id });
-        // debugger;
-        // switch (e.currentTarget.dataset.id) {
-        //     case "signin": return (props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="login" />);
-        //     case "signup": return (props => <SignInAndRegistration {...props} showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type="registration" />)
-        // };
+        switch (e.currentTarget.dataset.id) {
+            case "signin": return (store.dispatch({ type: 'SHOW_MODAL', showModal: true, modalType: 'login' }));
+            case "signup": return (store.dispatch({ type: 'SHOW_MODAL', showModal: true, modalType: 'registration' }));
+        };
     }
 
     existingItems = () => {
@@ -74,11 +69,10 @@ class MenuBar extends React.Component {
                     {this.existingItems()}
                     <div className="divMainBar_divsInsideBar_UserData">
                         <div className="divForUnloggedUser">
-                            <Link className="linksUnloggedUser" data-id="login" onClick={this.getRegistrationOrLogin}>Войти</Link>
-                            <Link className="linksUnloggedUser" data-id="registration" onClick={this.getRegistrationOrLogin}>Регистрация</Link>
+                            <Link className="linksUnloggedUser" data-id="signin" onClick={this.getRegistrationOrLogin}>Войти</Link>
+                            <Link className="linksUnloggedUser" data-id="signup" onClick={this.getRegistrationOrLogin}>Регистрация</Link>
                         </div>
                     </div>
-                    <SignInAndRegistration showModal={this.state.showModal} showOrHideModal={(showOrHide) => { this.setState({ showModal: showOrHide }) }} type={this.state.type} />
                 </div>
         );
     }
@@ -86,7 +80,7 @@ class MenuBar extends React.Component {
 
 const mapStateToProps = function (store) {
     return {
-        userData: store
+        userData: store.user
     };
 }
 

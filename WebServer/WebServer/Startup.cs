@@ -39,8 +39,14 @@ namespace WebServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+
             services.AddControllers();
-            services.AddMvc().AddMvcOptions(opts => opts.EnableEndpointRouting = false);
+
+            services.AddMvcCore().AddAuthorization();
+
+            services.AddMvc();//.AddMvcOptions(opts => opts.EnableEndpointRouting = false);
+
+            services.AddRouting();
             /*services.AddCors(opts =>
             {
                 opts.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
@@ -87,7 +93,12 @@ namespace WebServer
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("MyPolicy", policy => policy.Requirements.Add(new AccountRequirement()));
+                options.AddPolicy("MyPolicy", policy => 
+                {
+                    policy.Requirements.Add(new AccountRequirement());
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    //policy.RequireRole("User");
+                });
             });
             services.AddScoped<IAuthorizationHandler, AuthFilter>();
             //services.AddHttpContextAccessor();
@@ -104,7 +115,7 @@ namespace WebServer
                     ValidIssuer = AuthOptions.ISSUER,
                     ValidateAudience = true,
                     ValidAudience = AuthOptions.AUDIENCE,
-                    ValidateLifetime = true,
+                    ValidateLifetime = false,
                     IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                     ValidateIssuerSigningKey = true
                 };
@@ -146,9 +157,9 @@ namespace WebServer
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseStatusCodePages();
 
